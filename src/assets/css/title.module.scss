@@ -1,0 +1,88 @@
+.title_wrapper {
+  position: relative;
+  .desc_text {
+    font-size: 25px;
+    font-family: "Share Tech Mono";
+    line-height: inherit;
+    text-transform: uppercase;
+    z-index: 2;
+    position: relative;
+    @media only screen and (max-width: 1799px) {
+      font-size: 22px;
+    }
+    .mint_date {
+      font-size: 36px;
+      @media only screen and (max-width: 1799px) {
+        font-size: 34px;
+      }
+      @media only screen and (max-width: 1599px) {
+        font-size: 30px;
+      }
+      @media only screen and (max-width: 767px) {
+        font-size: 20px;
+      }
+    }
+  }
+  .one {
+    color: #682065;
+    top: -11px;
+    font-family: "Share Tech Mono";
+    position: absolute;
+    font-size: 25px;
+    left: 24%;
+    z-index: 0;
+    animation: mover 2s infinite alternate;
+    @media only screen and (max-width: 1799px) {
+      font-size: 22px;
+    }
+    @media only screen and (max-width: 1599px) {
+      font-size: 20px;
+      left: 25%;
+    }
+    @media only screen and (max-width: 767px) {
+      font-size: 18px;
+      left: 24%;
+    }
+    @keyframes mover {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(30px);
+      }
+    }
+  }
+  .two {
+    color: #205368;
+    bottom: -19px;
+    font-family: "Share Tech Mono";
+    position: absolute;
+    font-size: 25px;
+    right: 25%;
+    z-index: 0;
+    animation: mover-top 2s infinite alternate;
+    @media only screen and (max-width: 1799px) {
+      font-size: 22px;
+    }
+    @media only screen and (max-width: 1599px) {
+      font-size: 20px;
+      bottom: -15px;
+    }
+    @media only screen and (max-width: 767px) {
+      font-size: 18px;
+      right: 19%;
+    }
+    @media only screen and (max-width: 449px) {
+      right: 15%;
+    }
+    @keyframes mover-top {
+      0% {
+        transform: translateY(0px);
+      }
+      100% {
+        transform: translateY(-30px);
+      }
+    }
+  }
+}
+

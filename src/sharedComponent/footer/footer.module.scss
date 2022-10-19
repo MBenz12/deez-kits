@@ -1,0 +1,45 @@
+.navbar_main {
+  // position: fixed;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 8px;
+  max-width: 100%;
+  margin-bottom: 10px;
+  @media only screen and (max-width: 991px) {
+    margin-top: 180px;
+  }
+  @media only screen and (max-width: 767px) {
+    margin-top: 80px;
+    display: block;
+  }
+
+  a {
+    color: #fbff49;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border: none;
+    padding: 4px 8px;
+    font-weight: 500;
+    font-size: 17px;
+    img {
+      color: #fbff49;
+    }
+  }
+  .me_link {
+    min-width: 106px;
+    cursor: not-allowed;
+  }
+  .twitter_link {
+    min-width: 70px;
+  }
+  .discord_link {
+    min-width: 70px;
+  }
+}

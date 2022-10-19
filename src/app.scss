@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  background-color: #000;
+  height: 100%;
+  font-size: 60%;
+}
+#root {
+  height: 100%;
+}
+.loading,
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-transform: capitalize;
+  height: 100vh;
+  flex-direction: column;
+  font-size: 25px;
+  a {
+    text-decoration: none;
+  }
+}
+.highlightedText {
+  color: #fbff49;
+  text-shadow: 0px 0px 16.1649px rgba(255, 247, 44, 0.83);
+}
+.BrownText {
+  color: #7a58ff;
+  font-size: 25px;
+  @media only screen and (max-width: 767px) {
+    font-size: 19px;
+  }
+}
+
+.desktop_view {
+  @media only screen and (min-width: 768px) {
+    display: block;
+  }
+  @media only screen and (max-width: 767px) {
+    display: none;
+  }
+}
+.mobile_view {
+  @media only screen and (min-width: 768px) {
+    display: none;
+  }
+  @media only screen and (max-width: 767px) {
+    display: block;
+  }
+}

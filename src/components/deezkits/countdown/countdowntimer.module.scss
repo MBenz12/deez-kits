@@ -1,0 +1,66 @@
+.timer_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 19px;
+  color: #4aff2c;
+  margin: 0 -10px;
+  font-family: "Share Tech Mono";
+  font-style: normal;
+  font-weight: 400;
+  @media only screen and (max-width: 767px) {
+    font-size: 13px;
+    line-height: 19px;
+    margin: 0 -7px;
+  }
+  .countdown {
+    padding: 0 10px;
+    @media only screen and (max-width: 767px) {
+      padding: 0 7px;
+    }
+    .countdown_value {
+      font-size: 58px !important;
+      font-family: "Share Tech Mono";
+      font-size: inherit;
+      @media only screen and (max-width: 1799px) {
+        font-size: 48px !important;
+      }
+      @media only screen and (max-width: 1599px) {
+        font-size: 42px !important;
+      }
+      @media  only screen and (max-width:767px) {
+        font-size: 30px !important;
+      }
+    }
+    .countdown_type {
+      font-size: 27px !important;
+      font-family: "Share Tech Mono";
+      font-size: inherit;
+      @media  only screen and (max-width:1799px) {
+        font-size: 22px !important;
+      }
+      @media  only screen and (max-width:767px) {
+        font-size: 17px !important;
+      }
+    }
+  }
+  .countdown_dot {
+    font-size: 61px;
+    margin-top: -28px;
+    @media  only screen and (max-width:767px) {
+      font-size: 20px;
+    }
+  }
+  .curlyBracket {
+    max-width: 7%;
+    margin-top: 40px;
+    @media  only screen and (max-width:767px) {
+      margin-top: 20px;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
