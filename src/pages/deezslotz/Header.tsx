@@ -32,7 +32,7 @@ const Header = ({
     <>
       <div className="hidden xl:flex w-full justify-center relative">
         <div className="absolute left-[-20px] top-[-20px]">
-          <div className="w-[90px] h-[90px]">
+          <div className="w-[225px] h-[104px]">
             <KitsLogo />
           </div>
         </div>
@@ -55,17 +55,17 @@ const Header = ({
         </div>
       </div>
       <div className="xl:hidden flex flex-col w-full gap-3">
-        <div className="flex justify-between relative">
+        <div className="flex sm:flex-row flex-col items-center justify-between relative">
           <div className="relative">
-            <div className="w-[45px] h-[45px]">
+            <div className="w-[170px] h-[85px]">
               <KitsLogo />
             </div>
           </div>
-          <div className="absolute top-0 left-[50%] translate-x-[-50%] z-[1000]">
+          <div className="">
             <WalletButton id={2} />
           </div>
         </div>
-        <div className="flex flex-col items-center gap-5 mb-5">
+        <div className="flex flex-col items-center gap-5 my-5">
           <CommunityFunds id={2} balance={communityBalance} royalty={royalty} />
           <Jackpot jackpot={14.4} />
           <PlayerFunds

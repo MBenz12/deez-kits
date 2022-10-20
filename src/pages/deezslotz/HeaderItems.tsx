@@ -172,7 +172,7 @@ export const SolBalance = ({
 }) => {
   const [tooltip, setTooltip] = useState(false);
   return (
-    <div className="relative sm:w-[224px] w-[158px] sm:h-[61px] h-[41px] border-[#952CFF] border-2 rounded-md cursor-context-menu">
+    <div className="relative w-[224px] h-[61px] border-[#952CFF] border-2 rounded-md cursor-context-menu">
       <div
         onMouseOver={() => setTooltip(true)}
         onMouseLeave={() => setTooltip(false)}
