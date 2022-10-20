@@ -8,6 +8,9 @@ import twitterIcon from "../assets/images/deezKits/twitter.svg";
 import discordIcon from "../assets/images/deezKits/discord.svg";
 import MobileMenuLogo from "../assets/images/site-icon.png";
 import DeezKitsKitty from '../assets/images/deezKits/deezkits_kitty.png'
+import slotzLogo from "../assets/images/deezKits/deez_slotz_logo.png";
+import BetBtn from "../assets/images/deezKits/bet_btn.png";
+
 export const Images = {
   MintBtn,
   logoTrasnsparent,
@@ -16,6 +19,8 @@ export const Images = {
   MeIcon,
   twitterIcon,
   discordIcon,
+  slotzLogo,
+  BetBtn,
 
   MobileMenuLogo,
   DeezKitsKitty

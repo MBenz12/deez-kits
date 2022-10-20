@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Error from "../sharedComponent/Error";
 import Loading from "../sharedComponent/Loading";
 import Audio from '../sharedComponent/Audio'
+import DeezSlotz from "../pages/deezslotz";
 const Home = React.lazy(() => import("../pages/home/index"));
 const Deezkits = React.lazy(() => import("../pages/deezkits/index"));
 
@@ -25,6 +26,14 @@ const Router = () => {
         element={
           <Suspense fallback={<Loading />}>
             <Deezkits isMint={true} ref={MusicRef} isMusicPlayer={true} />
+          </Suspense>
+        }
+      ></Route>
+      <Route
+        path="/deezslotz"
+        element={
+          <Suspense fallback={<Loading />}>
+            <DeezSlotz isMint={true} ref={MusicRef} />
           </Suspense>
         }
       ></Route>
