@@ -92,10 +92,8 @@ const Column = ({
           >
             <div className="flex items-center justify-center">
               <img
-                className={`rounded-xl w-full h-full`}
                 src={`/${assets}/${item + 1}.png`}
-                width={size - 16}
-                height={size - 16}
+                style={{ width: "auto", height: `${size - 16}px`, borderRadius: '8px' }}
                 alt=""
               />
             </div>

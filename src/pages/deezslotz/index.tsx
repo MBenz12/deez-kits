@@ -14,7 +14,7 @@ import {
 } from "@solana/wallet-adapter-react";
 import Confetti from "react-confetti";
 import {
-  ButtonImage,
+  BetButton,
   Discord,
   LoadingIcon,
   MagicEden,
@@ -374,22 +374,22 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         className="relative mt-5 mb-10 w-[175px] h-[52px] flex items-center justify-center text-[22px] font-bold text-[#96FFF9] cursor-pointer"
       >
         <div className="absolute l-0 t-0">
-          <ButtonImage />
+          <BetButton />
         </div>
 
-        {loading ? (
+        {/* {loading ? (
           <div className="animate-spin">
             <LoadingIcon small={false} id={2} />
           </div>
         ) : (
-          "SPIN"
-        )}
+          ""
+        )} */}
       </div>
 
       <div className="absolute bottom-5 flex items-center gap-5">
         <a
           className="flex items-center gap-1 no-underline"
-          href="https://magiceden.io/creators/sol_kitties"
+          href="https://magiceden.io/marketplace/deez_kits"
           target={"_blank"}
           rel="noreferrer"
         >
@@ -397,7 +397,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         </a>
         <a
           className="flex items-center gap-1 no-underline"
-          href="https://twitter.com/SolKitties"
+          href="https://twitter.com/deezkits"
           target={"_blank"}
           rel="noreferrer"
         >
@@ -405,7 +405,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         </a>
         <a
           className="flex items-center gap-1 no-underline"
-          href="http://discord.gg/solkitties"
+          href="http://discord.gg/deezkits"
           target={"_blank"}
           rel="noreferrer"
         >
