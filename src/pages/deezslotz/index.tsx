@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import {
   LAMPORTS_PER_SOL,
@@ -6,8 +7,6 @@ import {
   clusterApiUrl,
 } from "@solana/web3.js";
 import * as anchor from "@project-serum/anchor";
-import { Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { ASSOCIATED_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/token";
 import {
   useAnchorWallet,
   // useConnection,
@@ -25,13 +24,14 @@ import {
 import Slots, { random } from "./Slots";
 import Header from "./Header";
 import "./index.css";
+import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
   getGameAddress,
   getPlayerAddress,
   convertLog,
-  postToApi,
+  // postToApi,
   isAdmin,
   getProviderAndProgram,
   playTransaction,
@@ -41,7 +41,6 @@ import {
 
 const game_name = "game2";
 const game_owner = new PublicKey("3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd");
-const sktMint = new PublicKey("SKTsW8KvzopQPdamXsPhvkPfwzTenegv3c3PEX4DT1o");
 const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 113;
 
@@ -154,13 +153,13 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       counts[target] = (counts[target] || 0) + 1;
     });
     let maxCount = 0;
-    let equalNum = -1;
+    // let equalNum = -1;
     Object.keys(counts).forEach((num) => {
       // @ts-ignore
       if (maxCount < counts[num]) {
         // @ts-ignore
         maxCount = counts[num];
-        equalNum = parseInt(num);
+        // equalNum = parseInt(num);
       }
     });
 
@@ -200,12 +199,12 @@ const DeezSlotz = React.forwardRef((props, ref) => {
 
   const play = async () => {
     if (loading) return;
+    if (!wallet.connected) {
+      return;
+    }
     if (solBalance < price) {
       toast.dismiss();
       toast.error(`Not enough funds to bet.`, { containerId });
-      return;
-    }
-    if (!wallet.connected) {
       return;
     }
     setLoading(true);
@@ -240,6 +239,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         let rd = random();
         while (
           rd === equal_no ||
+          // eslint-disable-next-line no-loop-func
           targets.filter((target) => target === rd).length
         ) {
           rd = random();

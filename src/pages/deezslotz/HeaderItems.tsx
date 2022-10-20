@@ -1,13 +1,13 @@
 import {
   CommunityFundsFrame,
   SolanaLogo,
-  PhantomIcon,
   ButtonImage,
   WithdrawIcon,
 } from "./Svgs";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import "@solana/wallet-adapter-react-ui/styles.css";
 import { useState, useEffect } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
+// import { useWallet } from "@solana/wallet-adapter-react";
 
 export const CommunityFunds = ({
   balance,
@@ -42,31 +42,27 @@ export const CommunityFunds = ({
 
   return (
     <div>
-      <div className="relative cursor-context-menu">
-        <CommunityFundsFrame id={id} />
-        <div className="text-[#47C3D7] font-bold top-[-10px] w-full text-center absolute text-[13px]">
-          COMMUNITY FUNDS
+      <div className="relative cursor-context-menu rounded-md border-[#371761] border-2 min-w-[224px]">
+        <div className="top-0 translate-y-[-50%] w-full flex justify-center absolute">
+          <p className="text-[22px] leading-[25px] text-[#FFC42C] bg-black px-2">community funds</p>
         </div>
         <div
-          className="absolute left-0 top-0 w-full h-[51px]"
+          className="p-2"
           onMouseOver={() => setTooltip1(true)}
           onMouseLeave={() => setTooltip1(false)}
         >
-          <div className="relative h-full flex justify-center items-center">
-            <div className="absolute left-[12px] top-[50%] translate-y-[-50%]">
-              <SolanaLogo id={id} />
-            </div>
-            <p className="text-[#47C3D7] font-bold text-[20px] leading-[100%]">
+          <div className="relative h-full flex justify-center items-center text-[36px]">
+            <p className="text-white">
               {balance.toLocaleString("en-us", {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 4,
               })}{" "}
-              SOL
+              <span className="text-[#FFC42C]">SOL</span>
             </p>
           </div>
         </div>
         <div
-          className="flex flex-col gap-1 w-full text-center bottom-[4px] absolute leading-[100%] z-[5]"
+          className="flex flex-col gap-1 w-full text-center leading-[100%]"
           onMouseOver={() => setTooltip2(true)}
           onMouseLeave={() => setTooltip2(false)}
         >
@@ -127,10 +123,10 @@ export const Jackpot = ({ jackpot }: { jackpot: number }) => {
 };
 
 export const WalletButton = ({ id }: { id: number }) => {
-  const wallet = useWallet();
+  // const wallet = useWallet();
   return (
     <>
-      {!wallet.connected && (
+      {/* {!wallet.connected && (
         <div
           title="Devnet"
           className="w-[195px] h-[51px] border-[#47C3D7] border-2 rounded-md flex justify-center h-auto p-0"
@@ -156,7 +152,8 @@ export const WalletButton = ({ id }: { id: number }) => {
             </div>
           </WalletMultiButton>
         </div>
-      )}
+      )} */}
+      <WalletMultiButton />
     </>
   );
 };

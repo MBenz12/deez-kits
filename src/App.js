@@ -18,16 +18,20 @@ import { useMemo } from "react";
 function App() {
   const network = WalletAdapterNetwork.Devnet;
   const endpoint = "https://api.devnet.solana.com";
-  const wallet = useMemo(() => [
+  const wallets = useMemo(() => [
     new PhantomWalletAdapter(), 
     new SolflareWalletAdapter({network}), 
     new SolletWalletAdapter({network}), 
     new SlopeWalletAdapter({network})
   ], [network]);
+
+  const walletConnectionErr = (error) => {
+    console.log("Wallet Connection Error:", error);
+  };
   return (
     <>
       <ConnectionProvider endpoint={endpoint}>
-        <WalletProvider wallets={wallet} autoConnect >
+        <WalletProvider wallets={wallets} onError={walletConnectionErr} autoConnect >
           <WalletModalProvider>
             <Router />
           </WalletModalProvider>
