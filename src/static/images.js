@@ -7,7 +7,7 @@ import MeIcon from "../assets/images/deezKits/me.svg";
 import twitterIcon from "../assets/images/deezKits/twitter.svg";
 import discordIcon from "../assets/images/deezKits/discord.svg";
 import MobileMenuLogo from "../assets/images/site-icon.png";
-
+import DeezKitsKitty from '../assets/images/deezKits/deezkits_kitty.png'
 export const Images = {
   MintBtn,
   logoTrasnsparent,
@@ -18,4 +18,5 @@ export const Images = {
   discordIcon,
 
   MobileMenuLogo,
+  DeezKitsKitty
 };

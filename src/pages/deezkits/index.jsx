@@ -1,31 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import HighlightedText from "../../sharedComponent/HighlightedText";
 import { Images } from "../../static/images";
 import style from "./deezkits.module.scss";
 import CountdownTimer from "../../components/deezkits/countdown/CountDownTImer";
-import ImageUI from "../../sharedComponent/ImageUI";
+// import ImageUI from "../../sharedComponent/ImageUI";
 import Footer from "../../sharedComponent/footer/footer";
 import CommonTitle from "../../sharedComponent/FancyTitle";
-import Music from '../../sharedComponent/musicPlayer'
+import Music from "../../sharedComponent/musicPlayer";
 
 const DeezKits = React.forwardRef((props, ref) => {
   const [isMintState, setMintState] = useState(props?.isMint);
+  const totalTicket = 4343;
+  const [ticket, setTicket] = useState(0);
   const MintDate = new Date("10/25/2022 12:00:00");
   const mintHandler = () => {
     console.log("mint");
   };
+
+  useEffect(() => {
+    const increaseTicket = () => {
+      if (ticket < 1000) {
+        setTicket(ticket + 1);
+      } else {
+        return true;
+      }
+    };
+    const interval = setInterval(() => {
+      increaseTicket();
+    }, 1);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [ticket]);
+
   return (
     <Box className={style.deez_kits_wrapper}>
       <Box className={style.deezkits_header}>
         <img src={Images?.logo} alt="deezkits-icon" />
       </Box>
-      <Box className={style.deez_content_wrapper} >
-        <Box className={style.deez_inner_content} >
+      <Box className={style.deez_content_wrapper}>
+        <Box className={style.deez_inner_content}>
           <Box className={style.deezkits_content_wrapper}>
             {isMintState ? (
               <Box className={style.deezkits_mint_title}>
-                <img src={Images?.MintTitle} alt="deezkits-mint-title" />
+                {/* <img src={Images?.MintTitle} alt="deezkits-mint-title" /> */}
+                &lt; <span className={style.can}>CAN</span>{" "}
+                <span className={style.deez}>DEEZ</span>{" "}
+                <span className={style.kits}>KITS</span>{" "}
+                <span className={style.fit}>FIT</span>{" "}
+                <span className={style.yr}>YR</span>{" "}
+                <span className={style.wallet}>WALLET</span>&gt; &#63;
               </Box>
             ) : (
               <CommonTitle MintDate={MintDate} />
@@ -40,19 +65,27 @@ const DeezKits = React.forwardRef((props, ref) => {
                 <Box className={style.progress_bar}>
                   <Box
                     className={style.progress_bar_inner}
-                    sx={{ width: "50%" }}
+                    sx={{
+                      width: `${parseInt((100 * ticket) / totalTicket)}%`,
+                    }}
                   ></Box>
                 </Box>
               </Box>
 
               <Box className={style.sold_mint_wrapper}>
                 <Typography className={style.sold_mint_text}>
-                  123 / 4343 SOLD
+                  {ticket} / {totalTicket} SOLD
                 </Typography>
               </Box>
-              <Box className={style.mint_button}>
-                <button onClick={mintHandler}>
-                  <ImageUI src={Images?.MintBtn} alt="mint-button" />
+              <Box>
+                <button onClick={mintHandler} className={style.mint_button}>
+                  <span className={`${style.curly_open} ${style.zoom_in_out}`}>
+                    &#123;
+                  </span>{" "}
+                  <span className={style.mint_btn}>MINT</span>{" "}
+                  <span className={`${style.curly_close} ${style.zoom_in_out}`}>
+                    &#125;
+                  </span>
                 </button>
               </Box>
 
@@ -65,7 +98,10 @@ const DeezKits = React.forwardRef((props, ref) => {
             </>
           ) : (
             <Box>
-              <Typography className={`${style.desc_text} ${style.mint_supply}`} sx={{ marginBottom: "16px" }}>
+              <Typography
+                className={`${style.desc_text} ${style.mint_supply}`}
+                sx={{ marginBottom: "16px" }}
+              >
                 <HighlightedText className="highlightedText">
                   {" "}
                   Supply{" "}
@@ -87,13 +123,17 @@ const DeezKits = React.forwardRef((props, ref) => {
           )}
         </Box>
       </Box>
+      <Box className={style.deez_kits_kitty}>
+        <img src={Images?.DeezKitsKitty} alt="deez-kits-kitty" />
+      </Box>
       <Footer />
+
       <Box className={style.toggle_btn}>
         <Button onClick={() => setMintState(!isMintState)}>
           <span>{!isMintState ? "Mint" : "countdown"}</span>
         </Button>
       </Box>
-      <Music props={props} ref={ref}/>
+      <Music props={props} ref={ref} />
     </Box>
   );
 });
