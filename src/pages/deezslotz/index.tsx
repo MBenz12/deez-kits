@@ -113,26 +113,26 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         convertLog(playerData, isAdmin(provider.wallet.publicKey))
       );
     }
-    console.log(
-      "Player earned money: ",
-      playerData?.earnedMoney.toString(),
-      "|",
-      playerData?.earnedMoney / LAMPORTS_PER_SOL
-    );
 
-    console.log(
-      "Main Balance: ",
-      gameData?.mainBalance.toString(),
-      "|",
-      gameData?.mainBalance / LAMPORTS_PER_SOL
-    );
     // console.log("Community Wallet: ", gameData?.communityWallet.toString());
     // console.log("Community Balance: ", gameData?.communityBalance.toString());
     if (playerData?.earnedMoney) {
       setPlayerBalance(playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL);
+      console.log(
+        "Player Balance: ",
+        playerData?.earnedMoney.toString(),
+        "|",
+        playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL
+      );
     }
 
     if (gameData) {
+      console.log(
+        "Main Balance: ",
+        gameData?.mainBalance.toString(),
+        "|",
+        gameData?.mainBalance.toNumber() / LAMPORTS_PER_SOL
+      );
       setMainBalance(gameData.mainBalance.toNumber() / LAMPORTS_PER_SOL);
       setTokenType(gameData.tokenType);
       setCommunityBalance(
@@ -140,14 +140,6 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       );
       setRoyalty(gameData.royalties[0] / 100);
     }
-
-    const payerAta = await Token.getAssociatedTokenAddress(
-      ASSOCIATED_PROGRAM_ID,
-      TOKEN_PROGRAM_ID,
-      sktMint,
-      provider.wallet.publicKey,
-      false
-    );
 
     setSolBalance(
       (await program.provider.connection.getBalance(wallet.publicKey)) /
@@ -158,14 +150,17 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   const finished = async () => {
     const counts = {};
     targets.forEach((target) => {
+      // @ts-ignore
       counts[target] = (counts[target] || 0) + 1;
     });
     let maxCount = 0;
     let equalNum = -1;
     Object.keys(counts).forEach((num) => {
+      // @ts-ignore
       if (maxCount < counts[num]) {
+        // @ts-ignore
         maxCount = counts[num];
-        equalNum = num;
+        equalNum = parseInt(num);
       }
     });
 
@@ -183,7 +178,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       setRun(true);
       setCycle(true);
       setTimeout(() => setCycle(false), 4000);
-      await postToApi();
+      // await postToApi();
     } else {
       setLoading(false);
       setWon(false);
@@ -220,6 +215,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         connection,
         anchorWallet
       );
+      // @ts-ignore
       const { gameData, playerData } = await playTransaction(
         program,
         provider,
