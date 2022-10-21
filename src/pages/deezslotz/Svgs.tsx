@@ -263,3 +263,9 @@ export const WithdrawIcon = () => (
     <rect x="3" y="4" width="19" height="3" fill="#83FF49" />
   </svg>
 );
+
+export const InfoIcon = () => (
+  <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fillRule="evenodd" clipRule="evenodd" d="M13.5 25C19.8513 25 25 19.8513 25 13.5C25 7.14873 19.8513 2 13.5 2C7.14873 2 2 7.14873 2 13.5C2 19.8513 7.14873 25 13.5 25ZM13.5 27C20.9558 27 27 20.9558 27 13.5C27 6.04416 20.9558 0 13.5 0C6.04416 0 0 6.04416 0 13.5C0 20.9558 6.04416 27 13.5 27ZM15 11V22H12V11H15ZM15 9V6H12V9H15Z" fill="#952CFF"/>
+</svg>
+)

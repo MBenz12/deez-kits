@@ -39,6 +39,7 @@ import {
   useWindowDimensions,
   postToApi,
 } from "./utils";
+import { Information } from "./HeaderItems";
 
 const game_name = "game2";
 const game_owner = new PublicKey("3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd");
@@ -295,7 +296,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
     fetchData();
   };
   return (
-    <div className="slots flex flex-col items-center bg-black min-h-[100vh] lg:px-7 sm:p-4 p-2 font-['Share Tech Mono'] relative">
+    <div className="slots flex flex-col items-center bg-black min-h-[100vh] lg:p-6 sm:p-4 p-2 font-['Share Tech Mono'] relative">
       <Confetti
         width={width}
         height={height}
@@ -319,15 +320,20 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         won={won}
         withdrawPlayerMoney={withdrawPlayerMoney}
       />
-      <ToastContainer
-        rtl={false}
-        containerId={containerId}
-        position="top-right"
-        toastClassName={() =>
-          "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[250px] top-[160px]"
-        }
-      />
+      <div className="z-0">
+        <ToastContainer
+          rtl={false}
+          containerId={containerId}
+          position="top-right"
+          toastClassName={() =>
+            "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[250px] top-[150px] z-0"
+          }
+        />
+      </div>
       <div className="relative">
+        <div className="absolute left-3 top-[-40px]">
+          <Information />
+        </div>
         <div className="absolute border-[#4AFF2C] border-2 lg:w-[830px] md:w-[660px] sm:w-[630px] w-[350px] lg:h-[150px] sm:h-[120px] h-[65px] rounded-md lg:left-[-40px] md:left-[-30px] sm:left-[-15px] left-[-13px] lg:top-[150px] sm:top-[120px] top-[65px] flex items-center justify-between lg:p-4 sm:p-2 p-1">
           <div className="cursor-pointer md:hidden block" onClick={play}>
             <PlayIcon fill="#4AFF2C" small />
@@ -358,7 +364,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           finished={finished}
         />
       </div>
-      <div className="my-2 grid md:grid-cols-6 grid-cols-3 gap-4">
+      <div className="my-1 grid md:grid-cols-6 grid-cols-3 gap-4">
         {prices.map((value) => (
           <div
             key={value}
@@ -391,7 +397,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         )} */}
       </div>
 
-      <div className="absolute bottom-1 flex items-center gap-5">
+      <div className="absolute bottom-5 flex items-center gap-5 text-[14px]">
         <a
           className="flex items-center gap-1 no-underline"
           href="https://magiceden.io/marketplace/deez_kits"

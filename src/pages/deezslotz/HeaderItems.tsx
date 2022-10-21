@@ -1,8 +1,9 @@
 import {
+  InfoIcon,
   SolanaLogo,
   WithdrawIcon,
 } from "./Svgs";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { WalletConnectButton, WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -36,7 +37,7 @@ export const CommunityFunds = ({
       clearInterval(interval);
     };
   }, []);
-
+  const wallet = useWallet();
   return (
     <div>
       <div className="relative cursor-context-menu rounded-md border-[#371761] border-2 min-w-[224px]">
@@ -81,7 +82,7 @@ export const CommunityFunds = ({
         
         <div
           className={`absolute border-[1px] border-[#C974F4] bg-[#492D5E] w-[320px] left-[50%] top-[60px] translate-x-[-50%] text-[14px] text-[#C974F4] rounded-md duration-300 ${
-            !tooltip1 ? "opacity-0 z-[0]" : "z-[108]"
+            !tooltip1 || !wallet.connected ? "opacity-0 z-[0]" : "z-[108]"
           }`}
         >
           <div className="relative p-2">
@@ -92,7 +93,7 @@ export const CommunityFunds = ({
         </div>
         <div
           className={`absolute border-[1px] border-[#C974F4] bg-[#492D5E] w-[320px] left-[50%] top-[110px] translate-x-[-50%] text-[14px] text-[#C974F4] rounded-md duration-300 ${
-            !tooltip2 ? "opacity-0" : "z-[108]"
+            !tooltip2 || !wallet.connected ? "opacity-0" : "z-[108]"
           }`}
         >
           <div className="relative p-2">
@@ -107,7 +108,7 @@ export const CommunityFunds = ({
 
 export const Jackpot = ({ jackpot }: { jackpot: number }) => {
   return (
-    <div className="flex flex-col items-center my-3`2 cursor-context-menu">
+    <div className="flex flex-col items-center mt-2 cursor-context-menu">
       <p className="text-[#952CFF] text-[35px]">jackPOTz</p>
       <div className="text-[32px] flex">
         <p className="text-white">
@@ -130,13 +131,20 @@ export const WalletButton = ({ id }: { id: number }) => {
       {!wallet.connected && (
         <div
           title="Devnet"
-          className="w-[224px] h-[61px] border-[#952CFF] border-2 rounded-md flex items-center justify-center p-0"
+          className="w-[224px] h-[61px] border-[#952CFF] border-2 rounded-md flex items-center justify-center p-0 connecting"
         >
-          <WalletMultiButton>
+          {!wallet.connecting && (<WalletMultiButton>
             <div className="w-full h-full flex items-center justify-center">
-              <p className="text-[#83FF49] text-[27px] leading-[31px]">Connect Wallet</p>
+              <p className="text-[#83FF49] text-[24px] leading-[31px]">Connect Wallet</p>
             </div>
-          </WalletMultiButton>
+          </WalletMultiButton>)}
+          {wallet.connecting && (
+            <WalletConnectButton>
+              <div className="w-full h-full flex items-center justify-center">
+                <p className="text-[#83FF49] text-[24px] leading-[31px]">Connecting...</p>
+              </div>
+            </WalletConnectButton>
+          )}
         </div>
       )}
       {wallet.connected && (
@@ -145,7 +153,7 @@ export const WalletButton = ({ id }: { id: number }) => {
           className="w-[224px] h-[61px] border-[#952CFF] border-2 rounded-md flex items-center justify-center p-0"
         >
           <WalletMultiButton>
-            <div className="text-[#83FF49] font-['Share Tech Mono'] flex items-center text-[20px]">
+            <div className="text-[#83FF49] font-['Share Tech Mono'] flex items-center text-[27px]">
               <div className="px-2">
                 {wallet.publicKey?.toString().slice(0, 4) +
                   ".." +
@@ -175,23 +183,16 @@ export const SolBalance = ({
       <div
         onMouseOver={() => setTooltip(true)}
         onMouseLeave={() => setTooltip(false)}
-        className="relative p-2 flex items-center h-full"
+        className="relative p-3 flex justify-between items-center h-full"
       >
-        <div className="absolute left-[12px] top-[50%] translate-y-[-50%]">
-          <SolanaLogo />
-        </div>
-        <div className="absolute w-full h-full top-0 left-0 flex justify-evenly items-center">
-        <div className="relative p-2 w-full">
-          <p className="text-[#83FF49] text-[27px] leading-[31px] w-full text-center" style={{ fontSize: `${balance < 10 ? 27 : (balance < 100 ? 24 : 20)}px` }}>
-            {balance.toLocaleString("en-us", {
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 4,
-            })}
-            {" "}
-            <span className="text-[#FFC42C]">SOL</span>
-          </p>
-        </div>
-      </div>
+        <SolanaLogo />
+        <p className="text-[#83FF49] text-[27px] leading-[31px] w-full text-center" style={{ fontSize: `${balance < 10 ? 27 : (balance < 100 ? 24 : 20)}px` }}>
+          {balance.toLocaleString("en-us", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 4,
+          })}
+        </p>
+        <span className="text-[27px] leading-[31px] text-[#FFC42C]">SOL</span>      
       </div>
       <div
         className={`absolute border-[1px] border-[#C974F4] bg-[#492D5E] w-[200px] xl:left-0 left-[50%] xl:top-[50%] top-[calc(100%_+_10px)] xl:translate-x-[calc(-100%_-_10px)] translate-x-[-50%] xl:translate-y-[-50%] text-[#C974F4] rounded-md duration-300 ${
@@ -237,6 +238,7 @@ export const PlayerFunds = ({
   won: boolean;
 }) => {
   const [tooltip, setTooltip] = useState(false);
+  const wallet = useWallet();
   return (
     <div
       onClick={withdrawPlayerMoney}
@@ -277,7 +279,7 @@ export const PlayerFunds = ({
       <div
         onMouseOver={() => setTooltip(false)}
         className={`absolute w-[330px] left-[50%] top-[60px] translate-x-[-50%] text-[#C974F4] text-[14px] rounded-md duration-300 ${
-          !tooltip ? "opacity-0 z-[0]" : "z-[108]"
+          !tooltip || !wallet.connected ? "opacity-0 z-[0]" : "z-[108]"
         }`}
       >
         <div className="relative p-2 border-[1px] border-[#C974F4] bg-[#492D5E] rounded-md">
@@ -288,3 +290,27 @@ export const PlayerFunds = ({
     </div>
   );
 };
+
+export const Information = () => {
+  const [tooltip, setTooltip] = useState(false);
+  return (
+    <div 
+      onMouseOver={() => setTooltip(true)}
+      onMouseLeave={() => setTooltip(false)}
+      className="relative"
+    >
+      <InfoIcon />
+      <div
+        onMouseOver={() => setTooltip(false)}
+        className={`absolute w-[330px] left-[50%] top-[34px] translate-x-[-50%] text-[#C974F4] text-[14px] rounded-md duration-300 ${
+          !tooltip ? "opacity-0 z-[0]" : "z-[108]"
+        }`}
+      >
+        <div className="relative p-2 border-[1px] border-[#C974F4] bg-[#492D5E] rounded-md">
+          <div>In order to win you need 3 / 4 / 5 kits in the middle row. Good luck!</div>
+          <div className="absolute w-[10px] h-[10px] rotate-45 left-[50%] translate-x-[-50%] translate-y-[-50%] top-0 bg-[#492D5E] border-[1px] border-[#C974F4] border-r-0 border-b-0"></div>
+        </div>
+      </div>
+    </div>
+  )
+}
