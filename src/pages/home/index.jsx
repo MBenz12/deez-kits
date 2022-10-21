@@ -3,6 +3,7 @@ import style from "./maintenance.module.scss";
 import meIcon from "../../assets/images/me_icon.svg";
 import twitterIcon from "../../assets/images/twitter_icon.svg";
 import discordIcon from "../../assets/images/discord_icon.svg";
+import kitIcon from "../../assets/images/cat.gif";
 import deezkits from "../../assets/video/hathalo.mp4";
 import Music from "../../sharedComponent/musicPlayer";
 // import cat from '../assets/images/cat.gif'
@@ -53,7 +54,7 @@ const Maintenance = () => {
       </div>
       <div className={style.navbar_main}>
         <a
-          href="https://discord.gg/deezkits"
+          href="https://magiceden.io/marketplace/deez_kits"
           target="_blank"
           rel="noreferrer"
           className={style.me_link}
@@ -67,7 +68,7 @@ const Maintenance = () => {
           target="_blank"
           className={style.twitter_link}
         >
-          <img src={twitterIcon} alt="magic-eden-icon" />
+          <img src={twitterIcon} alt="twitter-icon" />
           Twitter
         </a>
         <a
@@ -76,8 +77,18 @@ const Maintenance = () => {
           rel="noreferrer"
           className={style.discord_link}
         >
-          <img src={discordIcon} alt="magic-eden-icon" />
+          <img src={discordIcon} alt="discord-icon" />
           Discord
+        </a>
+
+        <a
+            href="https://staking.deezkits.com"
+            target="_blank"
+            rel="noreferrer"
+            className={style.staking_link}
+        >
+          <img src={kitIcon} alt="magic-eden-icon" />
+          Staking
         </a>
       </div>
       {/* music toggle button */}

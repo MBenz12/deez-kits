@@ -40,22 +40,48 @@
       opacity: 0;
       animation: 1s ease-in 0.5s 1 normal forwards running fade-in;
     }
+    img {
+      width:16px;
+      height:16px;
+    }
     .me_link {
       animation-delay: 1s;
       min-width: 106px;
       // &:hover {
       //   color: rgb(228, 37, 117);
       // }
-      cursor: not-allowed;
+      //cursor: not-allowed;
+
+      img {
+        margin-top: -6px;
+      }
     }
+
     .twitter_link {
       animation-delay: 0.8s;
       min-width: 70px;
       &:hover {
         color: rgb(29, 161, 242);
       }
+
+      img {
+        margin-top: -2px;
+      }
     }
+
     .discord_link {
+      animation-delay: 1s;
+      min-width: 70px;
+      &:hover {
+        color: rgb(88, 101, 242);
+      }
+
+      img {
+        margin-top: -4px;
+      }
+    }
+
+    .staking_link {
       animation-delay: 1s;
       min-width: 70px;
       &:hover {
@@ -64,6 +90,14 @@
     }
   }
 }
+
+a {
+  @media(max-width: 900px) {
+    font-size:10px !important;
+    //display: none
+  }
+}
+
 @keyframes fade-in {
   100% {
     opacity: 1;

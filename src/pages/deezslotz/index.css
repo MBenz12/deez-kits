@@ -22,6 +22,6 @@
     z-index: 200;
 }
 
-.connecting .wallet-adapter-button .wallet-adapter-button-start-icon {
+.slots .connecting .wallet-adapter-button .wallet-adapter-button-start-icon {
   display: none;
 }
