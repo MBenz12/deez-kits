@@ -1,4 +1,4 @@
-import React, { Suspense, useRef } from "react";
+import React, {Suspense, useEffect, useRef, useState} from "react";
 import { Route, Routes } from "react-router-dom";
 import Error from "../sharedComponent/Error";
 import Loading from "../sharedComponent/Loading";
@@ -9,6 +9,19 @@ const Deezkits = React.lazy(() => import("../pages/deezkits/index"));
 
 const Router = () => {
   const MusicRef = useRef(null);
+  const [subDomain, setSubDomain] = useState(null);
+
+    useEffect(() => {
+        const host = window.location.host;
+        const arr = host.split(".").slice(0, host.includes("localhost") ? -1 : -2);
+
+        if (arr.length > 0) {
+            setSubDomain(arr[0]);
+        }
+    }, []);
+
+    console.log(subDomain)
+
   // const [isPlaying,setIsPlaying]=useState(false);
   return (
     <>
@@ -17,8 +30,13 @@ const Router = () => {
         path="/"
         element={
           <Suspense fallback={<Loading />}>
-            {/*<Home />*/}
-              <DeezSlotz isMint={true} ref={MusicRef} />
+          {
+              subDomain === "slotz" ? (
+                  <DeezSlotz isMint={true} ref={MusicRef} />
+              ) : (
+                  <Home />
+              )
+          }
           </Suspense>
         }
       ></Route>
