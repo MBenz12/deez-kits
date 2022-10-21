@@ -37,6 +37,7 @@ import {
   playTransaction,
   withdrawTransaction,
   useWindowDimensions,
+  postToApi,
 } from "./utils";
 
 const game_name = "game2";
@@ -147,6 +148,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   }
 
   const finished = async () => {
+    if(!wallet.publicKey) return;
     const counts = {};
     targets.forEach((target) => {
       // @ts-ignore
@@ -177,7 +179,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       setRun(true);
       setCycle(true);
       setTimeout(() => setCycle(false), 4000);
-      // await postToApi();
+      await postToApi(wallet.publicKey, multiplier * price / 10);
     } else {
       setLoading(false);
       setWon(false);
@@ -187,7 +189,8 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           tokenType ? "$SKT" : "SOL"
         }, better luck next time.`,
         { containerId }
-      );      
+      );   
+      await postToApi(wallet.publicKey, -price);
     }
     setLost(true);
     setTimeout(() => {
@@ -321,7 +324,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         containerId={containerId}
         position="top-right"
         toastClassName={() =>
-          "bg-black text-white relative flex p-1 min-h-[50px] text-[16px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[250px] top-[160px]"
+          "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[250px] top-[160px]"
         }
       />
       <div className="relative">
