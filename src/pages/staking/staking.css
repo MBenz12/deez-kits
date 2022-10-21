@@ -3,5 +3,13 @@
 .vault-main-container {
   font-family: "Poppins",sans-serif;
   font-size: initial;
-  background: linear-gradient(.5deg,#020408 34%,#20272c 96.6%);
+  background-color: black;
+  /*background: linear-gradient(.5deg,#020408 34%,#20272c 96.6%);*/
+}
+
+.vault-wallet-wrapper .wallet-btn
+{
+  font-family: "Poppins", serif !important;
+  font-weight: 200 !important;
+  font-size: 16px !important;
 }
