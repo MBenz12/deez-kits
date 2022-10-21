@@ -200,6 +200,8 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   const play = async () => {
     if (loading) return;
     if (!wallet.connected) {
+      toast.dismiss();
+      toast.error('Please connect wallet to play.', { containerId });
       return;
     }
     if (solBalance < price) {
@@ -319,7 +321,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         containerId={containerId}
         position="top-right"
         toastClassName={() =>
-          "bg-black text-white relative flex p-1 min-h-[50px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[250px] mt-[210px]"
+          "bg-black text-white relative flex p-1 min-h-[50px] text-[16px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[250px] top-[160px]"
         }
       />
       <div className="relative">

@@ -61,7 +61,7 @@ export const CommunityFunds = ({
             onMouseOver={() => setTooltip2(true)}
             onMouseLeave={() => setTooltip2(false)}
           >
-            <p className="text-[#4AFF2C]/[0.36] text-[16px] leading-[19px]">distribution in</p>
+            <p className="text-[#4AFF2C]/[0.36] text-[14px] leading-[19px]">distribution in</p>
             <div className="flex flex-col gap-1 w-full text-center leading-[100%]">
               <div className="font-bold text-[26px] leading-[30px] text-[#4AFF2C] flex justify-center">
                 <p className="w-[30px]">{`${day}`.padStart(2, "0")}</p> :
@@ -80,7 +80,7 @@ export const CommunityFunds = ({
         </div>
         
         <div
-          className={`absolute border-[1px] border-[#C974F4] bg-[#492D5E] w-[320px] left-[50%] top-[60px] translate-x-[-50%] text-[#C974F4] rounded-md duration-300 ${
+          className={`absolute border-[1px] border-[#C974F4] bg-[#492D5E] w-[320px] left-[50%] top-[60px] translate-x-[-50%] text-[14px] text-[#C974F4] rounded-md duration-300 ${
             !tooltip1 ? "opacity-0 z-[0]" : "z-[108]"
           }`}
         >
@@ -91,7 +91,7 @@ export const CommunityFunds = ({
           </div>
         </div>
         <div
-          className={`absolute border-[1px] border-[#C974F4] bg-[#492D5E] w-[320px] left-[50%] top-[110px] translate-x-[-50%] text-[#C974F4] rounded-md duration-300 ${
+          className={`absolute border-[1px] border-[#C974F4] bg-[#492D5E] w-[320px] left-[50%] top-[110px] translate-x-[-50%] text-[14px] text-[#C974F4] rounded-md duration-300 ${
             !tooltip2 ? "opacity-0" : "z-[108]"
           }`}
         >
@@ -161,7 +161,6 @@ export const WalletButton = ({ id }: { id: number }) => {
 
 export const SolBalance = ({
   balance,
-  id,
   lost,
   bet,
 }: {
@@ -200,7 +199,7 @@ export const SolBalance = ({
         }`}
       >
         <div className="relative p-2">
-          <div className="text-center">
+          <div className="text-center text-[14px]">
             {balance.toLocaleString("en-us", {
               minimumFractionDigits: 0,
               maximumFractionDigits: 4,
@@ -211,7 +210,7 @@ export const SolBalance = ({
         </div>
       </div>
       <div
-        className={`absolute w-[100px] xl:left-0 left-[50%] xl:top-[50%] top-[48px] xl:translate-x-[-100%] translate-x-[-50%] xl:translate-y-[-50%] text-[#47C3D7] duration-1000 flex justify-center ${
+        className={`absolute w-[100px] xl:left-0 left-[50%] xl:top-[50%] top-[48px] xl:translate-x-[-100%] translate-x-[-50%] xl:translate-y-[-50%] text-[#47C3D7] text-[14px] duration-1000 flex justify-center ${
           !lost ? "opacity-0" : ""
         }`}
       >
@@ -229,13 +228,11 @@ export const SolBalance = ({
 export const PlayerFunds = ({
   withdrawPlayerMoney,
   playerBalance,
-  tokenType,
   prize,
   won,
 }: {
   withdrawPlayerMoney: () => void;
   playerBalance: number;
-  tokenType: boolean;
   prize: number;
   won: boolean;
 }) => {
@@ -266,7 +263,7 @@ export const PlayerFunds = ({
         </div>
       </div>
       <div
-        className={`absolute w-[100px] left-[50%] top-[52px] translate-x-[-50%] text-[#47C3D7] duration-1000 flex justify-center ${
+        className={`absolute w-[100px] left-[50%] top-[52px] translate-x-[-50%] text-[14px] text-[#47C3D7] duration-1000 flex justify-center ${
           !won ? "opacity-0" : ""
         }`}
       >
@@ -275,17 +272,16 @@ export const PlayerFunds = ({
           minimumFractionDigits: 0,
           maximumFractionDigits: 4,
         })}
-        {tokenType ? " $SKT" : " SOL"}
+        {" SOL"}
       </div>
       <div
         onMouseOver={() => setTooltip(false)}
-        className={`absolute w-[320px] left-[50%] top-[60px] translate-x-[-50%] text-[#C974F4] rounded-md duration-300 ${
+        className={`absolute w-[330px] left-[50%] top-[60px] translate-x-[-50%] text-[#C974F4] text-[14px] rounded-md duration-300 ${
           !tooltip ? "opacity-0 z-[0]" : "z-[108]"
         }`}
       >
         <div className="relative p-2 border-[1px] border-[#C974F4] bg-[#492D5E] rounded-md">
-          <div>Player's funds available for withdrawal.</div>
-          <div>Click to withdraw</div>
+          <div>Player's funds available for withdrawal. Click to withdraw.</div>
           <div className="absolute w-[10px] h-[10px] rotate-45 left-[50%] translate-x-[-50%] translate-y-[-50%] top-0 bg-[#492D5E] border-[1px] border-[#C974F4] border-r-0 border-b-0"></div>
         </div>
       </div>

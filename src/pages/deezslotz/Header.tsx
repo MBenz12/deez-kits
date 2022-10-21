@@ -44,7 +44,6 @@ const Header = ({
           <PlayerFunds
             won={won}
             prize={prize}
-            tokenType={false}
             playerBalance={playerBalance}
             withdrawPlayerMoney={withdrawPlayerMoney}
           />
@@ -55,8 +54,8 @@ const Header = ({
         </div>
       </div>
       <div className="xl:hidden flex flex-col w-full gap-3">
-        <div className="flex sm:flex-row flex-col items-center justify-between relative">
-          <div className="relative">
+        <div className="flex flex-col items-center justify-between relative">
+          <div className="relative sm:absolute sm:left-[-20px] sm:top-[-20px]">
             <div className="w-[170px] h-[85px]">
               <KitsLogo />
             </div>
@@ -71,7 +70,6 @@ const Header = ({
           <PlayerFunds
             won={won}
             prize={prize}
-            tokenType={false}
             playerBalance={playerBalance}
             withdrawPlayerMoney={withdrawPlayerMoney}
           />

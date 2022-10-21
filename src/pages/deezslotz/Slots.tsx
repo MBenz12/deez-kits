@@ -90,7 +90,7 @@ const Column = ({
             key={index}
             style={{ width: `${size}px`, height: `${size}px`, padding: "8px", overflow: "hidden" }}
           >
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center rounded-md bg-gradient-to-b from-[#100319] to-[#1B2415]">
               <img
                 src={`/${assets}/${item + 1}.png`}
                 style={{ width: "auto", height: `${size - 16}px`, borderRadius: '8px' }}
