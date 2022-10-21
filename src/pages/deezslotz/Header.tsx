@@ -30,7 +30,7 @@ const Header = ({
 }) => {
   return (
     <>
-      <div className="hidden xl:flex w-full justify-center relative">
+      <div className="hidden xl:flex w-full justify-center relative mb-10">
         <div className="absolute left-[-20px] top-[-20px]">
           <div className="w-[225px] h-[104px]">
             <KitsLogo />
@@ -38,7 +38,7 @@ const Header = ({
         </div>
         <div className="">
           <CommunityFunds id={1} balance={communityBalance} royalty={royalty} />
-          <Jackpot jackpot={14.4} />
+          {/* <Jackpot jackpot={14.4} /> */}
         </div>
         <div className="absolute right-0 top-0 flex gap-3">
           <PlayerFunds
@@ -66,7 +66,7 @@ const Header = ({
         </div>
         <div className="flex flex-col items-center gap-5 my-5">
           <CommunityFunds id={2} balance={communityBalance} royalty={royalty} />
-          <Jackpot jackpot={14.4} />
+          {/* <Jackpot jackpot={14.4} /> */}
           <PlayerFunds
             won={won}
             prize={prize}

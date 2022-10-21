@@ -365,7 +365,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           finished={finished}
         />
       </div>
-      <div className="my-1 grid md:grid-cols-6 grid-cols-3 gap-4">
+      <div className="my-1 grid md:grid-cols-6 grid-cols-3 md:w-[7344px] md:flex justify-between gap-4">
         {prices.map((value, index) => (
           <div
             key={value}

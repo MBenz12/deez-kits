@@ -20,6 +20,7 @@
     justify-content: center;
     align-items: center;
     z-index: 200;
+    background-color: transparent;
 }
 
 .slots .connecting .wallet-adapter-button .wallet-adapter-button-start-icon {
