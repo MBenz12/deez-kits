@@ -15,7 +15,7 @@ const Router = () => {
 
   useEffect(() => {
     const host = window.location.host;
-    const arr = host.split(".").slice(0, host.includes("deezkits") ? -1 : -2);
+    const arr = host.split(".").slice(0, host.includes("localhost") ? -1 : -2);
 
     if (arr.length > 0) {
         setSubDomain(arr[0]);

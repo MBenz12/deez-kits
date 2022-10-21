@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 const Staking = () => {
+  const vaultPath = { vaultPath: 'deez-kits' };
+
   return (
-    <h1 style={{color: "#fff", fontSize: "25px"}}>Staking page</h1>
+      <div id="diamond-vaults" {...vaultPath}></div>
   );
 }
 
