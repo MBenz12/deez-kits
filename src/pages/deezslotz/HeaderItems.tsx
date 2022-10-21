@@ -107,7 +107,7 @@ export const CommunityFunds = ({
 
 export const Jackpot = ({ jackpot }: { jackpot: number }) => {
   return (
-    <div className="flex flex-col items-center my-3 cursor-context-menu">
+    <div className="flex flex-col items-center my-3`2 cursor-context-menu">
       <p className="text-[#952CFF] text-[35px]">jackPOTz</p>
       <div className="text-[32px] flex">
         <p className="text-white">
@@ -182,7 +182,7 @@ export const SolBalance = ({
         </div>
         <div className="absolute w-full h-full top-0 left-0 flex justify-evenly items-center">
         <div className="relative p-2 w-full">
-          <p className="text-[#83FF49] text-[27px] leading-[31px] w-full text-center">
+          <p className="text-[#83FF49] text-[27px] leading-[31px] w-full text-center" style={{ fontSize: `${balance < 10 ? 27 : (balance < 100 ? 24 : 20)}px` }}>
             {balance.toLocaleString("en-us", {
               minimumFractionDigits: 0,
               maximumFractionDigits: 4,
