@@ -107,7 +107,7 @@ export const CommunityFunds = ({
 
 export const Jackpot = ({ jackpot }: { jackpot: number }) => {
   return (
-    <div className="flex flex-col items-center my-3 cursor-context-menu">
+    <div className="flex flex-col items-center my-2 cursor-context-menu">
       <p className="text-[#952CFF] text-[35px]">jackPOTz</p>
       <div className="text-[32px] flex">
         <p className="text-white">
