@@ -17,7 +17,8 @@ const Router = () => {
         path="/"
         element={
           <Suspense fallback={<Loading />}>
-            <Home />
+            {/*<Home />*/}
+              <DeezSlotz isMint={true} ref={MusicRef} />
           </Suspense>
         }
       ></Route>
