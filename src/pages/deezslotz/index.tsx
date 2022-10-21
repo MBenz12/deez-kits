@@ -27,6 +27,7 @@ import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import {
   getGameAddress,
   getPlayerAddress,
@@ -79,6 +80,26 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   const { width, height } = useWindowDimensions();
   const [run, setRun] = useState(false);
   const [cycle, setCycle] = useState(false);
+
+  useEffect(() => {
+    const fetchGame = async () => {
+      const wallet = new NodeWallet(anchor.web3.Keypair.generate());
+      const { program } = getProviderAndProgram(
+        connection,
+        wallet
+      );
+      const [game] = await getGameAddress(game_name, game_owner);
+      const gameData = await program.account.game.fetchNullable(game);
+      if (gameData) {
+        setTokenType(gameData.tokenType);
+        setCommunityBalance(
+          gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL
+        );
+        setRoyalty(gameData.royalties[0] / 100);
+      }
+    }
+    fetchGame();
+  }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   async function fetchData() {
@@ -365,7 +386,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           finished={finished}
         />
       </div>
-      <div className="my-1 grid md:grid-cols-6 grid-cols-3 md:w-[7344px] md:flex justify-between gap-4">
+      <div className="my-1 grid md:grid-cols-6 grid-cols-3 md:w-[734px] md:flex justify-between gap-4">
         {prices.map((value, index) => (
           <div
             key={value}
