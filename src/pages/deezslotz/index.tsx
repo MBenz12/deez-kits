@@ -37,6 +37,7 @@ import {
   playTransaction,
   withdrawTransaction,
   useWindowDimensions,
+  postToApi,
 } from "./utils";
 
 const game_name = "game2";
@@ -147,6 +148,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   }
 
   const finished = async () => {
+    if(!wallet.publicKey) return;
     const counts = {};
     targets.forEach((target) => {
       // @ts-ignore
@@ -177,7 +179,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       setRun(true);
       setCycle(true);
       setTimeout(() => setCycle(false), 4000);
-      // await postToApi();
+      await postToApi(wallet.publicKey, multiplier * price / 10);
     } else {
       setLoading(false);
       setWon(false);
@@ -187,7 +189,8 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           tokenType ? "$SKT" : "SOL"
         }, better luck next time.`,
         { containerId }
-      );      
+      );   
+      await postToApi(wallet.publicKey, -price);
     }
     setLost(true);
     setTimeout(() => {
@@ -292,7 +295,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
     fetchData();
   };
   return (
-    <div className="slots flex flex-col items-center bg-black min-h-[100vh] lg:p-7 sm:p-4 p-2 font-['Share Tech Mono'] relative">
+    <div className="slots flex flex-col items-center bg-black min-h-[100vh] lg:px-7 sm:p-4 p-2 font-['Share Tech Mono'] relative">
       <Confetti
         width={width}
         height={height}
@@ -321,7 +324,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         containerId={containerId}
         position="top-right"
         toastClassName={() =>
-          "bg-black text-white relative flex p-1 min-h-[50px] text-[16px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[250px] top-[160px]"
+          "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[250px] top-[160px]"
         }
       />
       <div className="relative">
@@ -355,7 +358,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           finished={finished}
         />
       </div>
-      <div className="my-4 grid md:grid-cols-6 grid-cols-3 gap-4">
+      <div className="my-2 grid md:grid-cols-6 grid-cols-3 gap-4">
         {prices.map((value) => (
           <div
             key={value}
@@ -373,7 +376,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       </div>
       <div
         onClick={play}
-        className="relative mt-5 mb-10 w-[175px] h-[52px] flex items-center justify-center text-[22px] font-bold text-[#96FFF9] cursor-pointer"
+        className="relative mt-3 mb-10 w-[175px] h-[52px] flex items-center justify-center text-[22px] font-bold text-[#96FFF9] cursor-pointer"
       >
         <div className="absolute l-0 t-0">
           <BetButton />
@@ -388,7 +391,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         )} */}
       </div>
 
-      <div className="absolute bottom-5 flex items-center gap-5">
+      <div className="absolute bottom-1 flex items-center gap-5">
         <a
           className="flex items-center gap-1 no-underline"
           href="https://magiceden.io/marketplace/deez_kits"

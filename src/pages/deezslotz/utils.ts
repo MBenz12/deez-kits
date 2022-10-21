@@ -52,9 +52,10 @@ export const convertLog = (data: { [x: string]: { toString: () => any; }; }, isA
 export const postToApi = async (user: PublicKey, balance: number) => {
   return await axios.post("https://api.servica.io/extorio/apis/general", {
     method: "postDiscord",
-    params: {
+    params:
+    {
       token: "xxxx",
-      channelId: 1031495600937644066,
+      channelId: "1031495600937644066",
       message: `User ${user.toString()} ${balance > 0 ? `Won ${balance} sol` : `Lost ${-balance} sol, better luck next time`}`,
     },
   });
