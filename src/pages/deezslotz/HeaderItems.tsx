@@ -300,7 +300,7 @@ export const Information = () => {
       <InfoIcon />
       <div
         onMouseOver={() => setTooltip(false)}
-        className={`absolute w-[560px] left-[0%] top-[34px]  text-[#C974F4] text-[14px] rounded-md duration-300 ${
+        className={`absolute sm:w-[560px] w-[300px] left-[0%] top-[34px]  text-[#C974F4] text-[14px] rounded-md duration-300 ${
           !tooltip ? "opacity-0 z-[0]" : "z-[108]"
         }`}
       >
