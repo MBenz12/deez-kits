@@ -41,7 +41,7 @@ import {
 } from "./utils";
 import { Information } from "./HeaderItems";
 
-const game_name = "game2";
+const game_name = "game3";
 const game_owner = new PublicKey("3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd");
 const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 113;
@@ -56,6 +56,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   const [roll, setRoll] = useState<any>({});
   const prices = [0.05, 0.1, 0.25, 0.5, 1, 2];
   const [price, setPrice] = useState(0.05);
+  const [betNo, setBetNo] = useState(0);
   const [loading, setLoading] = useState(false);
   const [communityBalance, setCommunityBalance] = useState(0);
   const [royalty, setRoyalty] = useState(0);
@@ -104,13 +105,13 @@ const DeezSlotz = React.forwardRef((props, ref) => {
 
     if (gameData) {
       console.log(
-        "Game Data:",
+        "Game Data:", // @ts-ignore
         convertLog(gameData, isAdmin(provider.wallet.publicKey))
       );
     }
     if (playerData) {
       console.log(
-        "Player Data:",
+        "Player Data:", // @ts-ignore
         convertLog(playerData, isAdmin(provider.wallet.publicKey))
       );
     }
@@ -227,7 +228,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         wallet,
         game_name,
         game_owner,
-        price
+        betNo
       );
 
       let status = playerData?.status;
@@ -365,10 +366,13 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         />
       </div>
       <div className="my-1 grid md:grid-cols-6 grid-cols-3 gap-4">
-        {prices.map((value) => (
+        {prices.map((value, index) => (
           <div
             key={value}
-            onClick={() => setPrice(value)}
+            onClick={() => {
+              setPrice(value);
+              setBetNo(index);
+            }}
             className={`lg:w-[112px] w-[95px] lg:h-[45px] h-[38px] flex items-center justify-center text-[16px] border-2 rounded-md font-bold cursor-pointer ${
               value === price
                 ? "text-black bg-[#4AFF2C] border-[#4AFF2C]"

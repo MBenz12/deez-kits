@@ -6,12 +6,12 @@
   font-family: "Share Tech Mono";
 }
 
-.wallet-adapter-dropdown {
+.slots .wallet-adapter-dropdown {
     width: 100%;
     height: 100%;
 }
 
-.wallet-adapter-button {
+.slots .wallet-adapter-button {
     width: 100%;
     height: 100%;
     font-family: "Share Tech Mono";
