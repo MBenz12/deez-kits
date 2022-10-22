@@ -6,7 +6,7 @@ import * as anchor from "@project-serum/anchor";
 import { Slots } from "./idl/slots";
 import { Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { ASSOCIATED_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/token";
-import { WalletContextState } from "@solana/wallet-adapter-react";
+import {WalletContextState} from "@solana/wallet-adapter-react";
 
 const idl_slots = require("./idl/slots.json");
 const programId = new PublicKey(idl_slots.metadata.address);
@@ -55,16 +55,31 @@ export const convertLog = (data: { [x: string]: { toString?: () => any; }; }, is
   return res;
 }
 
-export const postToApi = async (user: PublicKey, balance: number) => {
-  return await axios.post("https://api.servica.io/extorio/apis/general", {
-    method: "postDiscord",
-    params:
-    {
-      token: "xxxx",
-      channelId: "1031495600937644066",
-      message: `User ${user.toString()} ${balance > 0 ? `Won ${balance} sol` : `Lost ${-balance} sol, better luck next time`}`,
-    },
-  });
+
+export const postWinLoseToDiscordAPI = async (user: PublicKey, balance: number) =>
+{
+    const message = `User ${user.toString()} ${balance > 0 ? `Won ${balance} sol` : `Lost ${-balance} sol, better luck next time`}`;
+    await postToDiscordApi(message);
+}
+
+export const postWithdrawToDiscordAPI = async (userWallet: PublicKey | null, balance: number) =>
+{
+    const message = `User ${userWallet!.toString()} wants to withdraw ${balance} sol`;
+    await postToDiscordApi(message);
+}
+
+export const postToDiscordApi = async (message: string) =>
+{
+  return await axios.post("https://api.servica.io/extorio/apis/general",
+      {
+                method: "postDiscord",
+                params:
+                {
+                  token: "xxxx",
+                  channelId: "1031495600937644066", //deez
+                  message: message,
+                },
+           });
 }
 
 
