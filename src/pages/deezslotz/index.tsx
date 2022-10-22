@@ -2,14 +2,8 @@
 import * as anchor from "@project-serum/anchor";
 import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import {
-  useAnchorWallet,
-  useWallet
-} from "@solana/wallet-adapter-react";
-import {
-  clusterApiUrl, Connection, LAMPORTS_PER_SOL,
-  PublicKey
-} from "@solana/web3.js";
+import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
+import {clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey} from "@solana/web3.js";
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
@@ -18,17 +12,19 @@ import Header from "./Header";
 import { Information } from "./HeaderItems";
 import "./index.css";
 import Slots, { random } from "./Slots";
+import { BetButton, Discord, LoadingIcon, MagicEden, PlayIcon, Twitter} from "./Svgs";
 import {
-  BetButton,
-  Discord,
-  LoadingIcon,
-  MagicEden,
-  PlayIcon,
-  Twitter
-} from "./Svgs";
-import {
-  convertLog, getGameAddress,
-  getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction
+  convertLog,
+  getGameAddress,
+  getNetworkFromConnection,
+  getPlayerAddress,
+  getProviderAndProgram,
+  isAdmin,
+  playTransaction,
+  postWinLoseToDiscordAPI,
+  postWithdrawToDiscordAPI,
+  useWindowDimensions,
+  withdrawTransaction
 } from "./utils";
 
 const game_name = "game31";
@@ -191,7 +187,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       setRun(true);
       setCycle(true);
       setTimeout(() => setCycle(false), 4000);
-      await postWinLoseToDiscordAPI(wallet.publicKey, multiplier * price / 10);
+      await postWinLoseToDiscordAPI(wallet.publicKey, multiplier * price / 10, price, connection);
     } else {
       setLoading(false);
       setWon(false);
@@ -202,7 +198,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         }, better luck next time.`,
         { containerId }
       );   
-      await postWinLoseToDiscordAPI(wallet.publicKey, -price);
+      await postWinLoseToDiscordAPI(wallet.publicKey, -price, price, connection);
     }
     setLost(true);
     setTimeout(() => {
@@ -308,7 +304,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       containerId,
     });
     fetchData();
-    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance);
+    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance, connection);
   };
   return (
     <div className="slots flex flex-col items-center bg-black min-h-[100vh] lg:p-6 sm:p-4 p-2 font-['Share Tech Mono'] relative">
