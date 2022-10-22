@@ -14,9 +14,9 @@ import "./index.css";
 import Slots, { random } from "./Slots";
 import { BetButton, Discord, LoadingIcon, MagicEden, PlayIcon, Twitter} from "./Svgs";
 import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
-import {game_name, game_owner} from "./constants";
+import { game_name, game_owner } from "./constants";
 
-const cluster = WalletAdapterNetwork.Devnet;
+//const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 113;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
@@ -42,7 +42,8 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   const [multiplier, setMultiplier] = useState(0);
   const [tokenType, setTokenType] = useState(false);
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     console.log(connection);
   }, []);
 
@@ -62,9 +63,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       const gameData = await program.account.game.fetchNullable(game);
       if (gameData) {
         setTokenType(gameData.tokenType);
-        setCommunityBalance(
-          gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL
-        );
+        setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
         setRoyalty(gameData.royalties[0] / 100);
       }
     };
@@ -162,7 +161,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       setWon(false);
       toast.dismiss();
       toast.error(
-        `You almost won ${price} ${tokenType ? "$SKT" : "SOL"}, better luck next time.`,
+        `You almost won! better luck next time.`,
         { containerId }
       );
       await postWinLoseToDiscordAPI(
