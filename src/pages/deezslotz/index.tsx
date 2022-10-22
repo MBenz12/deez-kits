@@ -106,14 +106,9 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       return;
     }
 
-    const { provider, program } = getProviderAndProgram(
-      connection,
-      anchorWallet
-    );
+    const { provider, program } = getProviderAndProgram(connection, anchorWallet);
     const [game] = await getGameAddress(game_name, game_owner);
-
     const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
-
     const playerData = await program.account.player.fetchNullable(player);
     const gameData = await program.account.game.fetchNullable(game);
 
@@ -325,7 +320,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       containerId,
     });
     fetchData();
-    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance, connection);
+    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance, connection, mainBalance);
   };
   return (
     <div className="slots flex flex-col items-center bg-black min-h-[100vh] lg:p-6 sm:p-4 p-2 font-['Share Tech Mono'] relative">
