@@ -43,19 +43,31 @@ export const getPlayerAddress = async (playerKey: PublicKey, game: PublicKey) =>
   )
 )
 
-export const convertLog = (data: { [x: string]: { toString?: () => any; }; }, isAdmin: boolean = true) => {
-  const res: { [x: string]: any } = {};
-  Object.keys(data).forEach(key => {
-    if (isAdmin || key !== "winPercents") {
-      res[key] = data[key];
-      if (typeof data[key] === "object") {
-        if (data[key].toString) {// @ts-ignore
-          res[key] = data[key].toString();
+export const convertLog = (data: any, isAdmin: boolean = true) =>
+{
+    const res: any = {};
+
+    const adminKeys =
+    [
+        "winPercents",
+        "loseCounter",
+        "minRoundsBeforeWin",
+        "jackpot"
+    ]
+
+    Object.keys(data).forEach(key =>
+    {
+        if (isAdmin || !adminKeys.includes(key))
+        {
+            res[key] = data[key];
+            if (typeof data[key] === "object") {
+                if (data[key].toString) {// @ts-ignore
+                    res[key] = data[key].toString();
+                }
+            }
         }
-      }
-    }
-  });
-  return res;
+    });
+    return res;
 }
 
 

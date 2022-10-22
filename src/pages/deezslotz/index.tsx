@@ -72,67 +72,51 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  async function fetchData() {
-    if (!wallet.publicKey) {
-      setCommunityBalance(0);
-      setRoyalty(0);
-      setSolBalance(0);
-      setPlayerBalance(0);
-      setTokenType(false);
-      setMainBalance(0);
-      return;
-    }
+  async function fetchData()
+  {
+      if (!wallet.publicKey)
+      {
+          setCommunityBalance(0);
+          setRoyalty(0);
+          setSolBalance(0);
+          setPlayerBalance(0);
+          setTokenType(false);
+          setMainBalance(0);
+          return;
+      }
 
-    const { provider, program } = getProviderAndProgram(connection, anchorWallet);
-    const [game] = await getGameAddress(game_name, game_owner);
-    const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
-    const playerData = await program.account.player.fetchNullable(player);
-    const gameData = await program.account.game.fetchNullable(game);
+      const { provider, program } = getProviderAndProgram(connection, anchorWallet);
+      const [game] = await getGameAddress(game_name, game_owner);
+      const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
+      const playerData = await program.account.player.fetchNullable(player);
+      const gameData = await program.account.game.fetchNullable(game);
 
-    if (gameData) {
-      console.log(
-        "Game Data:", // @ts-ignore
-        convertLog(gameData, isAdmin(provider.wallet.publicKey))
-      );
-    }
-    if (playerData) {
-      console.log(
-        "Player Data:", // @ts-ignore
-        convertLog(playerData, isAdmin(provider.wallet.publicKey))
-      );
-    }
+      if (gameData)
+      {
+          console.log("Game Data:", convertLog(gameData, isAdmin(provider.wallet.publicKey)));
+      }
 
-    // console.log("Community Wallet: ", gameData?.communityWallet.toString());
-    // console.log("Community Balance: ", gameData?.communityBalance.toString());
-    if (playerData?.earnedMoney) {
-      setPlayerBalance(playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL);
-      console.log(
-        "Player Balance: ",
-        playerData?.earnedMoney.toString(),
-        "|",
-        playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL
-      );
-    }
+      if (playerData)
+      {
+          console.log("Player Data:", convertLog(playerData, isAdmin(provider.wallet.publicKey)));
+      }
 
-    if (gameData) {
-      console.log(
-        "Main Balance: ",
-        gameData?.mainBalance.toString(),
-        "|",
-        gameData?.mainBalance.toNumber() / LAMPORTS_PER_SOL
-      );
-      setMainBalance(gameData.mainBalance.toNumber() / LAMPORTS_PER_SOL);
-      setTokenType(gameData.tokenType);
-      setCommunityBalance(
-        gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL
-      );
-      setRoyalty(gameData.royalties[0] / 100);
-    }
+      if (playerData?.earnedMoney)
+      {
+          setPlayerBalance(playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL);
+          console.log("Player Balance:", playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL);
+      }
 
-    setSolBalance(
-      (await program.provider.connection.getBalance(wallet.publicKey)) /
-        LAMPORTS_PER_SOL
-    );
+      if (gameData)
+      {
+          console.log("Bank Balance:", gameData?.mainBalance.toNumber() / LAMPORTS_PER_SOL);
+          setMainBalance(gameData.mainBalance.toNumber() / LAMPORTS_PER_SOL);
+          setTokenType(gameData.tokenType);
+          setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
+          setRoyalty(gameData.royalties[0] / 100);
+      }
+
+      setSolBalance((await program.provider.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL);
   }
 
   const finished = async () => {
@@ -178,9 +162,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       setWon(false);
       toast.dismiss();
       toast.error(
-        `You lost ${price} ${
-          tokenType ? "$SKT" : "SOL"
-        }, better luck next time.`,
+        `You almost won ${price} ${tokenType ? "$SKT" : "SOL"}, better luck next time.`,
         { containerId }
       );
       await postWinLoseToDiscordAPI(
