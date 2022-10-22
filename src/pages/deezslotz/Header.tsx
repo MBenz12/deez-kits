@@ -1,9 +1,7 @@
 import {
-  CommunityFunds,
-  Jackpot,
-  PlayerFunds,
+  CommunityFunds, PlayerFunds,
   SolBalance,
-  WalletButton,
+  WalletButton
 } from "./HeaderItems";
 import { KitsLogo } from "./Svgs";
 
@@ -30,7 +28,7 @@ const Header = ({
 }) => {
   return (
     <>
-      <div className="hidden xl:flex w-full justify-center relative mb-10">
+      <div className="hidden xl:flex w-full justify-center relative mb-10 z-[3]">
         <div className="absolute left-[-20px] top-[-20px]">
           <div className="w-[225px] h-[104px]">
             <KitsLogo />

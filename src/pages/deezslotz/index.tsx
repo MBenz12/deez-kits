@@ -1,46 +1,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
-import {
-  LAMPORTS_PER_SOL,
-  PublicKey,
-  Connection,
-  clusterApiUrl,
-} from "@solana/web3.js";
 import * as anchor from "@project-serum/anchor";
+import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
   useAnchorWallet,
   // useConnection,
-  useWallet,
+  useWallet
 } from "@solana/wallet-adapter-react";
+import {
+  clusterApiUrl, Connection, LAMPORTS_PER_SOL,
+  PublicKey
+} from "@solana/web3.js";
+import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Header from "./Header";
+import { Information } from "./HeaderItems";
+import "./index.css";
+import Slots, { random } from "./Slots";
 import {
   BetButton,
   Discord,
   LoadingIcon,
   MagicEden,
   PlayIcon,
-  Twitter,
+  Twitter
 } from "./Svgs";
-import Slots, { random } from "./Slots";
-import Header from "./Header";
-import "./index.css";
-import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from "react-toastify";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import {
-  getGameAddress,
-  getPlayerAddress,
-  convertLog,
+  convertLog, getGameAddress,
+  getPlayerAddress, getProviderAndProgram,
   // postToApi,
-  isAdmin,
-  getProviderAndProgram,
-  playTransaction,
-  withdrawTransaction,
-  useWindowDimensions,
-  postToApi,
+  isAdmin, playTransaction, postToApi, useWindowDimensions, withdrawTransaction
 } from "./utils";
-import { Information } from "./HeaderItems";
 
 const game_name = "game3";
 const game_owner = new PublicKey("3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd");
@@ -259,9 +251,12 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       const targets = [];
       let equal_no = status % 10;
       let max = (status % 2) + 1;
-      gameData.winPercents.forEach((percent: number, index: number) => {
+      gameData.winPercents[betNo].forEach((percent: number, index: number) => {
         if (status < percent) max = index + 3;
       });
+      if (gameData.loseCounter && gameData.loseCounter <= gameData.minRoundsBeforeWin) {
+        max = (status % 2) + 1;
+      }
       setMultiplier((max - 1) * 10 - (status % 10));
       for (let i = 0; i < 5; i++) {
         let rd = random();
@@ -331,6 +326,17 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           setLoading(false);
         }}
       />
+      <div className="z-[2]">
+        <ToastContainer
+          rtl={false}
+          containerId={containerId}
+          position="top-right"
+          autoClose={5000}
+          toastClassName={() =>
+            "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px]"
+          }
+        />
+      </div>
       <Header
         communityBalance={communityBalance}
         royalty={royalty}
@@ -342,17 +348,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         won={won}
         withdrawPlayerMoney={withdrawPlayerMoney}
       />
-      <div className="z-0">
-        <ToastContainer
-          rtl={false}
-          containerId={containerId}
-          position="top-right"
-          toastClassName={() =>
-            "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[250px] top-[150px] z-0"
-          }
-        />
-      </div>
-      <div className="relative">
+      <div className="relative z-[1]">
         <div className="absolute left-3 top-[-40px]">
           <Information />
         </div>

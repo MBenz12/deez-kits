@@ -1,12 +1,12 @@
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletConnectButton, WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import "@solana/wallet-adapter-react-ui/styles.css";
+import { useEffect, useState } from "react";
 import {
   InfoIcon,
   SolanaLogo,
-  WithdrawIcon,
+  WithdrawIcon
 } from "./Svgs";
-import { WalletConnectButton, WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import "@solana/wallet-adapter-react-ui/styles.css";
-import { useState, useEffect } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
 
 export const CommunityFunds = ({
   balance,
@@ -210,7 +210,7 @@ export const SolBalance = ({
         </div>
       </div>
       <div
-        className={`absolute w-[100px] xl:left-0 left-[50%] xl:top-[50%] top-[48px] xl:translate-x-[-100%] translate-x-[-50%] xl:translate-y-[-50%] text-[#47C3D7] text-[14px] duration-1000 flex justify-center ${
+        className={`absolute w-[100px] xl:left-0 left-[50%] xl:top-[50%] top-[64px] xl:translate-x-[-100%] translate-x-[-50%] xl:translate-y-[-50%] text-[#47C3D7] text-[14px] duration-1000 flex justify-center ${
           !lost ? "opacity-0" : ""
         }`}
       >

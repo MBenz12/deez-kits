@@ -1,12 +1,12 @@
+import * as anchor from "@project-serum/anchor";
 import { Program, Provider } from "@project-serum/anchor";
+import { ASSOCIATED_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/token";
+import { Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { WalletContextState } from "@solana/wallet-adapter-react";
 import { Connection, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import * as anchor from "@project-serum/anchor";
 import { Slots } from "./idl/slots";
-import { Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { ASSOCIATED_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/token";
-import { WalletContextState } from "@solana/wallet-adapter-react";
 
 const idl_slots = require("./idl/slots.json");
 const programId = new PublicKey(idl_slots.metadata.address);
@@ -149,7 +149,7 @@ export async function playTransaction(program: Program<Slots>, provider: Provide
     transaction.add(await getAddPlayerTransaction(program, provider, game_name, game_owner));
   }
 
-  const gameData = await program.account.game.fetchNullable(game);
+  let gameData = await program.account.game.fetchNullable(game);
   if (!gameData) return;
 
   const payerAta = await Token.getAssociatedTokenAddress(
@@ -229,6 +229,7 @@ export async function playTransaction(program: Program<Slots>, provider: Provide
   );
   await provider.connection.confirmTransaction(txSignature, "confirmed");
   console.log(txSignature);
+  gameData = await program.account.game.fetchNullable(game);
   const playerData = await program.account.player.fetchNullable(player);
   return { gameData, playerData };
 }
