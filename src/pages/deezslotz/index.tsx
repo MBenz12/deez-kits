@@ -2,13 +2,8 @@
 import * as anchor from "@project-serum/anchor";
 import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
-import {
-  clusterApiUrl,
-  Connection,
-  LAMPORTS_PER_SOL,
-  PublicKey
-} from "@solana/web3.js";
+import {useAnchorWallet, useConnection, useWallet} from "@solana/wallet-adapter-react";
+import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey} from "@solana/web3.js";
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
@@ -17,35 +12,17 @@ import Header from "./Header";
 import { Information } from "./HeaderItems";
 import "./index.css";
 import Slots, { random } from "./Slots";
-import {
-  BetButton,
-  Discord,
-  LoadingIcon,
-  MagicEden,
-  PlayIcon,
-  Twitter
-} from "./Svgs";
-import {
-  convertLog,
-  getGameAddress,
-  getPlayerAddress,
-  getProviderAndProgram,
-  isAdmin,
-  playTransaction,
-  postWinLoseToDiscordAPI,
-  postWithdrawToDiscordAPI,
-  useWindowDimensions,
-  withdrawTransaction
-} from "./utils";
+import { BetButton, Discord, LoadingIcon, MagicEden, PlayIcon, Twitter} from "./Svgs";
+import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
+import {game_name, game_owner} from "./constants";
 
-const game_name = "game31";
-const game_owner = new PublicKey("EF5qxGB1AirUH4ENw1niV1ewiNHzH2fWs7naQQYF2dc");
 const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 113;
 
-const DeezSlotz = React.forwardRef((props, ref) => {
-  // const { connection } = useConnection();
-  const connection = new Connection(clusterApiUrl(cluster), "confirmed");
+const DeezSlotz = React.forwardRef((props, ref) =>
+{
+  const { connection } = useConnection();
+  // const connection = new Connection(clusterApiUrl(cluster), "confirmed");
   const wallet = useWallet();
   const anchorWallet = useAnchorWallet() as anchor.Wallet;
 

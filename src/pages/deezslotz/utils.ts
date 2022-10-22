@@ -8,18 +8,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Slots } from "./idl/slots";
 import {WalletAdapterNetwork} from "@solana/wallet-adapter-base";
+import {sktMint, adminWallets} from "./constants";
 
 const idl_slots = require("./idl/slots.json");
 const programId = new PublicKey(idl_slots.metadata.address);
 const slots_pda_seed = "slots_game_pda";
 const player_pda_seed = "player_pda";
-const sktMint = new PublicKey("SKTsW8KvzopQPdamXsPhvkPfwzTenegv3c3PEX4DT1o");
-
-const adminWallets = [
-  "EF5qxGB1AirUH4ENw1niV1ewiNHzH2fWs7naQQYF2dc",
-  "3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd",
-  "SERVUJeqsyaJTuVuXAmmko6kTigJmxzTxUMSThpC2LZ"
-];
 
 export const getNetworkFromConnection: (connection: Connection) => WalletAdapterNetwork.Devnet | WalletAdapterNetwork.Mainnet = (connection: Connection) =>
 {
