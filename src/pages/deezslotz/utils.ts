@@ -14,6 +14,10 @@ const slots_pda_seed = "slots_game_pda";
 const player_pda_seed = "player_pda";
 const sktMint = new PublicKey("SKTsW8KvzopQPdamXsPhvkPfwzTenegv3c3PEX4DT1o");
 
+const adminWallets = [
+  "SERVUJeqsyaJTuVuXAmmko6kTigJmxzTxUMSThpC2LZ"
+];
+
 export const getGameAddress = async (game_name: string, game_owner: PublicKey) => (
   await PublicKey.findProgramAddress(
     [
@@ -63,16 +67,10 @@ export const postToApi = async (user: PublicKey, balance: number) => {
   });
 }
 
-const adminWallets = [
-  "SERVUJeqsyaJTuVuXAmmko6kTigJmxzTxUMSThpC2LZ",
-  "EF5qxGB1AirUH4ENw1niV1ewiNHzH2fWs7naQQYF2dc",
-  "3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd",
-];
 
 export const isAdmin = (pubkey: PublicKey) => {
   return adminWallets.includes(pubkey.toString())
 }
-
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
