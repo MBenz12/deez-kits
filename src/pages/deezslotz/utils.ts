@@ -7,6 +7,7 @@ import { Connection, PublicKey, SystemProgram, Transaction } from "@solana/web3.
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Slots } from "./idl/slots";
+import {WalletAdapterNetwork} from "@solana/wallet-adapter-base";
 
 const idl_slots = require("./idl/slots.json");
 const programId = new PublicKey(idl_slots.metadata.address);
@@ -19,6 +20,12 @@ const adminWallets = [
   "3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd",
   "SERVUJeqsyaJTuVuXAmmko6kTigJmxzTxUMSThpC2LZ"
 ];
+
+export const getNetworkFromConnection: (connection: Connection) => WalletAdapterNetwork.Devnet | WalletAdapterNetwork.Mainnet = (connection: Connection) =>
+{
+    // @ts-ignore
+    return connection._rpcEndpoint.includes('devnet') ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet;
+}
 
 export const getGameAddress = async (game_name: string, game_owner: PublicKey) => (
   await PublicKey.findProgramAddress(
@@ -58,19 +65,37 @@ export const convertLog = (data: { [x: string]: { toString?: () => any; }; }, is
 }
 
 
-export const postWinLoseToDiscordAPI = async (user: PublicKey, balance: number) =>
+export const postWinLoseToDiscordAPI = async (userWallet: PublicKey, balance: number, bet: number, connection: Connection) =>
 {
-    const message = `User ${user.toString()} ${balance > 0 ? `Won ${balance} sol` : `Lost ${-balance} sol, better luck next time`}`;
-    await postToDiscordApi(message);
+    const wonEmoji = `<a:deezkits_confetti:1029282324170407936>`;
+    const catPartyEmoji = `<a:deezkitsparty2:1029282335549558804>`;
+
+    let message = ``;
+
+    balance = Number(balance.toFixed(3));
+    if (balance > 0)
+    {
+      message += `A cute Kit just **Won** \`${balance}\` SOL ${wonEmoji} with a bet of \`${bet}\``;
+    }
+    else
+    {
+      message += `A Kit Almost won \`${-balance}\` SOL, better luck next time ${catPartyEmoji}`;
+    }
+
+    message += `\n\n> Wallet: \`${userWallet!.toString()}\` \n`;
+
+    await postToDiscordApi(message, "1033022490202620056", getNetworkFromConnection(connection)); // slots
 }
 
-export const postWithdrawToDiscordAPI = async (userWallet: PublicKey | null, balance: number) =>
+export const postWithdrawToDiscordAPI = async (userWallet: PublicKey | null, balance: number, connection: Connection) =>
 {
-    const message = `User ${userWallet!.toString()} wants to withdraw ${balance} sol`;
-    await postToDiscordApi(message);
+    let message = `\`${userWallet!.toString()}\``;
+    message += `\n> Is about to withdraw \`${balance}\` SOL`;
+
+    await postToDiscordApi(message, `1033411235124883628`, getNetworkFromConnection(connection)); // slots-admin
 }
 
-export const postToDiscordApi = async (message: string) =>
+export const postToDiscordApi = async (message: string, channelId: string, network: string) =>
 {
   return await axios.post("https://api.servica.io/extorio/apis/general",
       {
@@ -78,8 +103,9 @@ export const postToDiscordApi = async (message: string) =>
                 params:
                 {
                   token: "xxxx",
-                  channelId: "1031495600937644066", //deez
+                  channelId: channelId,
                   message: message,
+                  network: network
                 },
            });
 }

@@ -11,11 +11,10 @@ const Deezkits = React.lazy(() => import("../pages/deezkits/index"));
 const Router = () => {
   const MusicRef = useRef(null);
   const [subDomain, setSubDomain] = useState(null);
-  // const [isPlaying,setIsPlaying]=useState(false);
 
   useEffect(() => {
     const host = window.location.host;
-    const arr = host.split(".");//.slice(0, host.includes("deezkits") ? -1 : -2);
+    const arr = host.split(".");
 
     console.log("SubDomain:" , arr);
 
@@ -40,12 +39,7 @@ const Router = () => {
       <Route path="/mint" element={<Suspense fallback={<Loading />}><Deezkits /></Suspense>}></Route>
       <Route path="/deezslotz" element={<Suspense fallback={<Loading />}><DeezSlotz /></Suspense>}></Route>
       <Route path="/staking" element={<Suspense fallback={<Loading />}><Staking/></Suspense>}></Route>
-      <Route path="/countdown" element=
-        {
-          <Suspense fallback={<Loading />}>
-            <Deezkits isMint={false} ref={MusicRef} isMusicPlayer={true}/>
-          </Suspense>
-        }>
+      <Route path="/countdown" element={<Suspense fallback={<Loading />}><Deezkits isMint={false} ref={MusicRef} isMusicPlayer={true}/></Suspense>}>
       </Route>
       <Route path="/discord" element={<External link="https://discord.gg/deezkits" />}></Route>
       <Route path="*" element={<Error />}></Route>
