@@ -85,7 +85,7 @@ export const postWinLoseToDiscordAPI = async (userWallet: PublicKey, balance: nu
     }
     else
     {
-      message += `A Kit Almost won \`${-balance}\` SOL, better luck next time ${catPartyEmoji}`;
+      message += `A Kit almost won \`${-balance}\` SOL, better luck next time ${catPartyEmoji}`;
     }
 
     message += `\n\n> Wallet: \`${userWallet!.toString()}\` \n`;

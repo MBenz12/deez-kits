@@ -23,8 +23,11 @@ export const CommunityFunds = ({
   const [tooltip1, setTooltip1] = useState(false);
   const [tooltip2, setTooltip2] = useState(false);
 
-  const timeout = () => {
-    const now = new Date();
+  const timeout = () =>
+  {
+    const targetDate = new Date('November 01, 2022 00:00:00').getTime();
+    const now2 = new Date().getTime();
+    const now = new Date(targetDate - now2);
     setDay(now.getDate());
     setHour(now.getHours());
     setMins(now.getMinutes() + 1);
