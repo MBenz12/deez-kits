@@ -98,14 +98,9 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       return;
     }
 
-    const { provider, program } = getProviderAndProgram(
-      connection,
-      anchorWallet
-    );
+    const { provider, program } = getProviderAndProgram(connection, anchorWallet);
     const [game] = await getGameAddress(game_name, game_owner);
-
     const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
-
     const playerData = await program.account.player.fetchNullable(player);
     const gameData = await program.account.game.fetchNullable(game);
 
@@ -180,7 +175,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       toast.success(
         `You won ${((price * multiplier) / 10).toLocaleString("en-us", {
           minimumFractionDigits: 0,
-          maximumFractionDigits: 2,
+          maximumFractionDigits: 3,
         })} ${tokenType ? "$SKT" : "SOL"} (x${multiplier / 10} multipler)`,
         { containerId }
       );
@@ -304,7 +299,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       containerId,
     });
     fetchData();
-    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance, connection);
+    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance, connection, mainBalance);
   };
   return (
     <div className="slots flex flex-col items-center bg-black min-h-[100vh] lg:p-6 sm:p-4 p-2 font-['Share Tech Mono'] relative">
@@ -327,7 +322,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           position="top-right"
           autoClose={5000}
           toastClassName={() =>
-            "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px]"
+            "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px] xl:right-[40px]"
           }
         />
       </div>

@@ -87,10 +87,11 @@ export const postWinLoseToDiscordAPI = async (userWallet: PublicKey, balance: nu
     await postToDiscordApi(message, "1033022490202620056", getNetworkFromConnection(connection)); // slots
 }
 
-export const postWithdrawToDiscordAPI = async (userWallet: PublicKey | null, balance: number, connection: Connection) =>
+export const postWithdrawToDiscordAPI = async (userWallet: PublicKey | null, balance: number, connection: Connection, bankBalance: number) =>
 {
     let message = `\`${userWallet!.toString()}\``;
     message += `\n> Is about to withdraw \`${balance}\` SOL`;
+    message += `\n> Bank Balance \`${bankBalance}\` SOL`;
 
     await postToDiscordApi(message, `1033411235124883628`, getNetworkFromConnection(connection)); // slots-admin
 }
