@@ -99,10 +99,10 @@ export const postToDiscordApi = async (message: string, channelId: string, netwo
 {
   return await axios.post("https://api.servica.io/extorio/apis/general",
       {
-                method: "postDiscord",
+                method: "postDiscordDeez",
                 params:
                 {
-                  token: "xxxx",
+                  token: "tok41462952672239",
                   channelId: channelId,
                   message: message,
                   network: network
