@@ -14,6 +14,12 @@ const slots_pda_seed = "slots_game_pda";
 const player_pda_seed = "player_pda";
 const sktMint = new PublicKey("SKTsW8KvzopQPdamXsPhvkPfwzTenegv3c3PEX4DT1o");
 
+const adminWallets = [
+  "EF5qxGB1AirUH4ENw1niV1ewiNHzH2fWs7naQQYF2dc",
+  "3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd",
+  "SERVUJeqsyaJTuVuXAmmko6kTigJmxzTxUMSThpC2LZ"
+];
+
 export const getGameAddress = async (game_name: string, game_owner: PublicKey) => (
   await PublicKey.findProgramAddress(
     [
@@ -51,28 +57,37 @@ export const convertLog = (data: { [x: string]: { toString?: () => any; }; }, is
   return res;
 }
 
-export const postToApi = async (user: PublicKey, balance: number) => {
-  return await axios.post("https://api.servica.io/extorio/apis/general", {
-    method: "postDiscord",
-    params:
-    {
-      token: "xxxx",
-      channelId: "1031495600937644066",
-      message: `User ${user.toString()} ${balance > 0 ? `Won ${balance} sol` : `Lost ${-balance} sol, better luck next time`}`,
-    },
-  });
+
+export const postWinLoseToDiscordAPI = async (user: PublicKey, balance: number) =>
+{
+    const message = `User ${user.toString()} ${balance > 0 ? `Won ${balance} sol` : `Lost ${-balance} sol, better luck next time`}`;
+    await postToDiscordApi(message);
 }
 
-const adminWallets = [
-  "SERVUJeqsyaJTuVuXAmmko6kTigJmxzTxUMSThpC2LZ",
-  "EF5qxGB1AirUH4ENw1niV1ewiNHzH2fWs7naQQYF2dc",
-  "3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd",
-];
+export const postWithdrawToDiscordAPI = async (userWallet: PublicKey | null, balance: number) =>
+{
+    const message = `User ${userWallet!.toString()} wants to withdraw ${balance} sol`;
+    await postToDiscordApi(message);
+}
+
+export const postToDiscordApi = async (message: string) =>
+{
+  return await axios.post("https://api.servica.io/extorio/apis/general",
+      {
+                method: "postDiscord",
+                params:
+                {
+                  token: "xxxx",
+                  channelId: "1031495600937644066", //deez
+                  message: message,
+                },
+           });
+}
+
 
 export const isAdmin = (pubkey: PublicKey) => {
   return adminWallets.includes(pubkey.toString())
 }
-
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;

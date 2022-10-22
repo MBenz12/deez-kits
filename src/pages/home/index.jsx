@@ -83,7 +83,6 @@ const Maintenance = () => {
 
         <a
             href="https://staking.deezkits.com"
-            target="_blank"
             rel="noreferrer"
             className={style.staking_link}
         >

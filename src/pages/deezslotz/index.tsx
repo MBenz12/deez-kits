@@ -4,7 +4,6 @@ import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
   useAnchorWallet,
-  // useConnection,
   useWallet
 } from "@solana/wallet-adapter-react";
 import {
@@ -29,13 +28,11 @@ import {
 } from "./Svgs";
 import {
   convertLog, getGameAddress,
-  getPlayerAddress, getProviderAndProgram,
-  // postToApi,
-  isAdmin, playTransaction, postToApi, useWindowDimensions, withdrawTransaction
+  getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction
 } from "./utils";
 
-const game_name = "game3";
-const game_owner = new PublicKey("3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd");
+const game_name = "game31";
+const game_owner = new PublicKey("EF5qxGB1AirUH4ENw1niV1ewiNHzH2fWs7naQQYF2dc");
 const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 113;
 
@@ -194,7 +191,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       setRun(true);
       setCycle(true);
       setTimeout(() => setCycle(false), 4000);
-      await postToApi(wallet.publicKey, multiplier * price / 10);
+      await postWinLoseToDiscordAPI(wallet.publicKey, multiplier * price / 10);
     } else {
       setLoading(false);
       setWon(false);
@@ -205,7 +202,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         }, better luck next time.`,
         { containerId }
       );   
-      await postToApi(wallet.publicKey, -price);
+      await postWinLoseToDiscordAPI(wallet.publicKey, -price);
     }
     setLost(true);
     setTimeout(() => {
@@ -311,6 +308,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       containerId,
     });
     fetchData();
+    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance);
   };
   return (
     <div className="slots flex flex-col items-center bg-black min-h-[100vh] lg:p-6 sm:p-4 p-2 font-['Share Tech Mono'] relative">
