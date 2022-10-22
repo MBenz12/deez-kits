@@ -27,6 +27,7 @@ import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import {
   getGameAddress,
   getPlayerAddress,
@@ -41,8 +42,8 @@ import {
 } from "./utils";
 import { Information } from "./HeaderItems";
 
-const game_name = "game2";
-const game_owner = new PublicKey("3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd");
+const game_name = "game31";
+const game_owner = new PublicKey("EF5qxGB1AirUH4ENw1niV1ewiNHzH2fWs7naQQYF2dc");
 const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 113;
 
@@ -56,6 +57,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   const [roll, setRoll] = useState<any>({});
   const prices = [0.05, 0.1, 0.25, 0.5, 1, 2];
   const [price, setPrice] = useState(0.05);
+  const [betNo, setBetNo] = useState(0);
   const [loading, setLoading] = useState(false);
   const [communityBalance, setCommunityBalance] = useState(0);
   const [royalty, setRoyalty] = useState(0);
@@ -78,6 +80,26 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   const { width, height } = useWindowDimensions();
   const [run, setRun] = useState(false);
   const [cycle, setCycle] = useState(false);
+
+  useEffect(() => {
+    const fetchGame = async () => {
+      const wallet = new NodeWallet(anchor.web3.Keypair.generate());
+      const { program } = getProviderAndProgram(
+        connection,
+        wallet
+      );
+      const [game] = await getGameAddress(game_name, game_owner);
+      const gameData = await program.account.game.fetchNullable(game);
+      if (gameData) {
+        setTokenType(gameData.tokenType);
+        setCommunityBalance(
+          gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL
+        );
+        setRoyalty(gameData.royalties[0] / 100);
+      }
+    }
+    fetchGame();
+  }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   async function fetchData() {
@@ -104,13 +126,13 @@ const DeezSlotz = React.forwardRef((props, ref) => {
 
     if (gameData) {
       console.log(
-        "Game Data:",
+        "Game Data:", // @ts-ignore
         convertLog(gameData, isAdmin(provider.wallet.publicKey))
       );
     }
     if (playerData) {
       console.log(
-        "Player Data:",
+        "Player Data:", // @ts-ignore
         convertLog(playerData, isAdmin(provider.wallet.publicKey))
       );
     }
@@ -227,7 +249,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         wallet,
         game_name,
         game_owner,
-        price
+        betNo
       );
 
       let status = playerData?.status;
@@ -364,11 +386,14 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           finished={finished}
         />
       </div>
-      <div className="my-1 grid md:grid-cols-6 grid-cols-3 gap-4">
-        {prices.map((value) => (
+      <div className="my-1 grid md:grid-cols-6 grid-cols-3 md:w-[734px] md:flex justify-between gap-4">
+        {prices.map((value, index) => (
           <div
             key={value}
-            onClick={() => setPrice(value)}
+            onClick={() => {
+              setPrice(value);
+              setBetNo(index);
+            }}
             className={`lg:w-[112px] w-[95px] lg:h-[45px] h-[38px] flex items-center justify-center text-[16px] border-2 rounded-md font-bold cursor-pointer ${
               value === price
                 ? "text-black bg-[#4AFF2C] border-[#4AFF2C]"

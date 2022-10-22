@@ -1,5 +1,5 @@
 import { Program, Provider } from "@project-serum/anchor";
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { Connection, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import * as anchor from "@project-serum/anchor";
@@ -36,13 +36,15 @@ export const getPlayerAddress = async (playerKey: PublicKey, game: PublicKey) =>
   )
 )
 
-export const convertLog = (data: { [x: string]: { toString: () => any; }; }, isAdmin: boolean = true) => {
+export const convertLog = (data: { [x: string]: { toString?: () => any; }; }, isAdmin: boolean = true) => {
   const res: { [x: string]: any } = {};
   Object.keys(data).forEach(key => {
     if (isAdmin || key !== "winPercents") {
       res[key] = data[key];
       if (typeof data[key] === "object") {
-        res[key] = data[key].toString();
+        if (data[key].toString) {// @ts-ignore
+          res[key] = data[key].toString();
+        }
       }
     }
   });
@@ -135,7 +137,7 @@ async function getAddPlayerTransaction(program: Program<Slots>, provider: Provid
   });
 }
 
-export async function playTransaction(program: Program<Slots>, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey, price: number) {
+export async function playTransaction(program: Program<Slots>, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey, betNo: number) {
   const [game] = await getGameAddress(game_name, game_owner);
   const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
 
@@ -186,7 +188,7 @@ export async function playTransaction(program: Program<Slots>, provider: Provide
     false
   );
   transaction.add(
-    program.transaction.play(new anchor.BN(LAMPORTS_PER_SOL * price), {
+    program.transaction.play(betNo, {
       accounts: {
         payer: provider.wallet.publicKey,
         payerAta,

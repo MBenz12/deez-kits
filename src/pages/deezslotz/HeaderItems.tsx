@@ -37,11 +37,10 @@ export const CommunityFunds = ({
       clearInterval(interval);
     };
   }, []);
-  const wallet = useWallet();
   return (
     <div>
       <div className="relative cursor-context-menu rounded-md border-[#371761] border-2 min-w-[224px]">
-        <div className="top-0 top-[-15px] w-full flex justify-center absolute">
+        <div className="top-[-15px] w-full flex justify-center absolute">
           <p className="text-[22px] leading-[25px] text-[#FFC42C] bg-black w-[200px] text-center">community funds</p>
         </div>
         <div className="p-2 flex flex-col items-center">
@@ -82,7 +81,7 @@ export const CommunityFunds = ({
         
         <div
           className={`absolute border-[1px] border-[#C974F4] bg-[#492D5E] w-[320px] left-[50%] top-[60px] translate-x-[-50%] text-[14px] text-[#C974F4] rounded-md duration-300 ${
-            !tooltip1 || !wallet.connected ? "opacity-0 z-[0]" : "z-[108]"
+            !tooltip1 ? "opacity-0 z-[0]" : "z-[108]"
           }`}
         >
           <div className="relative p-2">
@@ -93,7 +92,7 @@ export const CommunityFunds = ({
         </div>
         <div
           className={`absolute border-[1px] border-[#C974F4] bg-[#492D5E] w-[320px] left-[50%] top-[110px] translate-x-[-50%] text-[14px] text-[#C974F4] rounded-md duration-300 ${
-            !tooltip2 || !wallet.connected ? "opacity-0" : "z-[108]"
+            !tooltip2 ? "opacity-0" : "z-[108]"
           }`}
         >
           <div className="relative p-2">
@@ -238,7 +237,6 @@ export const PlayerFunds = ({
   won: boolean;
 }) => {
   const [tooltip, setTooltip] = useState(false);
-  const wallet = useWallet();
   return (
     <div
       onClick={withdrawPlayerMoney}
@@ -246,7 +244,7 @@ export const PlayerFunds = ({
       onMouseLeave={() => setTooltip(false)}
       className="h-[61px] relative cursor-pointer rounded-md border-[#952CFF] border-2 w-[224px]"
     >
-      <div className="top-0 top-[-15px] w-full flex justify-center absolute">
+      <div className="top-[-15px] w-full flex justify-center absolute">
         <p className="text-[22px] leading-[25px] text-[#952CFF] bg-black w-[200px] text-center">player funds</p>
       </div>
       <div className="absolute w-full h-full top-0 left-0 flex justify-evenly items-center">
@@ -279,7 +277,7 @@ export const PlayerFunds = ({
       <div
         onMouseOver={() => setTooltip(false)}
         className={`absolute w-[330px] left-[50%] top-[60px] translate-x-[-50%] text-[#C974F4] text-[14px] rounded-md duration-300 ${
-          !tooltip || !wallet.connected ? "opacity-0 z-[0]" : "z-[108]"
+          !tooltip ? "opacity-0 z-[0]" : "z-[108]"
         }`}
       >
         <div className="relative p-2 border-[1px] border-[#C974F4] bg-[#492D5E] rounded-md">
@@ -302,13 +300,13 @@ export const Information = () => {
       <InfoIcon />
       <div
         onMouseOver={() => setTooltip(false)}
-        className={`absolute w-[330px] left-[50%] top-[34px] translate-x-[-50%] text-[#C974F4] text-[14px] rounded-md duration-300 ${
+        className={`absolute sm:w-[560px] w-[300px] left-[0%] top-[34px]  text-[#C974F4] text-[14px] rounded-md duration-300 ${
           !tooltip ? "opacity-0 z-[0]" : "z-[108]"
         }`}
       >
         <div className="relative p-2 border-[1px] border-[#C974F4] bg-[#492D5E] rounded-md">
           <div>In order to win you need 3 / 4 / 5 kits in the middle row. Good luck!</div>
-          <div className="absolute w-[10px] h-[10px] rotate-45 left-[50%] translate-x-[-50%] translate-y-[-50%] top-0 bg-[#492D5E] border-[1px] border-[#C974F4] border-r-0 border-b-0"></div>
+          <div className="absolute w-[10px] h-[10px] rotate-45 left-2 translate-y-[-50%] top-0 bg-[#492D5E] border-[1px] border-[#C974F4] border-r-0 border-b-0"></div>
         </div>
       </div>
     </div>
