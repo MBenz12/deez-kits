@@ -26,3 +26,9 @@
 .slots .connecting .wallet-adapter-button .wallet-adapter-button-start-icon {
   display: none;
 }
+
+@keyframes slotsspin {
+  to {
+    transform: rotate(360deg);
+  }
+}

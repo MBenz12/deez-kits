@@ -3,7 +3,12 @@ import * as anchor from "@project-serum/anchor";
 import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
-import {clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey} from "@solana/web3.js";
+import {
+  clusterApiUrl,
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey
+} from "@solana/web3.js";
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
@@ -12,11 +17,17 @@ import Header from "./Header";
 import { Information } from "./HeaderItems";
 import "./index.css";
 import Slots, { random } from "./Slots";
-import { BetButton, Discord, LoadingIcon, MagicEden, PlayIcon, Twitter} from "./Svgs";
+import {
+  BetButton,
+  Discord,
+  LoadingIcon,
+  MagicEden,
+  PlayIcon,
+  Twitter
+} from "./Svgs";
 import {
   convertLog,
   getGameAddress,
-  getNetworkFromConnection,
   getPlayerAddress,
   getProviderAndProgram,
   isAdmin,
@@ -69,10 +80,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   useEffect(() => {
     const fetchGame = async () => {
       const wallet = new NodeWallet(anchor.web3.Keypair.generate());
-      const { program } = getProviderAndProgram(
-        connection,
-        wallet
-      );
+      const { program } = getProviderAndProgram(connection, wallet);
       const [game] = await getGameAddress(game_name, game_owner);
       const gameData = await program.account.game.fetchNullable(game);
       if (gameData) {
@@ -82,7 +90,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         );
         setRoyalty(gameData.royalties[0] / 100);
       }
-    }
+    };
     fetchGame();
   }, []);
 
@@ -156,7 +164,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   }
 
   const finished = async () => {
-    if(!wallet.publicKey) return;
+    if (!wallet.publicKey) return;
     const counts = {};
     targets.forEach((target) => {
       // @ts-ignore
@@ -187,7 +195,12 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       setRun(true);
       setCycle(true);
       setTimeout(() => setCycle(false), 4000);
-      await postWinLoseToDiscordAPI(wallet.publicKey, multiplier * price / 10, price, connection);
+      await postWinLoseToDiscordAPI(
+        wallet.publicKey,
+        (multiplier * price) / 10,
+        price,
+        connection
+      );
     } else {
       setLoading(false);
       setWon(false);
@@ -197,8 +210,13 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           tokenType ? "$SKT" : "SOL"
         }, better luck next time.`,
         { containerId }
-      );   
-      await postWinLoseToDiscordAPI(wallet.publicKey, -price, price, connection);
+      );
+      await postWinLoseToDiscordAPI(
+        wallet.publicKey,
+        -price,
+        price,
+        connection
+      );
     }
     setLost(true);
     setTimeout(() => {
@@ -212,7 +230,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
     if (loading) return;
     if (!wallet.connected) {
       toast.dismiss();
-      toast.error('Please connect wallet to play.', { containerId });
+      toast.error("Please connect wallet to play.", { containerId });
       return;
     }
     if (solBalance < price) {
@@ -247,7 +265,10 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       gameData.winPercents[betNo].forEach((percent: number, index: number) => {
         if (status < percent) max = index + 3;
       });
-      if (gameData.loseCounter && gameData.loseCounter <= gameData.minRoundsBeforeWin) {
+      if (
+        gameData.loseCounter &&
+        gameData.loseCounter <= gameData.minRoundsBeforeWin
+      ) {
         max = (status % 2) + 1;
       }
       setMultiplier((max - 1) * 10 - (status % 10));
@@ -355,10 +376,10 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           </div>
           {loading && (
             <>
-              <div className="animate-spin md:hidden block">
+              <div className="md:hidden block" style={{ animation: 'slotsspin 2s linear infinite' }}>
                 <LoadingIcon fill="#4AFF2C" small id={1} />
               </div>
-              <div className="animate-spin hidden md:block">
+              <div className="hidden md:block" style={{ animation: 'slotsspin 2s linear infinite' }}>
                 <LoadingIcon fill="#4AFF2C" small={false} id={2} />
               </div>
             </>
