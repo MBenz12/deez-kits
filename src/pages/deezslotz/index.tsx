@@ -9,7 +9,6 @@ import {
 import * as anchor from "@project-serum/anchor";
 import {
   useAnchorWallet,
-  // useConnection,
   useWallet,
 } from "@solana/wallet-adapter-react";
 import Confetti from "react-confetti";
@@ -32,13 +31,12 @@ import {
   getGameAddress,
   getPlayerAddress,
   convertLog,
-  // postToApi,
   isAdmin,
   getProviderAndProgram,
   playTransaction,
   withdrawTransaction,
   useWindowDimensions,
-  postToApi, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI,
+  postWinLoseToDiscordAPI, postWithdrawToDiscordAPI,
 } from "./utils";
 import { Information } from "./HeaderItems";
 

@@ -15,6 +15,8 @@ const player_pda_seed = "player_pda";
 const sktMint = new PublicKey("SKTsW8KvzopQPdamXsPhvkPfwzTenegv3c3PEX4DT1o");
 
 const adminWallets = [
+  "EF5qxGB1AirUH4ENw1niV1ewiNHzH2fWs7naQQYF2dc",
+  "3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd",
   "SERVUJeqsyaJTuVuXAmmko6kTigJmxzTxUMSThpC2LZ"
 ];
 
