@@ -184,7 +184,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       toast.success(
         `You won ${((price * multiplier) / 10).toLocaleString("en-us", {
           minimumFractionDigits: 0,
-          maximumFractionDigits: 2,
+          maximumFractionDigits: 3,
         })} ${tokenType ? "$SKT" : "SOL"} (x${multiplier / 10} multipler)`,
         { containerId }
       );
@@ -331,7 +331,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           position="top-right"
           autoClose={5000}
           toastClassName={() =>
-            "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px]"
+            "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px] xl:right-[40px]"
           }
         />
       </div>
