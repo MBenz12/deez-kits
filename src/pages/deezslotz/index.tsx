@@ -42,8 +42,8 @@ import {
 } from "./utils";
 import { Information } from "./HeaderItems";
 
-const game_name = "game3";
-const game_owner = new PublicKey("3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd");
+const game_name = "game31";
+const game_owner = new PublicKey("EF5qxGB1AirUH4ENw1niV1ewiNHzH2fWs7naQQYF2dc");
 const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 113;
 
