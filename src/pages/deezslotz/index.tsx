@@ -207,7 +207,8 @@ const DeezSlotz = React.forwardRef((props, ref) =>
         wallet,
         game_name,
         game_owner,
-        betNo
+        betNo,
+        connection
       );
 
       let status = playerData?.status;
