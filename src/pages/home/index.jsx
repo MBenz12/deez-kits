@@ -90,14 +90,14 @@ const Maintenance = () => {
           Staking
         </a>
 
-        <a
-            href="https://slotz.deezkits.com"
-            rel="noreferrer"
-            className={style.staking_link}
-        >
-          <span>🎰</span>
-          <span>Slotz</span>
-        </a>
+        {/*<a*/}
+        {/*    href="https://slotz.deezkits.com"*/}
+        {/*    rel="noreferrer"*/}
+        {/*    className={style.staking_link}*/}
+        {/*>*/}
+        {/*  <span>🎰</span>*/}
+        {/*  <span>Slotz</span>*/}
+        {/*</a>*/}
       </div>
       {/* music toggle button */}
       <Music ref={videoRef} />
