@@ -21,6 +21,14 @@ export const getNetworkFromConnection: (connection: Connection) => WalletAdapter
     return connection._rpcEndpoint.includes('devnet') ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet;
 }
 
+export const getWalletPartiallyHidden = (walletAddress: PublicKey) =>
+{
+    const walletStr = walletAddress!.toString();
+    const walletStart = walletStr.slice(0,4);
+    const walletEnd = walletStr.slice(-4);
+    return `${walletStart}...${walletEnd}`
+}
+
 export const getGameAddress = async (game_name: string, game_owner: PublicKey) => (
   await PublicKey.findProgramAddress(
     [
@@ -88,7 +96,7 @@ export const postWinLoseToDiscordAPI = async (userWallet: PublicKey, balance: nu
       message += `A Kit almost won \`${-balance}\` SOL, better luck next time ${catPartyEmoji}`;
     }
 
-    message += `\n\n> Wallet: \`${userWallet!.toString()}\` \n`;
+    message += `\n\n> Wallet: \`${getWalletPartiallyHidden(userWallet)}\` \n`;
 
     await postToDiscordApi(message, "1033022490202620056", getNetworkFromConnection(connection)); // slots
 }

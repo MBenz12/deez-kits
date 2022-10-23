@@ -181,21 +181,26 @@ const DeezSlotz = React.forwardRef((props, ref) =>
     fetchData();
   };
 
-  const play = async () => {
+  const play = async () =>
+  {
     if (loading) return;
     if (!wallet.connected) {
       toast.dismiss();
       toast.error("Please connect wallet to play.", { containerId });
       return;
     }
+
     if (solBalance < price) {
       toast.dismiss();
       toast.error(`Not enough funds to bet.`, { containerId });
       return;
     }
+
     setLoading(true);
     setWon(false);
-    try {
+
+    try
+    {
       const { provider, program } = getProviderAndProgram(
         connection,
         anchorWallet
