@@ -8,7 +8,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Slots } from "./idl/slots";
 import {WalletAdapterNetwork} from "@solana/wallet-adapter-base";
-import {sktMint, adminWallets} from "./constants";
+import {splTokenMint, adminWallets} from "./constants";
 
 const idl_slots = require("./idl/slots.json");
 const programId = new PublicKey(idl_slots.metadata.address);
@@ -202,8 +202,7 @@ export async function playTransaction(program: Program<Slots>, provider: Provide
 
   console.log("tokenType", gameData.tokenType);
 
-  // TBD - dodo fix
-  const mint = gameData.tokenType ? sktMint : NATIVE_MINT;
+  const mint = splTokenMint;
   const payerAta = await Token.getAssociatedTokenAddress(
       ASSOCIATED_PROGRAM_ID,
       TOKEN_PROGRAM_ID,
@@ -212,43 +211,19 @@ export async function playTransaction(program: Program<Slots>, provider: Provide
       false
   );
 
-  let auxAccount = Keypair.generate();
   const ta = await program.provider.connection.getAccountInfo(payerAta);
   if (!ta)
   {
-      if (!gameData.tokenType)
-      {
-
-          let amount = 1; /* Wrapped SOL's decimals is 9 */
-
-          transaction.add(SystemProgram.createAccount({
-              fromPubkey: provider.wallet.publicKey,
-              newAccountPubkey: auxAccount.publicKey,
-              space: AccountLayout.span,
-              lamports: (await Token.getMinBalanceRentForExemptAccount(connection)) + amount, // rent + amount
-              programId: TOKEN_PROGRAM_ID,
-          }));
-
-          transaction.add(Token.createInitAccountInstruction(
+      transaction.add(
+          Token.createAssociatedTokenAccountInstruction(
+              ASSOCIATED_PROGRAM_ID,
               TOKEN_PROGRAM_ID,
-              NATIVE_MINT,
-              auxAccount.publicKey,
+              mint,
+              payerAta,
+              provider.wallet.publicKey,
               provider.wallet.publicKey
-          ));
-      }
-      else
-      {
-          transaction.add(
-              Token.createAssociatedTokenAccountInstruction(
-                  ASSOCIATED_PROGRAM_ID,
-                  TOKEN_PROGRAM_ID,
-                  mint,
-                  payerAta,
-                  provider.wallet.publicKey,
-                  provider.wallet.publicKey
-              )
-          );
-      }
+          )
+      );
   }
 
   const gameTreasuryAta = await Token.getAssociatedTokenAddress(
@@ -284,36 +259,31 @@ export async function playTransaction(program: Program<Slots>, provider: Provide
     })
   );
 
-  // TBD - dodo fix
-  //for (const communityWallet of gameData.communityWallets)
+  for (const communityWallet of gameData.communityWallets)
   {
-        // let communityTreasuryAta = PublicKey.default;
-        // communityTreasuryAta = await Token.getAssociatedTokenAddress(
-        //       ASSOCIATED_PROGRAM_ID,
-        //       TOKEN_PROGRAM_ID,
-        //       mint,
-        //       communityWallet,
-        //       false
-        // );
-        //
-        // transaction.add(
-        //   program.transaction.sendToCommunityWallet({
-        //     accounts: {
-        //       game,
-        //       gameTreasuryAta,
-        //       communityWallet,
-        //       communityTreasuryAta,
-        //       tokenProgram: TOKEN_PROGRAM_ID,
-        //       systemProgram: SystemProgram.programId,
-        //     },
-        //   })
-        // );
+        const communityTreasuryAta = await Token.getAssociatedTokenAddress(
+              ASSOCIATED_PROGRAM_ID,
+              TOKEN_PROGRAM_ID,
+              mint,
+              communityWallet,
+              false
+        );
+
+        transaction.add(
+          program.transaction.sendToCommunityWallet({
+            accounts: {
+              game,
+              gameTreasuryAta,
+              communityWallet,
+              communityTreasuryAta,
+              tokenProgram: TOKEN_PROGRAM_ID,
+              systemProgram: SystemProgram.programId,
+            },
+          })
+        );
   }
 
-  const txSignature = await wallet.sendTransaction(
-    transaction,
-    provider.connection, { signers: [auxAccount]}
-  );
+  const txSignature = await wallet.sendTransaction(transaction, provider.connection);
 
   await provider.connection.confirmTransaction(txSignature, "confirmed");
   console.log(txSignature);
@@ -333,7 +303,7 @@ export async function withdrawTransaction(program: Program<Slots>, provider: Pro
   const claimerAta = await Token.getAssociatedTokenAddress(
     ASSOCIATED_PROGRAM_ID,
     TOKEN_PROGRAM_ID,
-    sktMint,
+    splTokenMint,
     provider.wallet.publicKey
   );
   let account = await provider.connection.getAccountInfo(claimerAta);
@@ -342,7 +312,7 @@ export async function withdrawTransaction(program: Program<Slots>, provider: Pro
       Token.createAssociatedTokenAccountInstruction(
         ASSOCIATED_PROGRAM_ID,
         TOKEN_PROGRAM_ID,
-        sktMint,
+        splTokenMint,
         claimerAta,
         provider.wallet.publicKey,
         provider.wallet.publicKey
@@ -353,7 +323,7 @@ export async function withdrawTransaction(program: Program<Slots>, provider: Pro
   const gameTreasuryAta = await Token.getAssociatedTokenAddress(
     ASSOCIATED_PROGRAM_ID,
     TOKEN_PROGRAM_ID,
-    sktMint,
+    splTokenMint,
     game,
     true
   );

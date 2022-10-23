@@ -22,7 +22,7 @@ const footer = () => {
           target="_blank"
           className={style.twitter_link}
         >
-          <img src={twitterIcon} alt="magic-eden-icon" />
+          <img src={twitterIcon} alt="twitter-icon" />
           Twitter
         </a>
         <a
@@ -31,7 +31,7 @@ const footer = () => {
           rel="noreferrer"
           className={style.discord_link}
         >
-          <img src={discordIcon} alt="magic-eden-icon" />
+          <img src={discordIcon} alt="discord-icon" />
           Discord
         </a>
       </div>
