@@ -86,8 +86,17 @@ const Maintenance = () => {
             rel="noreferrer"
             className={style.staking_link}
         >
-          <img src={kitIcon} alt="magic-eden-icon" />
+          <img src={kitIcon} alt="staking-icon" />
           Staking
+        </a>
+
+        <a
+            href="https://slotz.deezkits.com"
+            rel="noreferrer"
+            className={style.staking_link}
+        >
+          <span>🎰</span>
+          <span>Slotz</span>
         </a>
       </div>
       {/* music toggle button */}

@@ -9,7 +9,7 @@ import { useMemo } from "react";
 
 function App() {
   const network = WalletAdapterNetwork.Mainnet;
-  const endpoint = WalletAdapterNetwork.Devnet ? "https://api.devnet.solana.com" : "https://flashy-quaint-slug.solana-mainnet.quiknode.pro/3bf50fa9dcb8585bc7050818cab9095ba14ad141/";
+  const endpoint = network === WalletAdapterNetwork.Devnet ? "https://api.devnet.solana.com" : "https://flashy-quaint-slug.solana-mainnet.quiknode.pro/3bf50fa9dcb8585bc7050818cab9095ba14ad141/";
   const wallets = useMemo(() => [
     new PhantomWalletAdapter(), 
     new SolflareWalletAdapter({network}), 

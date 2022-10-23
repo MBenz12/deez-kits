@@ -14,9 +14,9 @@ import "./index.css";
 import Slots, { random } from "./Slots";
 import { BetButton, Discord, LoadingIcon, MagicEden, PlayIcon, Twitter} from "./Svgs";
 import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
-import {game_name, game_owner} from "./constants";
+import { game_name, game_owner } from "./constants";
 
-const cluster = WalletAdapterNetwork.Devnet;
+//const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 113;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
@@ -42,7 +42,8 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   const [multiplier, setMultiplier] = useState(0);
   const [tokenType, setTokenType] = useState(false);
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     console.log(connection);
   }, []);
 
@@ -62,9 +63,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       const gameData = await program.account.game.fetchNullable(game);
       if (gameData) {
         setTokenType(gameData.tokenType);
-        setCommunityBalance(
-          gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL
-        );
+        setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
         setRoyalty(gameData.royalties[0] / 100);
       }
     };
@@ -117,6 +116,8 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       }
 
       setSolBalance((await program.provider.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL);
+
+      return gameData;
   }
 
   const finished = async () => {
@@ -162,7 +163,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       setWon(false);
       toast.dismiss();
       toast.error(
-        `You almost won ${price} ${tokenType ? "$SKT" : "SOL"}, better luck next time.`,
+        `You almost won! better luck next time.`,
         { containerId }
       );
       await postWinLoseToDiscordAPI(
@@ -254,32 +255,32 @@ const DeezSlotz = React.forwardRef((props, ref) =>
     }
   };
 
-  const withdrawPlayerMoney = async () => {
-    if (!playerBalance) {
+  const withdrawPlayerMoney = async () =>
+  {
+    if (!playerBalance)
+    {
       toast.dismiss();
       toast.error("No funds available for withdrawal.", { containerId });
       return;
     }
-    if (playerBalance > mainBalance) {
+
+    if (playerBalance > mainBalance)
+    {
       toast.dismiss();
-      toast.error(
-        "Bank is being filled, please try to withdraw again shortly.",
-        { containerId }
-      );
+      toast.error("Bank is being filled, please try to withdraw again shortly.", { containerId });
       return;
     }
-    const { provider, program } = getProviderAndProgram(
-      connection,
-      anchorWallet
-    );
-    await withdrawTransaction(program, provider, wallet, game_name, game_owner);
+
+    const { provider, program } = getProviderAndProgram(connection, anchorWallet);
+    const txSignature = await withdrawTransaction(program, provider, wallet, game_name, game_owner);
 
     toast.dismiss();
-    toast.success("Funds sent to your wallet successfully.", {
-      containerId,
-    });
-    fetchData();
-    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance, connection, mainBalance);
+    toast.success("Funds sent to your wallet successfully.", { containerId });
+
+    const gameData = await fetchData();
+    const bankBalance = gameData!.mainBalance.toNumber() / LAMPORTS_PER_SOL;
+
+    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance, connection, bankBalance, txSignature);
   };
   return (
     <div className="slots flex flex-col items-center bg-black min-h-[100vh] lg:p-6 sm:p-4 p-2 font-['Share Tech Mono'] relative">
