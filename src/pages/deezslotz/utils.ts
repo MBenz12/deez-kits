@@ -93,11 +93,14 @@ export const postWinLoseToDiscordAPI = async (userWallet: PublicKey, balance: nu
     await postToDiscordApi(message, "1033022490202620056", getNetworkFromConnection(connection)); // slots
 }
 
-export const postWithdrawToDiscordAPI = async (userWallet: PublicKey | null, balance: number, connection: Connection, bankBalance: number) =>
+export const postWithdrawToDiscordAPI = async (userWallet: PublicKey | null, balance: number, connection: Connection, bankBalance: number, txSignature: string) =>
 {
     let message = `\`${userWallet!.toString()}\``;
-    message += `\n> Is about to withdraw \`${balance}\` SOL`;
+    message += `\n> Is asking to withdraw \`${balance}\` SOL`;
     message += `\n> Bank Balance \`${bankBalance}\` SOL`;
+
+    const sigLink = `[${txSignature}](https://solscan.io/tx/${txSignature})`;
+    message += `\n> Tx Signature: ${sigLink}`;
 
     await postToDiscordApi(message, `1033411235124883628`, getNetworkFromConnection(connection)); // slots-admin
 }
@@ -315,6 +318,7 @@ export async function withdrawTransaction(program: Program<Slots>, provider: Pro
     game,
     true
   );
+
   // console.log(claimerAta.toString());
   // console.log(game.toString());
   // console.log(gameTreasuryAta.toString());
@@ -332,10 +336,14 @@ export async function withdrawTransaction(program: Program<Slots>, provider: Pro
       },
     })
   );
+
   const txSignature = await wallet.sendTransaction(
     transaction,
     provider.connection
   );
+
   await provider.connection.confirmTransaction(txSignature, "confirmed");
   console.log(txSignature);
+
+  return txSignature;
 }
