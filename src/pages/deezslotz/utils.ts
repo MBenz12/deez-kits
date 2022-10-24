@@ -2,12 +2,12 @@ import * as anchor from "@project-serum/anchor";
 import { Program, Provider } from "@project-serum/anchor";
 import { ASSOCIATED_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/token";
 import { Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import { Connection, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Slots } from "./idl/slots";
-import {WalletAdapterNetwork} from "@solana/wallet-adapter-base";
 
 const idl_slots = require("./idl/slots.json");
 const programId = new PublicKey(idl_slots.metadata.address);
@@ -201,19 +201,19 @@ export async function playTransaction(program: Program<Slots>, provider: Provide
     provider.wallet.publicKey,
     false
   );
-  const ta = await program.provider.connection.getAccountInfo(payerAta);
-  if (!ta) {
-    transaction.add(
-      Token.createAssociatedTokenAccountInstruction(
-        ASSOCIATED_PROGRAM_ID,
-        TOKEN_PROGRAM_ID,
-        sktMint,
-        payerAta,
-        provider.wallet.publicKey,
-        provider.wallet.publicKey
-      )
-    );
-  }
+  // const ta = await program.provider.connection.getAccountInfo(payerAta);
+  // if (!ta) {
+  //   transaction.add(
+  //     Token.createAssociatedTokenAccountInstruction(
+  //       ASSOCIATED_PROGRAM_ID,
+  //       TOKEN_PROGRAM_ID,
+  //       sktMint,
+  //       payerAta,
+  //       provider.wallet.publicKey,
+  //       provider.wallet.publicKey
+  //     )
+  //   );
+  // }
   const gameTreasuryAta = await Token.getAssociatedTokenAddress(
     ASSOCIATED_PROGRAM_ID,
     TOKEN_PROGRAM_ID,
@@ -288,19 +288,19 @@ export async function withdrawTransaction(program: Program<Slots>, provider: Pro
     sktMint,
     provider.wallet.publicKey
   );
-  let account = await provider.connection.getAccountInfo(claimerAta);
-  if (!account) {
-    transaction.add(
-      Token.createAssociatedTokenAccountInstruction(
-        ASSOCIATED_PROGRAM_ID,
-        TOKEN_PROGRAM_ID,
-        sktMint,
-        claimerAta,
-        provider.wallet.publicKey,
-        provider.wallet.publicKey
-      )
-    );
-  }
+  // let account = await provider.connection.getAccountInfo(claimerAta);
+  // if (!account) {
+  //   transaction.add(
+  //     Token.createAssociatedTokenAccountInstruction(
+  //       ASSOCIATED_PROGRAM_ID,
+  //       TOKEN_PROGRAM_ID,
+  //       sktMint,
+  //       claimerAta,
+  //       provider.wallet.publicKey,
+  //       provider.wallet.publicKey
+  //     )
+  //   );
+  // }
 
   const gameTreasuryAta = await Token.getAssociatedTokenAddress(
     ASSOCIATED_PROGRAM_ID,
