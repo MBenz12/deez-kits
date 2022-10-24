@@ -23,8 +23,11 @@ export const CommunityFunds = ({
   const [tooltip1, setTooltip1] = useState(false);
   const [tooltip2, setTooltip2] = useState(false);
 
-  const timeout = () => {
-    const now = new Date();
+  const timeout = () =>
+  {
+    const targetDate = new Date('November 01, 2022 00:00:00').getTime();
+    const now2 = new Date().getTime();
+    const now = new Date(targetDate - now2);
     setDay(now.getDate());
     setHour(now.getHours());
     setMins(now.getMinutes() + 1);
@@ -96,7 +99,7 @@ export const CommunityFunds = ({
           }`}
         >
           <div className="relative p-2">
-            Time left before funds distribution to community
+            Time left before funds distribution to the community
             <div className="absolute w-[10px] h-[10px] rotate-45 left-[50%] translate-x-[-50%] translate-y-[-50%] top-0 bg-[#492D5E] border-[1px] border-[#C974F4] border-r-0 border-b-0"></div>
           </div>
         </div>

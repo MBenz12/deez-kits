@@ -54,8 +54,7 @@ export type Slots = {
           "name": "commissionFee",
           "type": "u16"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "setCommunityWallet",
@@ -80,8 +79,7 @@ export type Slots = {
           "name": "royalty",
           "type": "u16"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "setCommission",
@@ -106,8 +104,7 @@ export type Slots = {
           "name": "commissionFee",
           "type": "u16"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "setWinning",
@@ -146,8 +143,7 @@ export type Slots = {
           "name": "minRoundsBeforeWin",
           "type": "u8"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "addPlayer",
@@ -178,8 +174,7 @@ export type Slots = {
           "name": "bump",
           "type": "u8"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "play",
@@ -235,8 +230,7 @@ export type Slots = {
           "name": "betNo",
           "type": "u8"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "sendToCommunityWallet",
@@ -272,8 +266,7 @@ export type Slots = {
           "isSigner": false
         }
       ],
-      "args": [],
-      "returns": null
+      "args": []
     },
     {
       "name": "claim",
@@ -314,8 +307,7 @@ export type Slots = {
           "isSigner": false
         }
       ],
-      "args": [],
-      "returns": null
+      "args": []
     },
     {
       "name": "withdraw",
@@ -356,8 +348,7 @@ export type Slots = {
           "name": "amount",
           "type": "u64"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "fund",
@@ -398,8 +389,7 @@ export type Slots = {
           "name": "amount",
           "type": "u64"
         }
-      ],
-      "returns": null
+      ]
     }
   ],
   "accounts": [
@@ -588,8 +578,7 @@ export const IDL: Slots = {
           "name": "commissionFee",
           "type": "u16"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "setCommunityWallet",
@@ -614,8 +603,7 @@ export const IDL: Slots = {
           "name": "royalty",
           "type": "u16"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "setCommission",
@@ -640,8 +628,7 @@ export const IDL: Slots = {
           "name": "commissionFee",
           "type": "u16"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "setWinning",
@@ -680,8 +667,7 @@ export const IDL: Slots = {
           "name": "minRoundsBeforeWin",
           "type": "u8"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "addPlayer",
@@ -712,8 +698,7 @@ export const IDL: Slots = {
           "name": "bump",
           "type": "u8"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "play",
@@ -769,8 +754,7 @@ export const IDL: Slots = {
           "name": "betNo",
           "type": "u8"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "sendToCommunityWallet",
@@ -806,8 +790,7 @@ export const IDL: Slots = {
           "isSigner": false
         }
       ],
-      "args": [],
-      "returns": null
+      "args": []
     },
     {
       "name": "claim",
@@ -848,8 +831,7 @@ export const IDL: Slots = {
           "isSigner": false
         }
       ],
-      "args": [],
-      "returns": null
+      "args": []
     },
     {
       "name": "withdraw",
@@ -890,8 +872,7 @@ export const IDL: Slots = {
           "name": "amount",
           "type": "u64"
         }
-      ],
-      "returns": null
+      ]
     },
     {
       "name": "fund",
@@ -932,8 +913,7 @@ export const IDL: Slots = {
           "name": "amount",
           "type": "u64"
         }
-      ],
-      "returns": null
+      ]
     }
   ],
   "accounts": [

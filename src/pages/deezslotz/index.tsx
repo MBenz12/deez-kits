@@ -2,13 +2,8 @@
 import * as anchor from "@project-serum/anchor";
 import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
-import {
-  clusterApiUrl,
-  Connection,
-  LAMPORTS_PER_SOL,
-  PublicKey
-} from "@solana/web3.js";
+import {useAnchorWallet, useConnection, useWallet} from "@solana/wallet-adapter-react";
+import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey} from "@solana/web3.js";
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
@@ -17,35 +12,17 @@ import Header from "./Header";
 import { Information } from "./HeaderItems";
 import "./index.css";
 import Slots, { random } from "./Slots";
-import {
-  BetButton,
-  Discord,
-  LoadingIcon,
-  MagicEden,
-  PlayIcon,
-  Twitter
-} from "./Svgs";
-import {
-  convertLog,
-  getGameAddress,
-  getPlayerAddress,
-  getProviderAndProgram,
-  isAdmin,
-  playTransaction,
-  postWinLoseToDiscordAPI,
-  postWithdrawToDiscordAPI,
-  useWindowDimensions,
-  withdrawTransaction
-} from "./utils";
+import { BetButton, Discord, LoadingIcon, MagicEden, PlayIcon, Twitter} from "./Svgs";
+import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
+import { game_name, game_owner } from "./constants";
 
-const game_name = "game31";
-const game_owner = new PublicKey("EF5qxGB1AirUH4ENw1niV1ewiNHzH2fWs7naQQYF2dc");
-const cluster = WalletAdapterNetwork.Devnet;
+//const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 113;
 
-const DeezSlotz = React.forwardRef((props, ref) => {
-  // const { connection } = useConnection();
-  const connection = new Connection(clusterApiUrl(cluster), "confirmed");
+const DeezSlotz = React.forwardRef((props, ref) =>
+{
+  const { connection } = useConnection();
+  // const connection = new Connection(clusterApiUrl(cluster), "confirmed");
   const wallet = useWallet();
   const anchorWallet = useAnchorWallet() as anchor.Wallet;
 
@@ -65,7 +42,8 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   const [multiplier, setMultiplier] = useState(0);
   const [tokenType, setTokenType] = useState(false);
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     console.log(connection);
   }, []);
 
@@ -85,9 +63,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       const gameData = await program.account.game.fetchNullable(game);
       if (gameData) {
         setTokenType(gameData.tokenType);
-        setCommunityBalance(
-          gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL
-        );
+        setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
         setRoyalty(gameData.royalties[0] / 100);
       }
     };
@@ -95,67 +71,53 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  async function fetchData() {
-    if (!wallet.publicKey) {
-      setCommunityBalance(0);
-      setRoyalty(0);
-      setSolBalance(0);
-      setPlayerBalance(0);
-      setTokenType(false);
-      setMainBalance(0);
-      return;
-    }
+  async function fetchData()
+  {
+      if (!wallet.publicKey)
+      {
+          setCommunityBalance(0);
+          setRoyalty(0);
+          setSolBalance(0);
+          setPlayerBalance(0);
+          setTokenType(false);
+          setMainBalance(0);
+          return;
+      }
 
-    const { provider, program } = getProviderAndProgram(connection, anchorWallet);
-    const [game] = await getGameAddress(game_name, game_owner);
-    const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
-    const playerData = await program.account.player.fetchNullable(player);
-    const gameData = await program.account.game.fetchNullable(game);
+      const { provider, program } = getProviderAndProgram(connection, anchorWallet);
+      const [game] = await getGameAddress(game_name, game_owner);
+      const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
+      const playerData = await program.account.player.fetchNullable(player);
+      const gameData = await program.account.game.fetchNullable(game);
 
-    if (gameData) {
-      console.log(
-        "Game Data:", // @ts-ignore
-        convertLog(gameData, isAdmin(provider.wallet.publicKey))
-      );
-    }
-    if (playerData) {
-      console.log(
-        "Player Data:", // @ts-ignore
-        convertLog(playerData, isAdmin(provider.wallet.publicKey))
-      );
-    }
+      if (gameData)
+      {
+          console.log("Game Data:", convertLog(gameData, isAdmin(provider.wallet.publicKey)));
+      }
 
-    // console.log("Community Wallet: ", gameData?.communityWallet.toString());
-    // console.log("Community Balance: ", gameData?.communityBalance.toString());
-    if (playerData?.earnedMoney) {
-      setPlayerBalance(playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL);
-      console.log(
-        "Player Balance: ",
-        playerData?.earnedMoney.toString(),
-        "|",
-        playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL
-      );
-    }
+      if (playerData)
+      {
+          console.log("Player Data:", convertLog(playerData, isAdmin(provider.wallet.publicKey)));
+      }
 
-    if (gameData) {
-      console.log(
-        "Main Balance: ",
-        gameData?.mainBalance.toString(),
-        "|",
-        gameData?.mainBalance.toNumber() / LAMPORTS_PER_SOL
-      );
-      setMainBalance(gameData.mainBalance.toNumber() / LAMPORTS_PER_SOL);
-      setTokenType(gameData.tokenType);
-      setCommunityBalance(
-        gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL
-      );
-      setRoyalty(gameData.royalties[0] / 100);
-    }
+      if (playerData?.earnedMoney)
+      {
+          setPlayerBalance(playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL);
+          console.log("Player Balance:", playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL);
+      }
 
-    setSolBalance(
-      (await program.provider.connection.getBalance(wallet.publicKey)) /
-        LAMPORTS_PER_SOL
-    );
+      if (gameData)
+      {
+          console.log("Bank Balance:", gameData?.mainBalance.toNumber() / LAMPORTS_PER_SOL);
+          setMainBalance(gameData.mainBalance.toNumber() / LAMPORTS_PER_SOL);
+          setTokenType(gameData.tokenType);
+          setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
+          setRoyalty(gameData.royalties[0] / 100);
+      }
+
+      setSolBalance((await program.provider.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL);
+
+      return gameData;
   }
 
   const finished = async () => {
@@ -201,9 +163,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       setWon(false);
       toast.dismiss();
       toast.error(
-        `You lost ${price} ${
-          tokenType ? "$SKT" : "SOL"
-        }, better luck next time.`,
+        `You almost won! better luck next time.`,
         { containerId }
       );
       await postWinLoseToDiscordAPI(
@@ -221,21 +181,26 @@ const DeezSlotz = React.forwardRef((props, ref) => {
     fetchData();
   };
 
-  const play = async () => {
+  const play = async () =>
+  {
     if (loading) return;
     if (!wallet.connected) {
       toast.dismiss();
       toast.error("Please connect wallet to play.", { containerId });
       return;
     }
+
     if (solBalance < price) {
       toast.dismiss();
       toast.error(`Not enough funds to bet.`, { containerId });
       return;
     }
+
     setLoading(true);
     setWon(false);
-    try {
+
+    try
+    {
       const { provider, program } = getProviderAndProgram(
         connection,
         anchorWallet
@@ -247,7 +212,8 @@ const DeezSlotz = React.forwardRef((props, ref) => {
         wallet,
         game_name,
         game_owner,
-        betNo
+        betNo,
+        connection
       );
 
       let status = playerData?.status;
@@ -295,32 +261,32 @@ const DeezSlotz = React.forwardRef((props, ref) => {
     }
   };
 
-  const withdrawPlayerMoney = async () => {
-    if (!playerBalance) {
+  const withdrawPlayerMoney = async () =>
+  {
+    if (!playerBalance)
+    {
       toast.dismiss();
       toast.error("No funds available for withdrawal.", { containerId });
       return;
     }
-    if (playerBalance > mainBalance) {
+
+    if (playerBalance > mainBalance)
+    {
       toast.dismiss();
-      toast.error(
-        "Bank is being filled, please try to withdraw again shortly.",
-        { containerId }
-      );
+      toast.error("Bank is being filled, please try to withdraw again shortly.", { containerId });
       return;
     }
-    const { provider, program } = getProviderAndProgram(
-      connection,
-      anchorWallet
-    );
-    await withdrawTransaction(program, provider, wallet, game_name, game_owner);
+
+    const { provider, program } = getProviderAndProgram(connection, anchorWallet);
+    const txSignature = await withdrawTransaction(program, provider, wallet, game_name, game_owner);
 
     toast.dismiss();
-    toast.success("Funds sent to your wallet successfully.", {
-      containerId,
-    });
-    fetchData();
-    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance, connection, mainBalance);
+    toast.success("Funds sent to your wallet successfully.", { containerId });
+
+    const gameData = await fetchData();
+    const bankBalance = gameData!.mainBalance.toNumber() / LAMPORTS_PER_SOL;
+
+    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance, connection, bankBalance, txSignature);
   };
   return (
     <div className="slots flex flex-col items-center bg-black min-h-[100vh] lg:p-6 sm:p-4 p-2 font-['Share Tech Mono'] relative">

@@ -16,7 +16,7 @@ const Router = () => {
     const host = window.location.host;
     const arr = host.split(".");
 
-    console.log("SubDomain:" , arr);
+    //console.log("SubDomain:" , arr);
 
     if (arr.length > 0) {
         setSubDomain(arr[0]);
