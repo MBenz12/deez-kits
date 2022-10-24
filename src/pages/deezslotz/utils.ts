@@ -167,13 +167,16 @@ export function getProviderAndProgram(connection: Connection, anchorWallet: anch
 }
 
 export async function getAta(mint: PublicKey, owner: PublicKey, allowOffCurve: boolean = false) {
-  return await Token.getAssociatedTokenAddress(
-    ASSOCIATED_PROGRAM_ID,
-    TOKEN_PROGRAM_ID,
-    mint,
-    owner,
-    allowOffCurve
-  );
+  if (mint !== SystemProgram.programId) {
+    return await Token.getAssociatedTokenAddress(
+      ASSOCIATED_PROGRAM_ID,
+      TOKEN_PROGRAM_ID,
+      mint,
+      owner,
+      allowOffCurve
+    );
+  }
+  return mint;
 }
 
 export async function getCreateAtaInstruction(provider: Provider, ata: PublicKey, mint: PublicKey, owner: PublicKey) {
@@ -222,9 +225,9 @@ export async function playTransaction(program: Program<Slots>, provider: Provide
 
   console.log("tokenType", gameData.tokenType);
 
-  const mint = splTokenMint;
+  const mint = gameData.tokenType ? splTokenMint : SystemProgram.programId;
   const payerAta = await getAta(mint, provider.wallet.publicKey);
-  const gameTreasuryAta = await getAta(mint, game);
+  const gameTreasuryAta = await getAta(mint, game, true);
 
   const commissionTreasury = gameData.commissionWallet;
   const commissionTreasuryAta = await getAta(mint, commissionTreasury);
@@ -276,14 +279,16 @@ export async function playTransaction(program: Program<Slots>, provider: Provide
 export async function withdrawTransaction(program: Program<Slots>, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey) {
   const [game] = await getGameAddress(game_name, game_owner);
   const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
-
+  const gameData = await program.account.game.fetchNullable(game);
+  const mint = gameData?.tokenType ? splTokenMint : SystemProgram.programId;
+  
   const transaction = new Transaction();
 
-  const claimerAta = await getAta(splTokenMint, provider.wallet.publicKey);
-  const instruction = await getCreateAtaInstruction(provider, claimerAta, splTokenMint, provider.wallet.publicKey);
+  const claimerAta = await getAta(mint, provider.wallet.publicKey);
+  const instruction = await getCreateAtaInstruction(provider, claimerAta, mint, provider.wallet.publicKey);
   if (instruction) transaction.add(instruction);
 
-  const gameTreasuryAta = await getAta(splTokenMint, game);
+  const gameTreasuryAta = await getAta(mint, game, true);
 
   transaction.add(
     program.transaction.claim({
