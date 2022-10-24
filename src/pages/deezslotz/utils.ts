@@ -7,7 +7,7 @@ import { WalletContextState } from "@solana/wallet-adapter-react";
 import { Connection, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { adminWallets, splTokenMint } from "./constants";
+import { adminWallets, deezMint, splTokenMint } from "./constants";
 import { Slots } from "./idl/slots";
 
 const idl_slots = require("./idl/slots.json");
@@ -210,83 +210,121 @@ export async function playTransaction(program: Program<Slots>, provider: Provide
 
   console.log("tokenType", gameData.tokenType);
 
-  const mint = splTokenMint;
-  const payerAta = await Token.getAssociatedTokenAddress(
-      ASSOCIATED_PROGRAM_ID,
-      TOKEN_PROGRAM_ID,
-      mint,
-      provider.wallet.publicKey,
-      false
-  );
-  // const ta = await program.provider.connection.getAccountInfo(payerAta);
-  // if (!ta) {
-  //   transaction.add(
-  //     Token.createAssociatedTokenAccountInstruction(
-  //       ASSOCIATED_PROGRAM_ID,
-  //       TOKEN_PROGRAM_ID,
-  //       sktMint,
-  //       payerAta,
-  //       provider.wallet.publicKey,
-  //       provider.wallet.publicKey
-  //     )
-  //   );
-  // }
-  const gameTreasuryAta = await Token.getAssociatedTokenAddress(
-      ASSOCIATED_PROGRAM_ID,
-      TOKEN_PROGRAM_ID,
-      mint,
-      game,
-      true
-  );
-
-  const commissionTreasury = gameData.commissionWallet;
-  const commissionTreasuryAta = await Token.getAssociatedTokenAddress(
-    ASSOCIATED_PROGRAM_ID,
-    TOKEN_PROGRAM_ID,
-    mint,
-    commissionTreasury,
-    false
-  );
-
-  transaction.add(
-    program.transaction.play(betNo, {
-      accounts: {
-        payer: provider.wallet.publicKey,
-        payerAta,
-        player,
+  if (gameData.tokenType) {
+    const mint = splTokenMint;
+    const payerAta = await Token.getAssociatedTokenAddress(
+        ASSOCIATED_PROGRAM_ID,
+        TOKEN_PROGRAM_ID,
+        mint,
+        provider.wallet.publicKey,
+        false
+    );
+    const ta = await program.provider.connection.getAccountInfo(payerAta);
+    if (!ta) {
+      transaction.add(
+        Token.createAssociatedTokenAccountInstruction(
+          ASSOCIATED_PROGRAM_ID,
+          TOKEN_PROGRAM_ID,
+          deezMint,
+          payerAta,
+          provider.wallet.publicKey,
+          provider.wallet.publicKey
+        )
+      );
+    }
+    const gameTreasuryAta = await Token.getAssociatedTokenAddress(
+        ASSOCIATED_PROGRAM_ID,
+        TOKEN_PROGRAM_ID,
+        mint,
         game,
-        gameTreasuryAta,
-        commissionTreasury,
-        commissionTreasuryAta,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        systemProgram: SystemProgram.programId,
-      },
-    })
-  );
-
-  for (const communityWallet of gameData.communityWallets)
-  {
-        const communityTreasuryAta = await Token.getAssociatedTokenAddress(
-              ASSOCIATED_PROGRAM_ID,
-              TOKEN_PROGRAM_ID,
-              mint,
-              communityWallet,
-              false
-        );
-
-        transaction.add(
-          program.transaction.sendToCommunityWallet({
-            accounts: {
-              game,
-              gameTreasuryAta,
-              communityWallet,
-              communityTreasuryAta,
-              tokenProgram: TOKEN_PROGRAM_ID,
-              systemProgram: SystemProgram.programId,
-            },
-          })
-        );
+        true
+    );
+  
+    const commissionTreasury = gameData.commissionWallet;
+    const commissionTreasuryAta = await Token.getAssociatedTokenAddress(
+      ASSOCIATED_PROGRAM_ID,
+      TOKEN_PROGRAM_ID,
+      mint,
+      commissionTreasury,
+      false
+    );
+  
+    transaction.add(
+      program.transaction.play(betNo, {
+        accounts: {
+          payer: provider.wallet.publicKey,
+          payerAta,
+          player,
+          game,
+          gameTreasuryAta,
+          commissionTreasury,
+          commissionTreasuryAta,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        },
+      })
+    );
+  
+    for (const communityWallet of gameData.communityWallets)
+    {
+          const communityTreasuryAta = await Token.getAssociatedTokenAddress(
+                ASSOCIATED_PROGRAM_ID,
+                TOKEN_PROGRAM_ID,
+                mint,
+                communityWallet,
+                false
+          );
+  
+          transaction.add(
+            program.transaction.sendToCommunityWallet({
+              accounts: {
+                game,
+                gameTreasuryAta,
+                communityWallet,
+                communityTreasuryAta,
+                tokenProgram: TOKEN_PROGRAM_ID,
+                systemProgram: SystemProgram.programId,
+              },
+            })
+          );
+    }
+  } else {
+    const commissionTreasury = gameData.commissionWallet;
+    const emptyAddress = SystemProgram.programId
+    transaction.add(
+      program.transaction.play(betNo, {
+        accounts: {
+          payer: provider.wallet.publicKey,
+          payerAta: emptyAddress,
+          player,
+          game,
+          gameTreasuryAta: emptyAddress,
+          commissionTreasury,
+          commissionTreasuryAta: emptyAddress,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        },
+      })
+    );
+  
+    for (const communityWallet of gameData.communityWallets)
+    {
+          transaction.add(
+            program.transaction.sendToCommunityWallet({
+              accounts: {
+                game,
+                gameTreasuryAta: emptyAddress,
+                communityWallet,
+                communityTreasuryAta: emptyAddress,
+                tokenProgram: TOKEN_PROGRAM_ID,
+                systemProgram: SystemProgram.programId,
+              },
+            })
+          );
+    }
   }
+
+  
 
   const txSignature = await wallet.sendTransaction(transaction, provider.connection);
 
@@ -303,53 +341,68 @@ export async function withdrawTransaction(program: Program<Slots>, provider: Pro
   const [game] = await getGameAddress(game_name, game_owner);
   const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
 
+  const gameData = await program.account.game.fetchNullable(game);
   const transaction = new Transaction();
 
-  const claimerAta = await Token.getAssociatedTokenAddress(
-    ASSOCIATED_PROGRAM_ID,
-    TOKEN_PROGRAM_ID,
-    splTokenMint,
-    provider.wallet.publicKey
-  );
-  // let account = await provider.connection.getAccountInfo(claimerAta);
-  // if (!account) {
-  //   transaction.add(
-  //     Token.createAssociatedTokenAccountInstruction(
-  //       ASSOCIATED_PROGRAM_ID,
-  //       TOKEN_PROGRAM_ID,
-  //       sktMint,
-  //       claimerAta,
-  //       provider.wallet.publicKey,
-  //       provider.wallet.publicKey
-  //     )
-  //   );
-  // }
-
-  const gameTreasuryAta = await Token.getAssociatedTokenAddress(
-    ASSOCIATED_PROGRAM_ID,
-    TOKEN_PROGRAM_ID,
-    splTokenMint,
-    game,
-    true
-  );
-
-  // console.log(claimerAta.toString());
-  // console.log(game.toString());
-  // console.log(gameTreasuryAta.toString());
-  // console.log(player.toString());
-  transaction.add(
-    program.transaction.claim({
-      accounts: {
-        claimer: provider.wallet.publicKey,
-        claimerAta,
-        game,
-        gameTreasuryAta,
-        player,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        systemProgram: SystemProgram.programId,
-      },
-    })
-  );
+  if (gameData?.tokenType) {
+    const claimerAta = await Token.getAssociatedTokenAddress(
+      ASSOCIATED_PROGRAM_ID,
+      TOKEN_PROGRAM_ID,
+      splTokenMint,
+      provider.wallet.publicKey
+    );
+    let account = await provider.connection.getAccountInfo(claimerAta);
+    if (!account) {
+      transaction.add(
+        Token.createAssociatedTokenAccountInstruction(
+          ASSOCIATED_PROGRAM_ID,
+          TOKEN_PROGRAM_ID,
+          splTokenMint,
+          claimerAta,
+          provider.wallet.publicKey,
+          provider.wallet.publicKey
+        )
+      );
+    }
+  
+    const gameTreasuryAta = await Token.getAssociatedTokenAddress(
+      ASSOCIATED_PROGRAM_ID,
+      TOKEN_PROGRAM_ID,
+      splTokenMint,
+      game,
+      true
+    );
+  
+    transaction.add(
+      program.transaction.claim({
+        accounts: {
+          claimer: provider.wallet.publicKey,
+          claimerAta,
+          game,
+          gameTreasuryAta,
+          player,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        },
+      })
+    );
+  } else {
+    const emptyAddress = SystemProgram.programId;
+    transaction.add(
+      program.transaction.claim({
+        accounts: {
+          claimer: provider.wallet.publicKey,
+          claimerAta: emptyAddress,
+          game,
+          gameTreasuryAta: emptyAddress,
+          player,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        },
+      })
+    );
+  }
+  
 
   const txSignature = await wallet.sendTransaction(
     transaction,
