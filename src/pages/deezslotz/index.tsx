@@ -1,20 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as anchor from "@project-serum/anchor";
 import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import {useAnchorWallet, useConnection, useWallet} from "@solana/wallet-adapter-react";
-import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey} from "@solana/web3.js";
+import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { game_name, game_owner } from "./constants";
 import Header from "./Header";
 import { Information } from "./HeaderItems";
 import "./index.css";
 import Slots, { random } from "./Slots";
-import { BetButton, Discord, LoadingIcon, MagicEden, PlayIcon, Twitter} from "./Svgs";
+import { BetButton, Discord, LoadingIcon, MagicEden, PlayIcon, Twitter } from "./Svgs";
 import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
-import { game_name, game_owner } from "./constants";
 
 //const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 113;
