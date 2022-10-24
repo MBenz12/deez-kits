@@ -167,16 +167,13 @@ export function getProviderAndProgram(connection: Connection, anchorWallet: anch
 }
 
 export async function getAta(mint: PublicKey, owner: PublicKey, allowOffCurve: boolean = false) {
-  if (mint !== SystemProgram.programId) {
-    return await Token.getAssociatedTokenAddress(
-      ASSOCIATED_PROGRAM_ID,
-      TOKEN_PROGRAM_ID,
-      mint,
-      owner,
-      allowOffCurve
-    );
-  }
-  return mint;
+  return await Token.getAssociatedTokenAddress(
+    ASSOCIATED_PROGRAM_ID,
+    TOKEN_PROGRAM_ID,
+    mint,
+    owner,
+    allowOffCurve
+  );
 }
 
 export async function getCreateAtaInstruction(provider: Provider, ata: PublicKey, mint: PublicKey, owner: PublicKey) {
@@ -281,7 +278,7 @@ export async function withdrawTransaction(program: Program<Slots>, provider: Pro
   const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
   const gameData = await program.account.game.fetchNullable(game);
   const mint = gameData?.tokenType ? splTokenMint : SystemProgram.programId;
-  
+
   const transaction = new Transaction();
 
   const claimerAta = await getAta(mint, provider.wallet.publicKey);
