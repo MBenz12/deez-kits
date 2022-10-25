@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import HighlightedText from "../../sharedComponent/HighlightedText";
 import { Images } from "../../static/images";
@@ -8,11 +8,13 @@ import CountdownTimer from "../../components/deezkits/countdown/CountDownTImer";
 import Footer from "../../sharedComponent/footer/footer";
 import CommonTitle from "../../sharedComponent/FancyTitle";
 import Music from "../../sharedComponent/musicPlayer";
-
+import audioUrl1 from "../../assets/audio/counting.mp3";
 const DeezKits = React.forwardRef((props, ref) => {
   const [isMintState, setMintState] = useState(props?.isMint);
   const totalTicket = 4343;
   const [ticket, setTicket] = useState(0);
+  const audioCountRef= useRef(null)
+  // const audio = new Audio(audioUrl1);
   const MintDate = new Date("10/25/2022 12:00:00");
   const mintHandler = () => {
     console.log("mint");
@@ -20,9 +22,13 @@ const DeezKits = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     const increaseTicket = () => {
-      if (ticket < 1000) {
+      if (ticket < 323) {
         setTicket(ticket + 1);
+        if (ticket === 1) {
+          audioCountRef.current.play();
+        }
       } else {
+        audioCountRef.current.pause();
         return true;
       }
     };
@@ -137,6 +143,10 @@ const DeezKits = React.forwardRef((props, ref) => {
         </Button>
       </Box>
       <Music props={props} ref={ref} />
+      {/* couting audio */}
+      <audio loop ref={audioCountRef} controls className="d-none">
+        <source loop src={audioUrl1}></source>
+      </audio>
     </Box>
   );
 });
