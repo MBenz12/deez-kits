@@ -163,6 +163,9 @@
       }
       .wallet{
         max-width: 8%;
+        @media only screen and (max-width:999px){
+          max-width: 12%;
+        }
         @media only screen and (max-width:767px){
           max-width: 14%;
         }
