@@ -11,6 +11,7 @@ const Header = ({
   solBalance,
   playerBalance,
   prize,
+  jackpot,
   won,
   lost,
   bet,
@@ -21,6 +22,7 @@ const Header = ({
   solBalance: number;
   playerBalance: number;
   prize: number;
+  jackpot:number;
   won: boolean;
   lost: boolean;
   bet: number;
