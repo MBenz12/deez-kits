@@ -50,7 +50,10 @@ const DeezKits = React.forwardRef((props, ref) => {
                 <span className={style.kits}>KITS</span>{" "}
                 <span className={style.fit}>FIT</span>{" "}
                 <span className={style.yr}>YR</span>{" "}
-                <span className={style.wallet}>WALLET</span>&gt; &#63;
+                <span className={style.wallet}>
+                  <img src={Images?.walletGlitch} alt="wallet-glitch" />
+                </span>
+                <span className={style.gt_entity}>&gt; &#63;</span>
               </Box>
             ) : (
               <CommonTitle MintDate={MintDate} />

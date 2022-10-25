@@ -148,11 +148,33 @@
     @media only screen and (min-width: 768px) and (max-width: 991px) and (min-height: 320px) and (max-height: 1000px) {
       margin-top: 80px;
     }
-
+  
     .deezkits_mint_title {
       color: #7a58ff;
       font-size: 25px;
       max-width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      @media only screen and (max-width:767px){
+        font-size: 20px;
+        gap: 12px;
+      }
+      .wallet{
+        max-width: 8%;
+        @media only screen and (max-width:767px){
+          max-width: 14%;
+        }
+        img{
+          width: 100%;
+          margin-top: -5px;
+          margin-left: -11px;
+        }
+      }
+      .gt_entity{
+        margin-left: -20px;
+      }
       .can:hover,
       .deez:hover,
       .kits:hover,
@@ -230,7 +252,7 @@
     }
     .progress_bar {
       background-color: #19103d;
-      max-width: 50%;
+      max-width: 15%;
       width: 100%;
       margin: 0 auto;
       height: 13px;
