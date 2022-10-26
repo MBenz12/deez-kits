@@ -10,7 +10,12 @@ import MobileMenuLogo from "../assets/images/site-icon.png";
 import DeezKitsKitty from '../assets/images/deezKits/deezkits_kitty.png'
 import slotzLogo from "../assets/images/deezKits/deez_slotz_logo.png";
 import BetBtn from "../assets/images/deezKits/bet_btn.png";
-
+import canGlitch from '../assets/images/deezKits/title/can_glitch.png'
+import walletGlitch from '../assets/images/deezKits/title/wallet_glitch.png'
+import kitGlitch from '../assets/images/deezKits/title/kits_glitch.png'
+import fitGlitch from '../assets/images/deezKits/title/fit_glitch.png'
+import yrGlitch from '../assets/images/deezKits/title/yr_glitch.png'
+import deezGlitch from '../assets/images/deezKits/title/deez_glitch.png'
 export const Images = {
   MintBtn,
   logoTrasnsparent,
@@ -21,7 +26,12 @@ export const Images = {
   discordIcon,
   slotzLogo,
   BetBtn,
-
   MobileMenuLogo,
-  DeezKitsKitty
+  DeezKitsKitty,
+  walletGlitch,
+  canGlitch,
+  deezGlitch,
+  kitGlitch,
+  fitGlitch,
+  yrGlitch
 };

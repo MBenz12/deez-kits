@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import HighlightedText from "../../sharedComponent/HighlightedText";
 import { Images } from "../../static/images";
@@ -8,11 +8,14 @@ import CountdownTimer from "../../components/deezkits/countdown/CountDownTImer";
 import Footer from "../../sharedComponent/footer/footer";
 import CommonTitle from "../../sharedComponent/FancyTitle";
 import Music from "../../sharedComponent/musicPlayer";
-
+import audioUrl1 from "../../assets/audio/counting.mp3";
+import mintBtnaudio from "../../assets/audio/menu.mp3";
 const DeezKits = React.forwardRef((props, ref) => {
   const [isMintState, setMintState] = useState(props?.isMint);
   const totalTicket = 4343;
   const [ticket, setTicket] = useState(0);
+  const audioCountRef = useRef(null);
+  const audioMintRef = useRef(null);
   const MintDate = new Date("10/25/2022 12:00:00");
   const mintHandler = () => {
     console.log("mint");
@@ -20,9 +23,13 @@ const DeezKits = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     const increaseTicket = () => {
-      if (ticket < 1000) {
+      if (ticket < 323) {
         setTicket(ticket + 1);
+        if (ticket === 1) {
+          audioCountRef.current.play();
+        }
       } else {
+        audioCountRef.current.pause();
         return true;
       }
     };
@@ -43,15 +50,52 @@ const DeezKits = React.forwardRef((props, ref) => {
         <Box className={style.deez_inner_content}>
           <Box className={style.deezkits_content_wrapper}>
             {isMintState ? (
+            <>
               <Box className={style.deezkits_mint_title}>
-                {/* <img src={Images?.MintTitle} alt="deezkits-mint-title" /> */}
-                &lt; <span className={style.can}>CAN</span>{" "}
+                <span> &lt; </span>
+                <span className={style.can}>CAN</span>{" "}
                 <span className={style.deez}>DEEZ</span>{" "}
                 <span className={style.kits}>KITS</span>{" "}
                 <span className={style.fit}>FIT</span>{" "}
                 <span className={style.yr}>YR</span>{" "}
-                <span className={style.wallet}>WALLET</span>&gt; &#63;
+                <span className={style.wallet}>
+                  <img src={Images?.walletGlitch} alt="wallet-glitch" />
+                </span>
+                <span className={style.gt_entity}>&gt; &#63;</span>
               </Box>
+                {/* <Box className={style.deezkits_mint_title}>
+                <span> &lt; </span>
+                <span className={style.can}>
+                  <span aria-hidden="true">CAN</span>
+                  CAN
+                  <span aria-hidden="true">CAN</span>
+                </span>{" "}
+
+                <span className={style.can}>
+                  <span aria-hidden="true">DEEZ</span>
+                  DEEZ
+                  <span aria-hidden="true">DEEZ</span>
+                </span>{" "}
+
+                <span className={style.can}>
+                  <span aria-hidden="true">FIT</span>
+                  FIT
+                  <span aria-hidden="true">FIT</span>
+                </span>{" "}
+
+                <span className={style.can}>
+                  <span aria-hidden="true">YR</span>
+                  YR
+                  <span aria-hidden="true">YR</span>
+                </span>{" "}
+                <span className={style.can}>
+                  <span aria-hidden="true">WALLET</span>
+                  WALLET
+                  <span aria-hidden="true">WALLET</span>
+                </span>{" "}
+                <span className={style.gt_entity}>&gt; &#63;</span>
+              </Box> */}
+              </>
             ) : (
               <CommonTitle MintDate={MintDate} />
             )}
@@ -134,6 +178,14 @@ const DeezKits = React.forwardRef((props, ref) => {
         </Button>
       </Box>
       <Music props={props} ref={ref} />
+      {/* couting audio */}
+      <audio loop ref={audioCountRef} controls className="d-none">
+        <source loop src={audioUrl1}></source>
+      </audio>
+      {/* mint audio */}
+      <audio loop ref={audioMintRef} controls className="d-none">
+        <source loop src={mintBtnaudio}></source>
+      </audio>
     </Box>
   );
 });
