@@ -8,7 +8,7 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { useMemo } from "react";
 
 function App() {
-  const network = WalletAdapterNetwork.Devnet;
+  const network = WalletAdapterNetwork.Mainnet;
   const endpoint = network === WalletAdapterNetwork.Devnet ? "https://api.devnet.solana.com" : "https://flashy-quaint-slug.solana-mainnet.quiknode.pro/3bf50fa9dcb8585bc7050818cab9095ba14ad141/";
   const wallets = useMemo(() => [
     new PhantomWalletAdapter(), 

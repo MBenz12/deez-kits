@@ -1,20 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as anchor from "@project-serum/anchor";
 import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import {useAnchorWallet, useConnection, useWallet} from "@solana/wallet-adapter-react";
-import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey} from "@solana/web3.js";
+import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// @ts-ignore
+import kitIcon from "../../assets/images/cat.gif";
+// @ts-ignore
+import coinFlipIcon from "../../assets/images/coinflip.png";
+// @ts-ignore
+import discordIcon from "../../assets/images/discord_icon.svg";
+// @ts-ignore
+import meIcon from "../../assets/images/me_icon.svg";
+// @ts-ignore
+import twitterIcon from "../../assets/images/twitter_icon.svg";
+import { game_name, game_owner } from "./constants";
 import Header from "./Header";
 import { Information } from "./HeaderItems";
-import "./index.css";
+import "./index.scss";
 import Slots, { random } from "./Slots";
-import { BetButton, Discord, LoadingIcon, MagicEden, PlayIcon, Twitter} from "./Svgs";
+import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
 import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
-import { game_name, game_owner } from "./constants";
 
 //const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 113;
@@ -401,8 +410,63 @@ const DeezSlotz = React.forwardRef((props, ref) =>
           ""
         )} */}
       </div>
+      <div className="footer absolute bottom-5 flex items-center">
+        <a
+          href="https://magiceden.io/marketplace/deez_kits"
+          target="_blank"
+          rel="noreferrer"
+          className="me_link"
+        >
+          <img src={meIcon} alt="magic-eden-icon" />
+          magic eden
+        </a>
+        <a
+          href="https://twitter.com/deezkits"
+          rel="noreferrer"
+          target="_blank"
+          className="twitter_link"
+        >
+          <img src={twitterIcon} alt="twitter-icon" />
+          Twitter
+        </a>
+        <a
+          href="https://discord.gg/deezkits"
+          target="_blank"
+          rel="noreferrer"
+          className="discord_link"
+        >
+          <img src={discordIcon} alt="discord-icon" />
+          Discord
+        </a>
 
-      <div className="absolute bottom-5 flex items-center gap-5 text-[14px]">
+        <a
+            href="https://staking.deezkits.com"
+            rel="noreferrer"
+            className="staking_link"
+        >
+          <img src={kitIcon} alt="staking-icon" />
+          Staking
+        </a>
+
+        <a
+            href="https://slotz.deezkits.com"
+            rel="noreferrer"
+            className="staking_link"
+        >
+          <span>🎰</span>
+          <span>Slotz</span>
+        </a>
+
+        <a
+            href="https://coinflip.deezkits.com"
+            rel="noreferrer"
+            className="coinflip_link"
+        >
+          <img src={coinFlipIcon} alt="coinflip-icon" />
+          <span>Coin Flip</span>
+        </a>
+      </div>
+      {/* <div className="absolute bottom-5 flex items-center gap-5 text-[14px]">
         <a
           className="flex items-center gap-1 no-underline"
           href="https://magiceden.io/marketplace/deez_kits"
@@ -427,7 +491,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
         >
           <Discord fill="#4AFF2C" /> <p className="text-[#4AFF2C]">DISCORD</p>
         </a>
-      </div>
+      </div> */}
     </div>
   );
 });
