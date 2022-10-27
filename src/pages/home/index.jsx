@@ -4,6 +4,7 @@ import meIcon from "../../assets/images/me_icon.svg";
 import twitterIcon from "../../assets/images/twitter_icon.svg";
 import discordIcon from "../../assets/images/discord_icon.svg";
 import kitIcon from "../../assets/images/cat.gif";
+import coinFlipIcon from "../../assets/images/coinflip.png";
 import deezkits from "../../assets/video/hathalo.mp4";
 import Music from "../../sharedComponent/musicPlayer";
 // import cat from '../assets/images/cat.gif'
@@ -97,6 +98,15 @@ const Maintenance = () => {
         >
           <span>🎰</span>
           <span>Slotz</span>
+        </a>
+
+        <a
+            href="https://coinflip.deezkits.com"
+            rel="noreferrer"
+            className={style.staking_link}
+        >
+          <img src={coinFlipIcon} alt="coinflip-icon" />
+          Coin Flip
         </a>
       </div>
       {/* music toggle button */}
