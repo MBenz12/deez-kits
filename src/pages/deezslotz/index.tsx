@@ -322,6 +322,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
         lost={lost}
         bet={price}
         won={won}
+        jackpot={0}
         withdrawPlayerMoney={withdrawPlayerMoney}
       />
       <div className="relative z-[1]">

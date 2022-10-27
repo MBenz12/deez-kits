@@ -133,17 +133,17 @@ export const WalletButton = ({ id }: { id: number }) => {
       {!wallet.connected && (
         <div
           title="Devnet"
-          className="w-[224px] h-[61px] border-[#952CFF] border-2 rounded-md flex items-center justify-center p-0 connecting"
+          className="sm:w-[224px] w-[136px] sm:h-[61px] h-[36px] border-[#952CFF] border-2 rounded-md flex items-center justify-center p-0 connecting"
         >
           {!wallet.connecting && (<WalletMultiButton>
             <div className="w-full h-full flex items-center justify-center">
-              <p className="text-[#83FF49] text-[24px] leading-[31px]">Connect Wallet</p>
+              <p className="text-[#83FF49] sm:text-[24px] text-[16px] sm:leading-[31px] leading-[18px]">Connect Wallet</p>
             </div>
           </WalletMultiButton>)}
           {wallet.connecting && (
             <WalletConnectButton>
               <div className="w-full h-full flex items-center justify-center">
-                <p className="text-[#83FF49] text-[24px] leading-[31px]">Connecting...</p>
+                <p className="text-[#83FF49] sm:text-[24px] text-[16px] sm:leading-[31px] leading-[18px]">Connecting...</p>
               </div>
             </WalletConnectButton>
           )}
@@ -152,11 +152,11 @@ export const WalletButton = ({ id }: { id: number }) => {
       {wallet.connected && (
         <div
           title="Devnet"
-          className="w-[224px] h-[61px] border-[#952CFF] border-2 rounded-md flex items-center justify-center p-0"
+          className="sm:w-[224px] w-[136px] sm:h-[61px] h-[36px] border-[#952CFF] border-2 rounded-md flex items-center justify-center p-0"
         >
           <WalletMultiButton>
-            <div className="text-[#83FF49] font-['Share Tech Mono'] flex items-center text-[27px]">
-              <div className="px-2">
+            <div className="text-[#83FF49] font-['Share Tech Mono'] flex items-center sm:text-[24px] text-[16px] sm:leading-[31px] leading-[18px]">
+              <div className="sm:px-2">
                 {wallet.publicKey?.toString().slice(0, 4) +
                   ".." +
                   wallet.publicKey?.toString().slice(-4)}
@@ -181,20 +181,20 @@ export const SolBalance = ({
 }) => {
   const [tooltip, setTooltip] = useState(false);
   return (
-    <div className="relative w-[224px] h-[61px] border-[#952CFF] border-2 rounded-md cursor-context-menu">
+    <div className="relative sm:w-[224px] w-[135px] sm:h-[61px] h-[36px] border-[#952CFF] border-2 rounded-md cursor-context-menu">
       <div
         onMouseOver={() => setTooltip(true)}
         onMouseLeave={() => setTooltip(false)}
         className="relative p-3 flex justify-between items-center h-full"
       >
         <SolanaLogo />
-        <p className="text-[#83FF49] text-[27px] leading-[31px] w-full text-center" style={{ fontSize: `${balance < 10 ? 27 : (balance < 100 ? 24 : 20)}px` }}>
+        <p className="text-[#83FF49] sm:text-[27px] text-[16px] sm:leading-[31px] leading-[18px] w-full text-center">
           {balance.toLocaleString("en-us", {
             minimumFractionDigits: 0,
             maximumFractionDigits: 4,
           })}
         </p>
-        <span className="text-[27px] leading-[31px] text-[#FFC42C]">SOL</span>      
+        <span className="sm:text-[27px] text-[16px] sm:leading-[31px] leading-[18px] text-[#FFC42C]">SOL</span>      
       </div>
       <div
         className={`absolute border-[1px] border-[#C974F4] bg-[#492D5E] w-[200px] xl:left-0 left-[50%] xl:top-[50%] top-[calc(100%_+_10px)] xl:translate-x-[calc(-100%_-_10px)] translate-x-[-50%] xl:translate-y-[-50%] text-[#C974F4] rounded-md duration-300 ${
@@ -245,14 +245,14 @@ export const PlayerFunds = ({
       onClick={withdrawPlayerMoney}
       onMouseOver={() => setTooltip(true)}
       onMouseLeave={() => setTooltip(false)}
-      className="h-[61px] relative cursor-pointer rounded-md border-[#952CFF] border-2 w-[224px]"
+      className="sm:h-[61px] h-[36px] relative cursor-pointer rounded-md border-[#952CFF] border-2 sm:w-[224px] w-[136px]"
     >
       <div className="top-[-15px] w-full flex justify-center absolute">
-        <p className="text-[22px] leading-[25px] text-[#952CFF] bg-black w-[200px] text-center">player funds</p>
+        <p className="sm:text-[22px] text-[14px] sm:leading-[25px] leading-[16px] text-[#952CFF] bg-black sm:w-[200px] w-[120px] text-center">player funds</p>
       </div>
       <div className="absolute w-full h-full top-0 left-0 flex justify-evenly items-center">
         <div className="relative p-2 w-full">
-          <p className="text-[#83FF49] text-[27px] leading-[31px] w-full text-center">
+          <p className="text-[#83FF49] sm:text-[27px] text-[16px] sm:leading-[31px] leading-[18px] w-full text-center">
             {playerBalance.toLocaleString("en-us", {
               minimumFractionDigits: 0,
               maximumFractionDigits: 4,
@@ -279,7 +279,7 @@ export const PlayerFunds = ({
       </div>
       <div
         onMouseOver={() => setTooltip(false)}
-        className={`absolute w-[330px] left-[50%] top-[60px] translate-x-[-50%] text-[#C974F4] text-[14px] rounded-md duration-300 ${
+        className={`absolute sm:w-[330px] w-[200px] left-[50%] top-[calc(100%_+_10px)] translate-x-[-50%] text-[#C974F4] text-[14px] rounded-md duration-300 ${
           !tooltip ? "opacity-0 z-[0]" : "z-[108]"
         }`}
       >
