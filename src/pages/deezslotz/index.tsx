@@ -1,46 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as anchor from "@project-serum/anchor";
 import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
-import {
-  useAnchorWallet,
-  useConnection,
-  useWallet
-} from "@solana/wallet-adapter-react";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import {useAnchorWallet, useConnection, useWallet} from "@solana/wallet-adapter-react";
+import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey} from "@solana/web3.js";
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { game_name, game_owner } from "./constants";
 import Header from "./Header";
 import { Information } from "./HeaderItems";
 import "./index.css";
 import Slots, { random } from "./Slots";
-import {
-  BetButton,
-  Discord,
-  LoadingIcon,
-  MagicEden,
-  PlayIcon,
-  Twitter
-} from "./Svgs";
-import {
-  convertLog,
-  getGameAddress,
-  getPlayerAddress,
-  getProviderAndProgram,
-  isAdmin,
-  playTransaction,
-  postWinLoseToDiscordAPI,
-  postWithdrawToDiscordAPI,
-  useWindowDimensions,
-  withdrawTransaction
-} from "./utils";
+import { BetButton, Discord, LoadingIcon, MagicEden, PlayIcon, Twitter} from "./Svgs";
+import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
+import { game_name, game_owner } from "./constants";
 
 //const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 113;
 
-const DeezSlotz = React.forwardRef((props, ref) => {
+const DeezSlotz = React.forwardRef((props, ref) =>
+{
   const { connection } = useConnection();
   // const connection = new Connection(clusterApiUrl(cluster), "confirmed");
   const wallet = useWallet();
@@ -64,7 +44,8 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   const [multiplier, setMultiplier] = useState(0);
   const [tokenType, setTokenType] = useState(false);
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     console.log(connection);
   }, []);
 
@@ -84,9 +65,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       const gameData = await program.account.game.fetchNullable(game);
       if (gameData) {
         setTokenType(gameData.tokenType);
-        setCommunityBalance(
-          gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL
-        );
+        setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
         setRoyalty(gameData.royalties[0] / 100);
       }
     };
@@ -94,68 +73,53 @@ const DeezSlotz = React.forwardRef((props, ref) => {
   }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  async function fetchData() {
-    if (!wallet.publicKey) {
-      setCommunityBalance(0);
-      setRoyalty(0);
-      setSolBalance(0);
-      setPlayerBalance(0);
-      setTokenType(false);
-      setMainBalance(0);
-      return;
-    }
+  async function fetchData()
+  {
+      if (!wallet.publicKey)
+      {
+          setCommunityBalance(0);
+          setRoyalty(0);
+          setSolBalance(0);
+          setPlayerBalance(0);
+          setTokenType(false);
+          setMainBalance(0);
+          return;
+      }
 
-    const { provider, program } = getProviderAndProgram(
-      connection,
-      anchorWallet
-    );
-    const [game] = await getGameAddress(game_name, game_owner);
-    const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
-    const playerData = await program.account.player.fetchNullable(player);
-    const gameData = await program.account.game.fetchNullable(game);
+      const { provider, program } = getProviderAndProgram(connection, anchorWallet);
+      const [game] = await getGameAddress(game_name, game_owner);
+      const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
+      const playerData = await program.account.player.fetchNullable(player);
+      const gameData = await program.account.game.fetchNullable(game);
 
-    if (gameData) {
-      console.log(
-        "Game Data:",
-        convertLog(gameData, isAdmin(provider.wallet.publicKey))
-      );
-    }
+      if (gameData)
+      {
+          console.log("Game Data:", convertLog(gameData, isAdmin(provider.wallet.publicKey)));
+      }
 
-    if (playerData) {
-      console.log(
-        "Player Data:",
-        convertLog(playerData, isAdmin(provider.wallet.publicKey))
-      );
-    }
+      if (playerData)
+      {
+          console.log("Player Data:", convertLog(playerData, isAdmin(provider.wallet.publicKey)));
+      }
 
-    if (playerData?.earnedMoney) {
-      setPlayerBalance(playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL);
-      console.log(
-        "Player Balance:",
-        playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL
-      );
-    }
+      if (playerData?.earnedMoney)
+      {
+          setPlayerBalance(playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL);
+          console.log("Player Balance:", playerData?.earnedMoney.toNumber() / LAMPORTS_PER_SOL);
+      }
 
-    if (gameData) {
-      console.log(
-        "Bank Balance:",
-        gameData?.mainBalance.toNumber() / LAMPORTS_PER_SOL
-      );
-      setMainBalance(gameData.mainBalance.toNumber() / LAMPORTS_PER_SOL);
-      setTokenType(gameData.tokenType);
-      setJackpotAmount(gameData.jackpot.toNumber() / LAMPORTS_PER_SOL);
-      setCommunityBalance(
-        gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL
-      );
-      setRoyalty(gameData.royalties[0] / 100);
-    }
+      if (gameData)
+      {
+          console.log("Bank Balance:", gameData?.mainBalance.toNumber() / LAMPORTS_PER_SOL);
+          setMainBalance(gameData.mainBalance.toNumber() / LAMPORTS_PER_SOL);
+          setTokenType(gameData.tokenType);
+          setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
+          setRoyalty(gameData.royalties[0] / 100);
+      }
 
-    setSolBalance(
-      (await program.provider.connection.getBalance(wallet.publicKey)) /
-        LAMPORTS_PER_SOL
-    );
+      setSolBalance((await program.provider.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL);
 
-    return gameData;
+      return gameData;
   }
 
   const finished = async () => {
@@ -180,19 +144,13 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       setWon(true);
       // setEqualNum(equalNum);
       toast.dismiss();
-      if (maxCount === 5 && jackpot) {
-        toast.success(
-          `WOW, you have won the JACKPOT of ${jackpot} SOL, big win! Congratulations!`
-        );
-      } else {
-        toast.success(
-          `You won ${((price * multiplier) / 10).toLocaleString("en-us", {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 3,
-          })} ${tokenType ? "$SKT" : "SOL"} (x${multiplier / 10} multipler)`,
-          { containerId }
-        );
-      }
+      toast.success(
+        `You won ${((price * multiplier) / 10).toLocaleString("en-us", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 3,
+        })} ${tokenType ? "$SKT" : "SOL"} (x${multiplier / 10} multipler)`,
+        { containerId }
+      );
       setRun(true);
       setCycle(true);
       setTimeout(() => setCycle(false), 4000);
@@ -206,7 +164,10 @@ const DeezSlotz = React.forwardRef((props, ref) => {
       setLoading(false);
       setWon(false);
       toast.dismiss();
-      toast.error(`You almost won! better luck next time.`, { containerId });
+      toast.error(
+        `You almost won! better luck next time.`,
+        { containerId }
+      );
       await postWinLoseToDiscordAPI(
         wallet.publicKey,
         -price,
@@ -222,7 +183,8 @@ const DeezSlotz = React.forwardRef((props, ref) => {
     fetchData();
   };
 
-  const play = async () => {
+  const play = async () =>
+  {
     if (loading) return;
     if (!wallet.connected) {
       toast.dismiss();
@@ -239,7 +201,8 @@ const DeezSlotz = React.forwardRef((props, ref) => {
     setLoading(true);
     setWon(false);
 
-    try {
+    try
+    {
       const { provider, program } = getProviderAndProgram(
         connection,
         anchorWallet
@@ -305,33 +268,24 @@ const DeezSlotz = React.forwardRef((props, ref) => {
     }
   };
 
-  const withdrawPlayerMoney = async () => {
-    if (!playerBalance) {
+  const withdrawPlayerMoney = async () =>
+  {
+    if (!playerBalance)
+    {
       toast.dismiss();
       toast.error("No funds available for withdrawal.", { containerId });
       return;
     }
 
-    if (playerBalance > mainBalance) {
+    if (playerBalance > mainBalance)
+    {
       toast.dismiss();
-      toast.error(
-        "Bank is being filled, please try to withdraw again shortly.",
-        { containerId }
-      );
+      toast.error("Bank is being filled, please try to withdraw again shortly.", { containerId });
       return;
     }
 
-    const { provider, program } = getProviderAndProgram(
-      connection,
-      anchorWallet
-    );
-    const txSignature = await withdrawTransaction(
-      program,
-      provider,
-      wallet,
-      game_name,
-      game_owner
-    );
+    const { provider, program } = getProviderAndProgram(connection, anchorWallet);
+    const txSignature = await withdrawTransaction(program, provider, wallet, game_name, game_owner);
 
     toast.dismiss();
     toast.success("Funds sent to your wallet successfully.", { containerId });
@@ -339,13 +293,7 @@ const DeezSlotz = React.forwardRef((props, ref) => {
     const gameData = await fetchData();
     const bankBalance = gameData!.mainBalance.toNumber() / LAMPORTS_PER_SOL;
 
-    await postWithdrawToDiscordAPI(
-      wallet.publicKey,
-      playerBalance,
-      connection,
-      bankBalance,
-      txSignature
-    );
+    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance, connection, bankBalance, txSignature);
   };
   return (
     <div className="slots flex flex-col items-center bg-black min-h-[100vh] lg:p-6 sm:p-4 p-2 font-['Share Tech Mono'] relative">
@@ -397,16 +345,10 @@ const DeezSlotz = React.forwardRef((props, ref) => {
           </div>
           {loading && (
             <>
-              <div
-                className="md:hidden block"
-                style={{ animation: "slotsspin 2s linear infinite" }}
-              >
+              <div className="md:hidden block" style={{ animation: 'slotsspin 2s linear infinite' }}>
                 <LoadingIcon fill="#4AFF2C" small id={1} />
               </div>
-              <div
-                className="hidden md:block"
-                style={{ animation: "slotsspin 2s linear infinite" }}
-              >
+              <div className="hidden md:block" style={{ animation: 'slotsspin 2s linear infinite' }}>
                 <LoadingIcon fill="#4AFF2C" small={false} id={2} />
               </div>
             </>

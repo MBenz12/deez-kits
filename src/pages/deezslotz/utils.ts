@@ -1,30 +1,32 @@
 import * as anchor from "@project-serum/anchor";
 import { Program, Provider } from "@project-serum/anchor";
 import { ASSOCIATED_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/token";
-import { Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import {NATIVE_MINT, Token, TOKEN_PROGRAM_ID, AccountInfo, AccountLayout} from "@solana/spl-token";
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import { Connection, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {Connection, Keypair, PublicKey, SystemProgram, Transaction} from "@solana/web3.js";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { adminWallets, splTokenMint } from "./constants";
 import { Slots } from "./idl/slots";
+import {WalletAdapterNetwork} from "@solana/wallet-adapter-base";
+import {splTokenMint, adminWallets} from "./constants";
 
 const idl_slots = require("./idl/slots.json");
 const programId = new PublicKey(idl_slots.metadata.address);
 const slots_pda_seed = "slots_game_pda";
 const player_pda_seed = "player_pda";
 
-export const getNetworkFromConnection: (connection: Connection) => WalletAdapterNetwork.Devnet | WalletAdapterNetwork.Mainnet = (connection: Connection) => {
-  // @ts-ignore
-  return connection._rpcEndpoint.includes('devnet') ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet;
+export const getNetworkFromConnection: (connection: Connection) => WalletAdapterNetwork.Devnet | WalletAdapterNetwork.Mainnet = (connection: Connection) =>
+{
+    // @ts-ignore
+    return connection._rpcEndpoint.includes('devnet') ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet;
 }
 
-export const getWalletPartiallyHidden = (walletAddress: PublicKey) => {
-  const walletStr = walletAddress!.toString();
-  const walletStart = walletStr.slice(0, 4);
-  const walletEnd = walletStr.slice(-4);
-  return `${walletStart}...${walletEnd}`
+export const getWalletPartiallyHidden = (walletAddress: PublicKey) =>
+{
+    const walletStr = walletAddress!.toString();
+    const walletStart = walletStr.slice(0,4);
+    const walletEnd = walletStr.slice(-4);
+    return `${walletStart}...${walletEnd}`
 }
 
 export const getGameAddress = async (game_name: string, game_owner: PublicKey) => (
@@ -49,73 +51,81 @@ export const getPlayerAddress = async (playerKey: PublicKey, game: PublicKey) =>
   )
 )
 
-export const convertLog = (data: any, isAdmin: boolean = true) => {
-  const res: any = {};
+export const convertLog = (data: any, isAdmin: boolean = true) =>
+{
+    const res: any = {};
 
-  const adminKeys =
+    const adminKeys =
     [
-      "winPercents",
-      "loseCounter",
-      "minRoundsBeforeWin",
-      "jackpot"
+        "winPercents",
+        "loseCounter",
+        "minRoundsBeforeWin",
+        "jackpot"
     ]
 
-  Object.keys(data).forEach(key => {
-    if (isAdmin || !adminKeys.includes(key)) {
-      res[key] = data[key];
-      if (typeof data[key] === "object") {
-        if (data[key].toString) {// @ts-ignore
-          res[key] = data[key].toString();
-        }
-      }
-    }
-  });
-  return res;
-}
-
-
-export const postWinLoseToDiscordAPI = async (userWallet: PublicKey, balance: number, bet: number, connection: Connection) => {
-  const wonEmoji = `<a:deezkits_confetti:1029282324170407936>`;
-  const catPartyEmoji = `<a:deezkitsparty2:1029282335549558804>`;
-
-  let message = ``;
-
-  balance = Number(balance.toFixed(3));
-  if (balance > 0) {
-    message += `A cute Kit just **Won** \`${balance}\` SOL ${wonEmoji} with a bet of \`${bet}\``;
-  }
-  else {
-    message += `A Kit almost won \`${-balance}\` SOL, better luck next time ${catPartyEmoji}`;
-  }
-
-  message += `\n\n> Wallet: \`${getWalletPartiallyHidden(userWallet)}\` \n`;
-
-  await postToDiscordApi(message, "1033022490202620056", getNetworkFromConnection(connection)); // slots
-}
-
-export const postWithdrawToDiscordAPI = async (userWallet: PublicKey | null, balance: number, connection: Connection, bankBalance: number, txSignature: string) => {
-  let message = `\`${userWallet!.toString()}\``;
-  message += `\n> Is asking to withdraw \`${balance}\` SOL`;
-  message += `\n> Bank Balance \`${bankBalance}\` SOL`;
-
-  const sigLink = `[${txSignature}](https://solscan.io/tx/${txSignature})`;
-  message += `\n> Tx Signature: ${sigLink}`;
-
-  await postToDiscordApi(message, `1033411235124883628`, getNetworkFromConnection(connection)); // slots-admin
-}
-
-export const postToDiscordApi = async (message: string, channelId: string, network: string) => {
-  return await axios.post("https://api.servica.io/extorio/apis/general",
+    Object.keys(data).forEach(key =>
     {
-      method: "postDiscordDeez",
-      params:
-      {
-        token: "tok41462952672239",
-        channelId: channelId,
-        message: message,
-        network: network
-      },
+        if (isAdmin || !adminKeys.includes(key))
+        {
+            res[key] = data[key];
+            if (typeof data[key] === "object") {
+                if (data[key].toString) {// @ts-ignore
+                    res[key] = data[key].toString();
+                }
+            }
+        }
     });
+    return res;
+}
+
+
+export const postWinLoseToDiscordAPI = async (userWallet: PublicKey, balance: number, bet: number, connection: Connection) =>
+{
+    const wonEmoji = `<a:deezkits_confetti:1029282324170407936>`;
+    const catPartyEmoji = `<a:deezkitsparty2:1029282335549558804>`;
+
+    let message = ``;
+
+    balance = Number(balance.toFixed(3));
+    if (balance > 0)
+    {
+      message += `A cute Kit just **Won** \`${balance}\` SOL ${wonEmoji} with a bet of \`${bet}\``;
+    }
+    else
+    {
+      message += `A Kit almost won \`${-balance}\` SOL, better luck next time ${catPartyEmoji}`;
+    }
+
+    message += `\n\n> Wallet: \`${getWalletPartiallyHidden(userWallet)}\` \n`;
+
+    await postToDiscordApi(message, "1033022490202620056", getNetworkFromConnection(connection)); // slots
+}
+
+export const postWithdrawToDiscordAPI = async (userWallet: PublicKey | null, balance: number, connection: Connection, bankBalance: number, txSignature: string) =>
+{
+    let message = `\`${userWallet!.toString()}\``;
+    message += `\n> Is asking to withdraw \`${balance}\` SOL`;
+    message += `\n> Bank Balance \`${bankBalance}\` SOL`;
+
+    const sigLink = `[${txSignature}](https://solscan.io/tx/${txSignature})`;
+    message += `\n> Tx Signature: ${sigLink}`;
+
+    await postToDiscordApi(message, `1033411235124883628`, getNetworkFromConnection(connection)); // slots-admin
+}
+
+export const postToDiscordApi = async (message: string, channelId: string, network: string) =>
+{
+  return await axios.post("https://api.servica.io/extorio/apis/general",
+      {
+                method: "postDiscordDeez",
+                params:
+                {
+                  token: "tok41462952672239",
+                  channelId: channelId,
+                  message: message,
+                  network: network
+                },
+           });
 }
 
 
@@ -190,7 +200,8 @@ export async function getCreateAtaInstruction(provider: Provider, ata: PublicKey
   }
 }
 
-async function getAddPlayerTransaction(program: Program<Slots>, provider: Provider, game_name: string, game_owner: PublicKey) {
+async function getAddPlayerTransaction(program: Program<Slots>, provider: Provider, game_name: string, game_owner: PublicKey)
+{
   const [game] = await getGameAddress(game_name, game_owner);
   const [player, bump] = await getPlayerAddress(provider.wallet.publicKey, game);
 
@@ -207,7 +218,8 @@ async function getAddPlayerTransaction(program: Program<Slots>, provider: Provid
     });
 }
 
-export async function playTransaction(program: Program<Slots>, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey, betNo: number, connection: Connection) {
+export async function playTransaction(program: Program<Slots>, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey, betNo: number, connection: Connection)
+{
   const [game] = await getGameAddress(game_name, game_owner);
   const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
 
@@ -273,41 +285,48 @@ export async function playTransaction(program: Program<Slots>, provider: Provide
   return { gameData, playerData };
 }
 
-export async function withdrawTransaction(program: Program<Slots>, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey) {
-  const [game] = await getGameAddress(game_name, game_owner);
-  const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
-  const gameData = await program.account.game.fetchNullable(game);
-  const mint = gameData?.tokenType ? splTokenMint : SystemProgram.programId;
+export async function withdrawTransaction(program: Program<Slots>, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey)
+{
+    const [game] = await getGameAddress(game_name, game_owner);
+    const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
+    const gameData = await program.account.game.fetchNullable(game);
+    const mint = gameData?.tokenType ? splTokenMint :SystemProgram.programId;
 
-  const transaction = new Transaction();
+    const transaction = new Transaction();
 
-  const claimerAta = await getAta(mint, provider.wallet.publicKey);
-  const instruction = await getCreateAtaInstruction(provider, claimerAta, mint, provider.wallet.publicKey);
-  if (instruction) transaction.add(instruction);
+    const claimerAta = await getAta(mint, provider.wallet.publicKey);
+    if (gameData?.tokenType)
+    {
+        const instruction = await getCreateAtaInstruction(provider, claimerAta, mint, provider.wallet.publicKey);
+        if (instruction)
+        {
+            transaction.add(instruction);
+        }
+    }
 
-  const gameTreasuryAta = await getAta(mint, game, true);
+    const gameTreasuryAta = await getAta(mint, game, true);
 
-  transaction.add(
-    program.transaction.claim({
-      accounts: {
-        claimer: provider.wallet.publicKey,
-        claimerAta,
-        game,
-        gameTreasuryAta,
-        player,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        systemProgram: SystemProgram.programId,
-      },
-    })
-  );
+    transaction.add(
+        program.transaction.claim({
+            accounts: {
+                claimer: provider.wallet.publicKey,
+                claimerAta,
+                game,
+                gameTreasuryAta,
+                player,
+                tokenProgram: TOKEN_PROGRAM_ID,
+                systemProgram: SystemProgram.programId,
+            },
+        })
+    );
 
-  const txSignature = await wallet.sendTransaction(
-    transaction,
-    provider.connection
-  );
+    const txSignature = await wallet.sendTransaction(
+        transaction,
+        provider.connection
+    );
 
-  await provider.connection.confirmTransaction(txSignature, "confirmed");
-  console.log(txSignature);
+    await provider.connection.confirmTransaction(txSignature, "confirmed");
+    console.log(txSignature);
 
-  return txSignature;
+    return txSignature;
 }
