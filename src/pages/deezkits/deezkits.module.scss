@@ -68,51 +68,6 @@
   // }
 
   //deezkits left kits style
-  // .deez_kits_kitty {
-  //   max-width: 28%;
-  //   width: 100%;
-  //   margin: 0 auto;
-  //   position: absolute;
-  //   left: 20px;
-  //   bottom: -19px;
-  //   opacity: 1;
-  //   z-index: 5;
-  //   transition: all 1s ease;
-  //   &:hover {
-  //     img {
-  //       left: 0px;
-  //       opacity: 0.5;
-  //       animation-name: moveInleft;
-  //       @keyframes moveInleft {
-  //         0% {
-  //           opacity: 0;
-  //           transform: translateX(-100px);
-  //         }
-  //         1.5% {
-  //           opacity: 0.3;
-  //         }
-  //         100% {
-  //           opacity: 0.5;
-  //           transform: translate(0);
-  //         }
-  //       }
-  //     }
-  //   }
-  //   @media only screen and (max-width: 767px) {
-  //     max-width: 328px;
-  //     position: relative;
-  //     display: none;
-  //   }
-  //   img {
-  //     transition: all 1s ease;
-  //     width: 100%;
-  //     height: 100%;
-  //     object-fit: contain;
-  //     position: relative;
-  //     left: -100%;
-  //     opacity: 0;
-  //   }
-  // }
 
   .deez_kits_kitty {
     max-width: 20%;
@@ -190,6 +145,15 @@
     background-position: 0 0;
     background-size: 384px 384px;
     opacity: 0.6;
+    @media only screen and (max-width: 1799px) {
+      background-size: 329px 329px;
+    }
+    @media only screen and (max-width: 1499px) {
+      background-size: 296px 296px;
+    }
+    @media only screen and (max-width: 1299px) {
+      background-size: 248px 248px;
+    }
   }
   .glitch__layer:nth-child(1) {
     transform: translateX(-5%);
@@ -343,6 +307,89 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  :root {
+    --color-text: #fff;
+    --color-bg: #000;
+    --color-link: #f9d77e;
+    --color-link-hover: #fff;
+    --color-info: #efc453;
+    --glitch-width: 100vw;
+    --glitch-height: 100vh;
+    --gap-horizontal: 10px;
+    --gap-vertical: 5px;
+    --time-anim: 5s;
+    --delay-anim: 0ms;
+    --blend-mode-1: none;
+    --blend-mode-2: none;
+    --blend-mode-3: none;
+    --blend-mode-4: none;
+    --blend-mode-5: overlay;
+    --blend-color-1: transparent;
+    --blend-color-2: transparent;
+    --blend-color-3: transparent;
+    --blend-color-4: transparent;
+    --blend-color-5: #af4949;
+  }
+
+  .glitch_right_layer {
+    background: url("../../assets/images//deezKits//deezkits_right.png")
+      no-repeat 50% 50% / cover;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+  }
+
+  .glitch_right_layer:nth-child(n + 2) {
+    opacity: 0;
+    animation-duration: var(--time-anim);
+    animation-delay: var(--delay-anim);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  .glitch_right_layer:nth-child(2) {
+    background-color: var(--blend-color-2);
+    background-blend-mode: var(--blend-mode-2);
+    animation-name: glitch-anim-2;
+  }
+
+  .glitch_right_layer:nth-child(2) {
+    background-color: var(--blend-color-3);
+    background-blend-mode: var(--blend-mode-3);
+    animation-name: glitch-anim-3;
+  }
+
+  .glitch_right_layer:nth-child(4) {
+    background-color: var(--blend-color-4);
+    background-blend-mode: var(--blend-mode-4);
+    animation-name: glitch-anim-4;
+  }
+
+  .glitch_right_layer:nth-child(5) {
+    background-color: var(--blend-color-5);
+    background-blend-mode: var(--blend-mode-5);
+    animation-name: glitch-anim-flash;
+
+    @keyframes glitch-anim-flash {
+      0%,
+      5% {
+        opacity: 0;
+        transform: translate3d(
+          var(--glitch-horizontal),
+          var(--glitch-height),
+          0
+        );
+      }
+      5.5%,
+      100% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0);
+      }
+    }
   }
   .deezkits_content_wrapper {
     @media only screen and (min-width: 768px) and (max-width: 991px) and (min-height: 320px) and (max-height: 1000px) {
