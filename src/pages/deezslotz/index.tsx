@@ -40,6 +40,8 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   const prices = [0.05, 0.1, 0.25, 0.5, 1, 2];
   const [price, setPrice] = useState(0.05);
   const [betNo, setBetNo] = useState(0);
+  const [jackpotAmount, setJackpotAmount] = useState(0);
+  const [jackpot, setJackpot] = useState(0);
   const [loading, setLoading] = useState(false);
   const [communityBalance, setCommunityBalance] = useState(0);
   const [royalty, setRoyalty] = useState(0);
@@ -242,6 +244,11 @@ const DeezSlotz = React.forwardRef((props, ref) =>
         max = (status % 2) + 1;
       }
       setMultiplier((max - 1) * 10 - (status % 10));
+      if (max === 5 && betNo > 3 && gameData.jackpot.toNumber() > 0) {
+        setJackpot(jackpotAmount);
+      } else {
+        setJackpot(0);
+      }
       for (let i = 0; i < 5; i++) {
         let rd = random();
         while (
@@ -328,10 +335,10 @@ const DeezSlotz = React.forwardRef((props, ref) =>
         solBalance={solBalance}
         playerBalance={playerBalance}
         prize={(price * multiplier) / 10}
+        jackpot={jackpotAmount}
         lost={lost}
         bet={price}
         won={won}
-        jackpot={0}
         withdrawPlayerMoney={withdrawPlayerMoney}
       />
       <div className="relative z-[1]">
