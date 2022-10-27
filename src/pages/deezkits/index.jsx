@@ -177,7 +177,13 @@ const DeezKits = React.forwardRef((props, ref) => {
 
       <Box className={style.deez_Right_kits_kitty}>
         <img src={Images?.DeezKitsRightKitty} alt="deez-kits-right-kitty" />
+        <div className={style.glitch_right_layers}>
+          <div className={style.glitch_right_layer}></div>
+          <div className={style.glitch_right_layer}></div>
+          <div className={style.glitch_right_layer}></div>
+        </div>
       </Box>
+
       <Footer />
 
       <Box className={style.toggle_btn}>
