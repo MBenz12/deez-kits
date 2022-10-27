@@ -4,7 +4,6 @@ import HighlightedText from "../../sharedComponent/HighlightedText";
 import { Images } from "../../static/images";
 import style from "./deezkits.module.scss";
 import CountdownTimer from "../../components/deezkits/countdown/CountDownTImer";
-// import ImageUI from "../../sharedComponent/ImageUI";
 import Footer from "../../sharedComponent/footer/footer";
 import CommonTitle from "../../sharedComponent/FancyTitle";
 import Music from "../../sharedComponent/musicPlayer";
@@ -12,7 +11,7 @@ import audioUrl1 from "../../assets/audio/counting.mp3";
 import mintBtnaudio from "../../assets/audio/menu.mp3";
 const DeezKits = React.forwardRef((props, ref) => {
   const [isMintState, setMintState] = useState(props?.isMint);
-  const totalTicket = 4343;
+  const totalTicket = 400;
   const [ticket, setTicket] = useState(0);
   const audioCountRef = useRef(null);
   const audioMintRef = useRef(null);
@@ -23,7 +22,7 @@ const DeezKits = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     const increaseTicket = () => {
-      if (ticket < 323) {
+      if (ticket < 0) {
         setTicket(ticket + 1);
         if (ticket === 1) {
           audioCountRef.current.play();
@@ -50,51 +49,19 @@ const DeezKits = React.forwardRef((props, ref) => {
         <Box className={style.deez_inner_content}>
           <Box className={style.deezkits_content_wrapper}>
             {isMintState ? (
-            <>
-              <Box className={style.deezkits_mint_title}>
-                <span> &lt; </span>
-                <span className={style.can}>CAN</span>{" "}
-                <span className={style.deez}>DEEZ</span>{" "}
-                <span className={style.kits}>KITS</span>{" "}
-                <span className={style.fit}>FIT</span>{" "}
-                <span className={style.yr}>YR</span>{" "}
-                <span className={style.wallet}>
-                  <img src={Images?.walletGlitch} alt="wallet-glitch" />
-                </span>
-                <span className={style.gt_entity}>&gt; &#63;</span>
-              </Box>
-                {/* <Box className={style.deezkits_mint_title}>
-                <span> &lt; </span>
-                <span className={style.can}>
-                  <span aria-hidden="true">CAN</span>
-                  CAN
-                  <span aria-hidden="true">CAN</span>
-                </span>{" "}
-
-                <span className={style.can}>
-                  <span aria-hidden="true">DEEZ</span>
-                  DEEZ
-                  <span aria-hidden="true">DEEZ</span>
-                </span>{" "}
-
-                <span className={style.can}>
-                  <span aria-hidden="true">FIT</span>
-                  FIT
-                  <span aria-hidden="true">FIT</span>
-                </span>{" "}
-
-                <span className={style.can}>
-                  <span aria-hidden="true">YR</span>
-                  YR
-                  <span aria-hidden="true">YR</span>
-                </span>{" "}
-                <span className={style.can}>
-                  <span aria-hidden="true">WALLET</span>
-                  WALLET
-                  <span aria-hidden="true">WALLET</span>
-                </span>{" "}
-                <span className={style.gt_entity}>&gt; &#63;</span>
-              </Box> */}
+              <>
+                <Box className={style.deezkits_mint_title}>
+                  <span> &lt; </span>
+                  <span className={style.can}>CAN</span>{" "}
+                  <span className={style.deez}>DEEZ</span>{" "}
+                  <span className={style.kits}>KITS</span>{" "}
+                  <span className={style.fit}>FIT</span>{" "}
+                  <span className={style.yr}>YO</span>{" "}
+                  <span className={style.wallet}>
+                    <img src={Images?.walletGlitch} alt="wallet-glitch" />
+                  </span>
+                  <span className={style.gt_entity}>&gt; &#63;</span>
+                </Box>
               </>
             ) : (
               <CommonTitle MintDate={MintDate} />
@@ -120,6 +87,9 @@ const DeezKits = React.forwardRef((props, ref) => {
                 <Typography className={style.sold_mint_text}>
                   {ticket} / {totalTicket} SOLD
                 </Typography>
+                <Typography className={style.mint_text}>
+                400 ALREADY AIRDROPPED TO KIT HOLDERS
+                </Typography>
               </Box>
               <Box>
                 <button onClick={mintHandler} className={style.mint_button}>
@@ -137,7 +107,7 @@ const DeezKits = React.forwardRef((props, ref) => {
                 <HighlightedText className="highlightedText">
                   Price{" "}
                 </HighlightedText>{" "}
-                - {`${"0.044"}`} SOL
+                - {`${"0.25"}`} SOL
               </Typography>
             </>
           ) : (
@@ -169,7 +139,30 @@ const DeezKits = React.forwardRef((props, ref) => {
       </Box>
       <Box className={style.deez_kits_kitty}>
         <img src={Images?.DeezKitsKitty} alt="deez-kits-kitty" />
+        <div className={style.glitch__layers}>
+          <div className={style.glitch__layer}></div>
+          <div className={style.glitch__layer}></div>
+          <div className={style.glitch__layer}></div>
+        </div>
       </Box>
+
+      <Box className={style.deez_Right_kits_kitty}>
+        <img src={Images?.DeezKitsRightKitty} alt="deez-kits-right-kitty" />
+        <div className={style.glitch_right_layers}>
+          <div className={style.glitch_right_layer}></div>
+          <div className={style.glitch_right_layer}></div>
+          <div className={style.glitch_right_layer}></div>
+        </div>
+      </Box>
+
+      {/* <Box className={style.glitch}>
+          <div className={style.glitch__item}></div>
+          <div className={style.glitch__item}></div>
+          <div className={style.glitch__item}></div>
+          <div className={style.glitch__item}></div>
+          <div className={style.glitch__item}></div>
+      </Box> */}
+
       <Footer />
 
       <Box className={style.toggle_btn}>

@@ -1,5 +1,5 @@
 // deezkits page images
-import logoTrasnsparent from "../assets/images/deezKits/Logo_transparent.png";
+import logoTrasnsparent from "../assets/images/deezKits/black_bg_02.gif";
 import logo from "../assets/images/deezKits/logo.png";
 import MintBtn from "../assets/images/deezKits/mint_btn.png";
 import MintTitle from "../assets/images/deezKits/title_deezkits.png";
@@ -16,6 +16,7 @@ import kitGlitch from '../assets/images/deezKits/title/kits_glitch.png'
 import fitGlitch from '../assets/images/deezKits/title/fit_glitch.png'
 import yrGlitch from '../assets/images/deezKits/title/yr_glitch.png'
 import deezGlitch from '../assets/images/deezKits/title/deez_glitch.png'
+import DeezKitsRightKitty from '../assets/images/deezKits/deezkits_right.png'
 export const Images = {
   MintBtn,
   logoTrasnsparent,
@@ -28,6 +29,7 @@ export const Images = {
   BetBtn,
   MobileMenuLogo,
   DeezKitsKitty,
+  DeezKitsRightKitty,
   walletGlitch,
   canGlitch,
   deezGlitch,
