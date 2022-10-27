@@ -4,7 +4,6 @@ import HighlightedText from "../../sharedComponent/HighlightedText";
 import { Images } from "../../static/images";
 import style from "./deezkits.module.scss";
 import CountdownTimer from "../../components/deezkits/countdown/CountDownTImer";
-// import ImageUI from "../../sharedComponent/ImageUI";
 import Footer from "../../sharedComponent/footer/footer";
 import CommonTitle from "../../sharedComponent/FancyTitle";
 import Music from "../../sharedComponent/musicPlayer";
@@ -50,19 +49,19 @@ const DeezKits = React.forwardRef((props, ref) => {
         <Box className={style.deez_inner_content}>
           <Box className={style.deezkits_content_wrapper}>
             {isMintState ? (
-            <>
-              <Box className={style.deezkits_mint_title}>
-                <span> &lt; </span>
-                <span className={style.can}>CAN</span>{" "}
-                <span className={style.deez}>DEEZ</span>{" "}
-                <span className={style.kits}>KITS</span>{" "}
-                <span className={style.fit}>FIT</span>{" "}
-                <span className={style.yr}>YR</span>{" "}
-                <span className={style.wallet}>
-                  <img src={Images?.walletGlitch} alt="wallet-glitch" />
-                </span>
-                <span className={style.gt_entity}>&gt; &#63;</span>
-              </Box>
+              <>
+                <Box className={style.deezkits_mint_title}>
+                  <span> &lt; </span>
+                  <span className={style.can}>CAN</span>{" "}
+                  <span className={style.deez}>DEEZ</span>{" "}
+                  <span className={style.kits}>KITS</span>{" "}
+                  <span className={style.fit}>FIT</span>{" "}
+                  <span className={style.yr}>YR</span>{" "}
+                  <span className={style.wallet}>
+                    <img src={Images?.walletGlitch} alt="wallet-glitch" />
+                  </span>
+                  <span className={style.gt_entity}>&gt; &#63;</span>
+                </Box>
                 {/* <Box className={style.deezkits_mint_title}>
                 <span> &lt; </span>
                 <span className={style.can}>
@@ -169,6 +168,15 @@ const DeezKits = React.forwardRef((props, ref) => {
       </Box>
       <Box className={style.deez_kits_kitty}>
         <img src={Images?.DeezKitsKitty} alt="deez-kits-kitty" />
+        <div className={style.glitch__layers}>
+          <div className={style.glitch__layer}></div>
+          <div className={style.glitch__layer}></div>
+          <div className={style.glitch__layer}></div>
+        </div>
+      </Box>
+
+      <Box className={style.deez_Right_kits_kitty}>
+        <img src={Images?.DeezKitsRightKitty} alt="deez-kits-right-kitty" />
       </Box>
       <Footer />
 

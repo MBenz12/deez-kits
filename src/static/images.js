@@ -16,6 +16,7 @@ import kitGlitch from '../assets/images/deezKits/title/kits_glitch.png'
 import fitGlitch from '../assets/images/deezKits/title/fit_glitch.png'
 import yrGlitch from '../assets/images/deezKits/title/yr_glitch.png'
 import deezGlitch from '../assets/images/deezKits/title/deez_glitch.png'
+import DeezKitsRightKitty from '../assets/images/deezKits/deezkits_right.png'
 export const Images = {
   MintBtn,
   logoTrasnsparent,
@@ -28,6 +29,7 @@ export const Images = {
   BetBtn,
   MobileMenuLogo,
   DeezKitsKitty,
+  DeezKitsRightKitty,
   walletGlitch,
   canGlitch,
   deezGlitch,
