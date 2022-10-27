@@ -81,18 +81,25 @@
       }
     }
 
+    .coinflip_link,
     .staking_link {
       animation-delay: 1s;
-      min-width: 70px;
+      min-width: 20px;
       &:hover {
         color: rgb(88, 101, 242);
       }
+    }
+
+    .coinflip_link {
+      min-width: 90px;
+      margin: 0;
+      padding: 0;
     }
   }
 }
 
 a {
-  @media(max-width: 900px) {
+  @media(max-width: 1250px) {
     font-size:10px !important;
     //display: none
   }

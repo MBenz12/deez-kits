@@ -103,10 +103,10 @@ const Maintenance = () => {
         <a
             href="https://coinflip.deezkits.com"
             rel="noreferrer"
-            className={style.staking_link}
+            className={style.coinflip_link}
         >
           <img src={coinFlipIcon} alt="coinflip-icon" />
-          Coin Flip
+          <span>Coin Flip</span>
         </a>
       </div>
       {/* music toggle button */}
