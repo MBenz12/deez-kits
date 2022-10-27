@@ -155,13 +155,13 @@ const DeezKits = React.forwardRef((props, ref) => {
         </div>
       </Box>
 
-      <Box className={style.glitch}>
+      {/* <Box className={style.glitch}>
           <div className={style.glitch__item}></div>
           <div className={style.glitch__item}></div>
           <div className={style.glitch__item}></div>
           <div className={style.glitch__item}></div>
           <div className={style.glitch__item}></div>
-      </Box>
+      </Box> */}
 
       <Footer />
 
