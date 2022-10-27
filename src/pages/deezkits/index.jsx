@@ -88,7 +88,7 @@ const DeezKits = React.forwardRef((props, ref) => {
                   {ticket} / {totalTicket} SOLD
                 </Typography>
                 <Typography className={style.mint_text}>
-                  400 already airdropped to Kit Holders
+                400 ALREADY AIRDROPPED TO KIT HOLDERS
                 </Typography>
               </Box>
               <Box>
@@ -153,6 +153,14 @@ const DeezKits = React.forwardRef((props, ref) => {
           <div className={style.glitch_right_layer}></div>
           <div className={style.glitch_right_layer}></div>
         </div>
+      </Box>
+
+      <Box className={style.glitch}>
+          <div className={style.glitch__item}></div>
+          <div className={style.glitch__item}></div>
+          <div className={style.glitch__item}></div>
+          <div className={style.glitch__item}></div>
+          <div className={style.glitch__item}></div>
       </Box>
 
       <Footer />
