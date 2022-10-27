@@ -120,14 +120,14 @@ const DeezKits = React.forwardRef((props, ref) => {
                   {" "}
                   Supply{" "}
                 </HighlightedText>{" "}
-                - {`${"4343"}`}
+                - {`${"400"}`}
               </Typography>
               <Typography className={`${style.desc_text} ${style.mint_price}`}>
                 <HighlightedText className="highlightedText">
                   {" "}
                   Price{" "}
                 </HighlightedText>{" "}
-                - {`${"0.0799"}`} SOL
+                - {`${"0.25"}`} SOL
               </Typography>
 
               <Box className={style.deezkits_timer}>
