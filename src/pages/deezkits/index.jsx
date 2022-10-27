@@ -152,19 +152,11 @@ const DeezKits = React.forwardRef((props, ref) => {
           <div className={style.glitch_right_layer}></div>
           <div className={style.glitch_right_layer}></div>
           <div className={style.glitch_right_layer}></div>
+          <div className={style.glitch_right_layer}></div>
+          <div className={style.glitch_right_layer}></div>
         </div>
       </Box>
-
-      {/* <Box className={style.glitch}>
-          <div className={style.glitch__item}></div>
-          <div className={style.glitch__item}></div>
-          <div className={style.glitch__item}></div>
-          <div className={style.glitch__item}></div>
-          <div className={style.glitch__item}></div>
-      </Box> */}
-
       <Footer />
-
       <Box className={style.toggle_btn}>
         <Button onClick={() => setMintState(!isMintState)}>
           <span>{!isMintState ? "Mint" : "countdown"}</span>
