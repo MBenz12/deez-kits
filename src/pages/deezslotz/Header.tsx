@@ -33,9 +33,9 @@ const Header = ({
     <>
       <div className="hidden xl:flex w-full justify-center relative mb-10 z-[3]">
         <div className="absolute left-[-20px] top-[-20px]">
-          <div className="w-[225px] h-[104px]">
+          <a className="w-[225px] h-[104px]" href="https://deezkits.com/">
             <KitsLogo />
-          </div>
+          </a>
         </div>
         <div className="">
           <CommunityFunds id={1} balance={communityBalance} royalty={royalty} />
@@ -57,9 +57,9 @@ const Header = ({
       <div className="xl:hidden flex flex-col w-full gap-3 mb-10">
         <div className="flex justify-center gap-5 items-center">
           <div className="sm:w-[224px] flex justify-center">
-            <div className="sm:w-[170px] w-[136px] sm:h-[85px] h-[53px]">
+            <a className="sm:w-[170px] w-[136px] sm:h-[85px] h-[53px]" href="https://deezkits.com/">
               <KitsLogo />
-            </div>
+            </a>
           </div>
           <WalletButton id={2} />
         </div>
