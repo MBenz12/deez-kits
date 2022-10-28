@@ -10,11 +10,12 @@ const WalletButton = () => {
 
   const wallet = useWallet();
   useEffect(() => {
-    wallet.connected &&
+   if(wallet?.publicKey?.toString()){
     toast.success("Wallet Connected Successfully.",{position: "bottom-right",theme: "dark",
     autoClose: 3000,})
       console.log(wallet?.publicKey?.toString());
-  }, [wallet.connected]);
+   }
+  }, [wallet]);
 
   const handleDisconnect = () => {
     toast.success("Wallet Disconnected Successfully.",{position: "bottom-right",theme: "dark",

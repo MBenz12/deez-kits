@@ -52,7 +52,9 @@ const DeezKits = React.forwardRef((props, ref) => {
   }, [wallet.connected]);
 
   const AmountHandler = (e) => {
-    setMint(parseInt(e.target.value));
+    if(parseInt(e.target.value)<10){
+      setMint(parseInt(e.target.value));
+    }
   };
   return (
     <Box className={style.deez_kits_wrapper}>
@@ -142,6 +144,9 @@ const DeezKits = React.forwardRef((props, ref) => {
                   <input
                     type="number"
                     defaultValue="1"
+                    placeholder="1"
+                    max="10"
+                    maxLength="10"
                     onChange={(e) => {
                       AmountHandler(e);
                     }}
