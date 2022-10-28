@@ -12,17 +12,18 @@ import mintBtnaudio from "../../assets/audio/menu.mp3";
 import WalletButton from "../../sharedComponent/wallletButton";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { useNavigate } from "react-router-dom";
 
 const DeezKits = React.forwardRef((props, ref) => {
   const [isMintState, setMintState] = useState(props?.isMint);
+  const [mint, setMint] = useState(1);
   const totalTicket = 400;
   const [ticket, setTicket] = useState(0);
   const audioCountRef = useRef(null);
   const audioMintRef = useRef(null);
   const MintDate = new Date("Fri, 28 Oct 2022 17:00:00 GMT");
   const mintHandler = () => {
-    console.log("mint");
+    setMint(mint + 1);
+    console.log("mint", mint + 1);
   };
 
   useEffect(() => {
@@ -52,9 +53,9 @@ const DeezKits = React.forwardRef((props, ref) => {
   return (
     <Box className={style.deez_kits_wrapper}>
       <Box className={style.deezkits_header}>
-       <a href=" https://deezkits.com" target="_self">
-        <img src={Images?.logo} alt="deezkits-icon" />
-       </a> 
+        <a href=" https://deezkits.com" target="_self">
+          <img src={Images?.logo} alt="deezkits-icon" />
+        </a>
       </Box>
       <Box className={style.deez_content_wrapper}>
         <Box className={style.deez_inner_content}>
@@ -110,7 +111,7 @@ const DeezKits = React.forwardRef((props, ref) => {
                   {wallet.connected ? (
                     <span className={style.mint_btn}>MINT</span>
                   ) : (
-                    <WalletMultiButton  className={style.wallet_connect}>
+                    <WalletMultiButton className={style.wallet_connect}>
                       <span className="connect-text">Connect</span>
                     </WalletMultiButton>
                   )}
@@ -126,6 +127,13 @@ const DeezKits = React.forwardRef((props, ref) => {
                 </HighlightedText>{" "}
                 - {`${"0.25"}`} SOL
               </Typography>
+
+              {/* <Typography className={style.desc_text}>
+                <HighlightedText className="highlightedText">
+                  Amount{" "}
+                </HighlightedText>{" "}
+                - {`${"1"}`}
+              </Typography> */}
             </>
           ) : (
             <Box>
@@ -174,11 +182,11 @@ const DeezKits = React.forwardRef((props, ref) => {
         </div>
       </Box>
       <Footer />
-      {/* <Box className={style.toggle_btn}>
+      <Box className={style.toggle_btn}>
           <Button onClick={() => setMintState(!isMintState)}>
             <span>{!isMintState ? "Mint" : "countdown"}</span>
           </Button>
-        </Box> */}
+        </Box>
       <Music props={props} ref={ref} />
       {/* couting audio */}
       <audio loop ref={audioCountRef} controls className="d-none">

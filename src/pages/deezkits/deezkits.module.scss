@@ -520,7 +520,9 @@
     height: auto;
     color: white;
     display: flex;
-    @media only screen and (max-width: 480px) {
+    visibility: hidden;
+    @media only screen and (max-width: 767px) {
+      visibility: visible;
       top: 9%;
     }
     span {
