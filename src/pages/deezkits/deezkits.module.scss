@@ -193,6 +193,9 @@
     z-index: 5;
     // overflow: hidden;
     transition: all 1s ease;
+    @media only screen and (max-width: 1599px) {
+      right: 10%;
+    }
     @media only screen and (max-width: 1299px) {
       max-width: 15%;
     }
@@ -451,43 +454,60 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 354px;
+    animation: UpDown 1s linear infinite;
+    @keyframes UpDown {
+      0% {
+        bottom: 0;
+      }
+      50% {
+        bottom: 1.1em;
+      }
+      100% {
+        bottom: 0;
+      }
+    }
     img {
-      height: 354px;
+      height: 245px;
       z-index: 1;
       position: relative;
-      // transition: transform 0.2s; /* Animation */
-      // @media only screen and (max-width: 1599px) {
-      //   width: 318.6px;
-      // }
+      transition: transform 0.2s; /* Animation */
+      @media only screen and (max-width: 1599px) {
+        width: 287px;
+      }
+      @media only screen and (max-width: 767) {
+        height: 230px;
+        width: 260px;
+      }
       // &:hover {
       //   transform: scale(1.2);
       // }
     }
-    // &::before {
-    //   content: "";
-    //   background-image: url("../../assets/images/deezKits/ellipse.png");
-    //   background-repeat: no-repeat;
-    //   position: absolute;
-    //   height: 0px;
-    //   width: 0px;
-    //   z-index: 0;
-    //   max-width: 100%;
-    //   box-shadow: 0px 0px 130px 100px rgb(206 78 255 / 40%);
-    //   border-radius: 1.5%;
+    &::before {
+      content: "";
+      background-image: url("../../assets/images/deezKits/black_bg_02\ copy\ 6.png");
+      background-repeat: no-repeat;
+      position: absolute;
+      height: 0px;
+      width: 0px;
+      z-index: 0;
+      max-width: 100%;
+      box-shadow: 0px 0px 130px 120px rgb(206 78 255 / 40%);
+      border-radius: 1.5%;
 
-    // animation: colorChange 5s ease infinite;
-    // @keyframes colorChange {
-    //   0% {
-    //     box-shadow: 0px 0px 130px 100px rgb(206 78 255 / 40%);
-    //   }
-    //  1.5% {
-    //     box-shadow: 0px 0px 130px 100px rgb(122 88 255 / 40%);
-    //   }
-    //   100% {
-    //     box-shadow: 0px 0px 130px 100px rgb(206 78 255 / 40%);
-    //   }
-    // }
-    // }
+      // animation: colorChange 5s ease infinite;
+      // @keyframes colorChange {
+      //   0% {
+      //     box-shadow: 0px 0px 130px 100px rgb(206 78 255 / 40%);
+      //   }
+      //  1.5% {
+      //     box-shadow: 0px 0px 130px 100px rgb(122 88 255 / 40%);
+      //   }
+      //   100% {
+      //     box-shadow: 0px 0px 130px 100px rgb(206 78 255 / 40%);
+      //   }
+      // }
+    }
   }
   .toggle_btn {
     position: fixed;
@@ -500,7 +520,9 @@
     height: auto;
     color: white;
     display: flex;
-    @media only screen and (max-width: 480px) {
+    visibility: hidden;
+    @media only screen and (max-width: 767px) {
+      visibility: visible;
       top: 9%;
     }
     span {
@@ -605,7 +627,14 @@
       margin-top: 15px;
       max-width: 45%;
     }
-
+    .wallet_connect {
+      background: none;
+      span {
+        font-size: 25px;
+        color: #4aff2c;
+        text-transform: uppercase;
+      }
+    }
     &:hover {
       .mint_btn {
         color: #fbff49;
@@ -649,6 +678,18 @@
     }
     @media only screen and (max-width: 767px) {
       font-size: 19px;
+    }
+  }
+  .amount_input {
+    input {
+      color: white;
+      padding: 0;
+      background-color: black;
+      width: 75px;
+      text-align: center;
+      border: 1px solid #fff;
+      padding-top: 2px;
+      padding-left: 10px;
     }
   }
   .mint_supply,

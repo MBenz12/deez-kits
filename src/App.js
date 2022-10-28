@@ -6,6 +6,8 @@ import { ConnectionProvider, WalletProvider,} from "@solana/wallet-adapter-react
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { useMemo } from "react";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const network = WalletAdapterNetwork.Mainnet;
@@ -27,6 +29,7 @@ function App() {
         <WalletProvider wallets={wallets} onError={walletConnectionErr} autoConnect >
           <WalletModalProvider>
             <Router />
+            <ToastContainer />
           </WalletModalProvider>
         </WalletProvider>
       </ConnectionProvider>

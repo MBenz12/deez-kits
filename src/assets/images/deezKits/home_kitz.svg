@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!--Generator: Xara Designer (www.xara.com), SVG filter version: 6.6.0.0-->
+<svg fill="none" fill-rule="evenodd" stroke="black" stroke-width="0.501" stroke-linejoin="bevel" stroke-miterlimit="10" font-family="Times New Roman" font-size="16" style="font-variant-ligatures:none" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" overflow="visible" width="19.286pt" height="18.472pt" viewBox="75.855 -607.876 19.286 18.472">
+ <defs>
+  <linearGradient id="LinearGradient" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="-7.95" y2="-21.225" gradientTransform="translate(100.005 607.608)">
+   <stop offset="0" stop-color="#ffd818"/>
+   <stop offset="1" stop-color="#6ad51e"/>
+  </linearGradient>
+ </defs>
+ <g id="Page background" transform="scale(1 -1)"/>
+ <g id="Layer 1" transform="scale(1 -1)">
+  <path d="M 94.802,600.702 L 92.389,602.668 L 92.389,605.814 C 92.389,606.168 92.101,606.456 91.746,606.456 L 90.228,606.456 C 89.874,606.456 89.586,606.168 89.586,605.814 L 89.586,604.953 L 86.362,607.581 C 86.128,607.771 85.821,607.876 85.496,607.876 C 85.172,607.876 84.867,607.772 84.634,607.583 L 76.194,600.702 C 75.811,600.389 75.834,600.117 75.881,599.983 C 75.929,599.849 76.083,599.624 76.575,599.624 L 77.731,599.624 L 77.731,590.575 C 77.731,589.929 78.255,589.404 78.899,589.404 L 82.549,589.404 C 83.188,589.404 83.687,589.918 83.687,590.575 L 83.687,594.286 C 83.687,594.604 83.98,594.893 84.301,594.893 L 86.754,594.893 C 87.06,594.893 87.309,594.621 87.309,594.286 L 87.309,590.575 C 87.309,589.94 87.856,589.404 88.505,589.404 L 92.097,589.404 C 92.741,589.404 93.265,589.929 93.265,590.575 L 93.265,599.624 L 94.421,599.624 C 94.913,599.624 95.067,599.849 95.115,599.983 C 95.163,600.117 95.185,600.389 94.802,600.702 Z" stroke="none" stroke-width="1.817" fill-rule="nonzero" stroke-linejoin="miter" marker-start="none" marker-end="none" fill="url(#LinearGradient)"/>
+ </g>
+</svg>

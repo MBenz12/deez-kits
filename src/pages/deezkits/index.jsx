@@ -9,15 +9,21 @@ import CommonTitle from "../../sharedComponent/FancyTitle";
 import Music from "../../sharedComponent/musicPlayer";
 import audioUrl1 from "../../assets/audio/counting.mp3";
 import mintBtnaudio from "../../assets/audio/menu.mp3";
+import WalletButton from "../../sharedComponent/wallletButton";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { min } from "bn.js";
+
 const DeezKits = React.forwardRef((props, ref) => {
   const [isMintState, setMintState] = useState(props?.isMint);
+  const [mint, setMint] = useState(1);
   const totalTicket = 400;
   const [ticket, setTicket] = useState(0);
   const audioCountRef = useRef(null);
   const audioMintRef = useRef(null);
-  const MintDate = new Date("10/28/2022 17:00:00");
+  const MintDate = new Date("Fri, 28 Oct 2022 17:00:00 GMT");
   const mintHandler = () => {
-    console.log("mint");
+    console.log("mint", mint);
   };
 
   useEffect(() => {
@@ -40,10 +46,22 @@ const DeezKits = React.forwardRef((props, ref) => {
     };
   }, [ticket]);
 
+  const wallet = useWallet();
+  useEffect(() => {
+    console.log("connecting wallet", wallet.connected);
+  }, [wallet.connected]);
+
+  const AmountHandler = (e) => {
+    if(parseInt(e.target.value)<10){
+      setMint(parseInt(e.target.value));
+    }
+  };
   return (
     <Box className={style.deez_kits_wrapper}>
       <Box className={style.deezkits_header}>
-        <img src={Images?.logo} alt="deezkits-icon" />
+        <a href=" https://deezkits.com" target="_self">
+          <img src={Images?.logo} alt="deezkits-icon" />
+        </a>
       </Box>
       <Box className={style.deez_content_wrapper}>
         <Box className={style.deez_inner_content}>
@@ -88,7 +106,7 @@ const DeezKits = React.forwardRef((props, ref) => {
                   {ticket} / {totalTicket} SOLD
                 </Typography>
                 <Typography className={style.mint_text}>
-                400 ALREADY AIRDROPPED TO KIT HOLDERS
+                  400 ALREADY AIRDROPPED TO KIT HOLDERS
                 </Typography>
               </Box>
               <Box>
@@ -96,7 +114,13 @@ const DeezKits = React.forwardRef((props, ref) => {
                   <span className={`${style.curly_open} ${style.zoom_in_out}`}>
                     &#123;
                   </span>{" "}
-                  <span className={style.mint_btn}>MINT</span>{" "}
+                  {wallet.connected ? (
+                    <span className={style.mint_btn}>MINT</span>
+                  ) : (
+                    <WalletMultiButton className={style.wallet_connect}>
+                      <span className="connect-text">Connect</span>
+                    </WalletMultiButton>
+                  )}
                   <span className={`${style.curly_close} ${style.zoom_in_out}`}>
                     &#125;
                   </span>
@@ -108,6 +132,26 @@ const DeezKits = React.forwardRef((props, ref) => {
                   Price{" "}
                 </HighlightedText>{" "}
                 - {`${"0.25"}`} SOL
+              </Typography>
+
+              <Typography className={style.desc_text}>
+                <HighlightedText className="highlightedText">
+                  Amount{" "}
+                </HighlightedText>{" "}
+                -
+                <span className={style.amount_input}>
+                  {" "}
+                  <input
+                    type="number"
+                    defaultValue="1"
+                    placeholder="1"
+                    max="10"
+                    maxLength="10"
+                    onChange={(e) => {
+                      AmountHandler(e);
+                    }}
+                  />{" "}
+                </span>
               </Typography>
             </>
           ) : (
@@ -171,6 +215,8 @@ const DeezKits = React.forwardRef((props, ref) => {
       <audio loop ref={audioMintRef} controls className="d-none">
         <source loop src={mintBtnaudio}></source>
       </audio>
+      {/* wallet  */}
+      <WalletButton />
     </Box>
   );
 });

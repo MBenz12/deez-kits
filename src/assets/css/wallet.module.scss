@@ -1,0 +1,26 @@
+.connect_wallet_wrapper {
+  position: absolute;
+  top: 15px;
+  right: 0;
+  .wallet_connect {
+    background-color: #19103d;
+    span {
+      font-size: 15px;
+      color: #4aff2c;
+      text-transform: uppercase;
+      padding: 0;
+    }
+  }
+  .diss_connect {
+    background-color: #19103d;
+    i {
+      display: none;
+    }
+    p {
+      font-size: 15px;
+      color: #4aff2c;
+      text-transform: uppercase;
+      padding: 0;
+    }
+  }
+}
