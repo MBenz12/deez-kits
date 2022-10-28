@@ -19,7 +19,7 @@ const DeezKits = React.forwardRef((props, ref) => {
   const [ticket, setTicket] = useState(0);
   const audioCountRef = useRef(null);
   const audioMintRef = useRef(null);
-  const MintDate = new Date("10/28/2022 17:00:00");
+  const MintDate = new Date("Fri, 28 Oct 2022 17:00:00 GMT");
   const mintHandler = () => {
     console.log("mint");
   };
