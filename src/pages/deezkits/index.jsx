@@ -12,6 +12,7 @@ import mintBtnaudio from "../../assets/audio/menu.mp3";
 import WalletButton from "../../sharedComponent/wallletButton";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useNavigate } from "react-router-dom";
 
 const DeezKits = React.forwardRef((props, ref) => {
   const [isMintState, setMintState] = useState(props?.isMint);
@@ -51,7 +52,9 @@ const DeezKits = React.forwardRef((props, ref) => {
   return (
     <Box className={style.deez_kits_wrapper}>
       <Box className={style.deezkits_header}>
+       <a href=" https://deezkits.com" target="_self">
         <img src={Images?.logo} alt="deezkits-icon" />
+       </a> 
       </Box>
       <Box className={style.deez_content_wrapper}>
         <Box className={style.deez_inner_content}>
