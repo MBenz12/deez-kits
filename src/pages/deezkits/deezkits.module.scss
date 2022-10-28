@@ -680,6 +680,14 @@
       font-size: 19px;
     }
   }
+  .amount_input {
+    input {
+      color: white;
+      padding: 0;
+      background-color: black;
+      width: 75px;
+    }
+  }
   .mint_supply,
   .mint_price {
     @media only screen and (max-width: 767px) {

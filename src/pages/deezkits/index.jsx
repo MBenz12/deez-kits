@@ -12,6 +12,7 @@ import mintBtnaudio from "../../assets/audio/menu.mp3";
 import WalletButton from "../../sharedComponent/wallletButton";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { min } from "bn.js";
 
 const DeezKits = React.forwardRef((props, ref) => {
   const [isMintState, setMintState] = useState(props?.isMint);
@@ -22,8 +23,7 @@ const DeezKits = React.forwardRef((props, ref) => {
   const audioMintRef = useRef(null);
   const MintDate = new Date("Fri, 28 Oct 2022 17:00:00 GMT");
   const mintHandler = () => {
-    setMint(mint + 1);
-    console.log("mint", mint + 1);
+    console.log("mint", mint);
   };
 
   useEffect(() => {
@@ -50,6 +50,10 @@ const DeezKits = React.forwardRef((props, ref) => {
   useEffect(() => {
     console.log("connecting wallet", wallet.connected);
   }, [wallet.connected]);
+
+  const AmountHandler = (e) => {
+    setMint(parseInt(e.target.value));
+  };
   return (
     <Box className={style.deez_kits_wrapper}>
       <Box className={style.deezkits_header}>
@@ -128,12 +132,22 @@ const DeezKits = React.forwardRef((props, ref) => {
                 - {`${"0.25"}`} SOL
               </Typography>
 
-              {/* <Typography className={style.desc_text}>
+              <Typography className={style.desc_text}>
                 <HighlightedText className="highlightedText">
                   Amount{" "}
                 </HighlightedText>{" "}
-                - {`${"1"}`}
-              </Typography> */}
+                -
+                <span className={style.amount_input}>
+                  {" "}
+                  <input
+                    type="number"
+                    defaultValue="1"
+                    onChange={(e) => {
+                      AmountHandler(e);
+                    }}
+                  />{" "}
+                </span>
+              </Typography>
             </>
           ) : (
             <Box>
@@ -183,10 +197,10 @@ const DeezKits = React.forwardRef((props, ref) => {
       </Box>
       <Footer />
       <Box className={style.toggle_btn}>
-          <Button onClick={() => setMintState(!isMintState)}>
-            <span>{!isMintState ? "Mint" : "countdown"}</span>
-          </Button>
-        </Box>
+        <Button onClick={() => setMintState(!isMintState)}>
+          <span>{!isMintState ? "Mint" : "countdown"}</span>
+        </Button>
+      </Box>
       <Music props={props} ref={ref} />
       {/* couting audio */}
       <audio loop ref={audioCountRef} controls className="d-none">
