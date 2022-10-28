@@ -9,6 +9,10 @@ import CommonTitle from "../../sharedComponent/FancyTitle";
 import Music from "../../sharedComponent/musicPlayer";
 import audioUrl1 from "../../assets/audio/counting.mp3";
 import mintBtnaudio from "../../assets/audio/menu.mp3";
+import WalletButton from "../../sharedComponent/wallletButton";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+
 const DeezKits = React.forwardRef((props, ref) => {
   const [isMintState, setMintState] = useState(props?.isMint);
   const totalTicket = 400;
@@ -40,6 +44,10 @@ const DeezKits = React.forwardRef((props, ref) => {
     };
   }, [ticket]);
 
+  const wallet = useWallet();
+  useEffect(() => {
+    console.log("connecting wallet", wallet.connected);
+  }, [wallet.connected]);
   return (
     <Box className={style.deez_kits_wrapper}>
       <Box className={style.deezkits_header}>
@@ -88,7 +96,7 @@ const DeezKits = React.forwardRef((props, ref) => {
                   {ticket} / {totalTicket} SOLD
                 </Typography>
                 <Typography className={style.mint_text}>
-                400 ALREADY AIRDROPPED TO KIT HOLDERS
+                  400 ALREADY AIRDROPPED TO KIT HOLDERS
                 </Typography>
               </Box>
               <Box>
@@ -96,7 +104,13 @@ const DeezKits = React.forwardRef((props, ref) => {
                   <span className={`${style.curly_open} ${style.zoom_in_out}`}>
                     &#123;
                   </span>{" "}
-                  <span className={style.mint_btn}>MINT</span>{" "}
+                  {wallet.connected ? (
+                    <span className={style.mint_btn}>MINT</span>
+                  ) : (
+                    <WalletMultiButton  className={style.wallet_connect}>
+                      <span className="connect-text">Connect</span>
+                    </WalletMultiButton>
+                  )}
                   <span className={`${style.curly_close} ${style.zoom_in_out}`}>
                     &#125;
                   </span>
@@ -157,11 +171,11 @@ const DeezKits = React.forwardRef((props, ref) => {
         </div>
       </Box>
       <Footer />
-      <Box className={style.toggle_btn}>
-        <Button onClick={() => setMintState(!isMintState)}>
-          <span>{!isMintState ? "Mint" : "countdown"}</span>
-        </Button>
-      </Box>
+      {/* <Box className={style.toggle_btn}>
+          <Button onClick={() => setMintState(!isMintState)}>
+            <span>{!isMintState ? "Mint" : "countdown"}</span>
+          </Button>
+        </Box> */}
       <Music props={props} ref={ref} />
       {/* couting audio */}
       <audio loop ref={audioCountRef} controls className="d-none">
@@ -171,6 +185,8 @@ const DeezKits = React.forwardRef((props, ref) => {
       <audio loop ref={audioMintRef} controls className="d-none">
         <source loop src={mintBtnaudio}></source>
       </audio>
+      {/* wallet  */}
+      <WalletButton />
     </Box>
   );
 });

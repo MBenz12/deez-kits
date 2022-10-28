@@ -605,7 +605,14 @@
       margin-top: 15px;
       max-width: 45%;
     }
-
+   .wallet_connect {
+    background: none;
+    span{
+      font-size: 25px;
+      color: #4aff2c;
+      text-transform: uppercase;
+    }
+   }
     &:hover {
       .mint_btn {
         color: #fbff49;
