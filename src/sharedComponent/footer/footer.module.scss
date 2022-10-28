@@ -15,7 +15,7 @@
     // display: block;
   }
   a {
-    color: #fbff49;
+    color: #fff;
     text-decoration: none;
     text-transform: uppercase;
     cursor: pointer;
@@ -26,10 +26,17 @@
     border: none;
     padding: 4px 8px;
     font-weight: 500;
-    font-size: 17px;
-    @media only screen and (max-width:349px){
-      gap:1px;
-      font-size: 15px;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+      sans-serif;
+    font-size: 13px;
+    @media only screen and (max-width: 1499px) {
+      gap: 3px;
+     
+    }
+    @media only screen and (max-width: 349px) {
+      gap: 1px;
+      font-size: 12px;
     }
     img {
       color: #fbff49;
@@ -45,8 +52,9 @@
   .discord_link {
     min-width: 70px;
   }
-  .staking_link,.coinflip_link{
-    img{
+  .staking_link,
+  .coinflip_link {
+    img {
       width: 17px;
       height: 20px;
     }

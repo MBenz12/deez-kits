@@ -193,6 +193,9 @@
     z-index: 5;
     // overflow: hidden;
     transition: all 1s ease;
+    @media only screen and (max-width: 1599px) {
+      right: 10%;
+    }
     @media only screen and (max-width: 1299px) {
       max-width: 15%;
     }
