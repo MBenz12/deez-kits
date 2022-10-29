@@ -1,18 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Button, Typography } from "@mui/material";
-import HighlightedText from "../../sharedComponent/HighlightedText";
-import { Images } from "../../static/images";
-import style from "./deezkits.module.scss";
-import CountdownTimer from "../../components/deezkits/countdown/CountDownTImer";
-import Footer from "../../sharedComponent/footer/footer";
-import CommonTitle from "../../sharedComponent/FancyTitle";
-import Music from "../../sharedComponent/musicPlayer";
+import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import React, { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import audioUrl1 from "../../assets/audio/counting.mp3";
 import mintBtnaudio from "../../assets/audio/menu.mp3";
+import CountdownTimer from "../../components/deezkits/countdown/CountDownTImer";
+import CommonTitle from "../../sharedComponent/FancyTitle";
+import Footer from "../../sharedComponent/footer/footer";
+import HighlightedText from "../../sharedComponent/HighlightedText";
+import Music from "../../sharedComponent/musicPlayer";
 import WalletButton from "../../sharedComponent/wallletButton";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { min } from "bn.js";
+import { Images } from "../../static/images";
+import { awaitTransactionSignatureConfirmation, getCandyMachineState, mintOneToken } from "./candy-machine";
+import style from "./deezkits.module.scss";
+
+const CANDY_MACHINE_ID = "BHovi838JNNmat1Bi1bLE4nCXVhFS33bqCKMXHDs2FaK";
 
 const DeezKits = React.forwardRef((props, ref) => {
   const [isMintState, setMintState] = useState(props?.isMint);
@@ -22,9 +27,7 @@ const DeezKits = React.forwardRef((props, ref) => {
   const audioCountRef = useRef(null);
   const audioMintRef = useRef(null);
   const MintDate = new Date("Mon, 31 Oct 2022 17:00:00 GMT");
-  const mintHandler = () => {
-    console.log("mint", mint);
-  };
+  
 
   useEffect(() => {
     const increaseTicket = () => {
@@ -47,13 +50,67 @@ const DeezKits = React.forwardRef((props, ref) => {
   }, [ticket]);
 
   const wallet = useWallet();
+  const anchorWallet = useAnchorWallet();
+  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+  const [candyMachine, setCandyMachine] = useState();
   useEffect(() => {
     console.log("connecting wallet", wallet.connected);
+
+    refreshCandyMachineState();
+    
   }, [wallet.connected]);
+
+  const refreshCandyMachineState = async () => {
+    const cndy = await getCandyMachineState(
+      anchorWallet,
+      new PublicKey(CANDY_MACHINE_ID),
+      connection
+    );
+    setCandyMachine(cndy);
+  }
 
   const AmountHandler = (e) => {
     if(parseInt(e.target.value)<10){
       setMint(parseInt(e.target.value));
+    }
+  };
+
+  const mintHandler = async () => {
+    console.log("mint", mint);
+    // const setupMint = await createAccountsForMint(candyMachine, wallet.publicKey);
+    console.log(candyMachine);
+    const mintResult = await mintOneToken(candyMachine, wallet.publicKey, [], []);
+    console.log(mintResult);
+
+    let status = { err: true };
+    let metadataStatus = null;
+    if (mintResult) {
+      status = await awaitTransactionSignatureConfirmation(
+        mintResult.mintTxId,
+        props.txTimeout,
+        props.connection,
+        true
+      );
+
+      metadataStatus =
+        await candyMachine.program.provider.connection.getAccountInfo(
+          mintResult.metadataKey,
+          "processed"
+        );
+      console.log("Metadata status: ", !!metadataStatus);
+    }
+
+    if (status && !status.err && metadataStatus) {
+      // manual update since the refresh might not detect
+      // the change immediately
+      toast.success("Congratulations! Mint succeeded!");
+      refreshCandyMachineState("processed");
+    } else if (status && !status.err) {
+      toast.error("Mint likely failed! Anti-bot SOL 0.01 fee potentially charged! Check the explorer to confirm the mint failed and if so, make sure you are eligible to mint before trying again.");
+      refreshCandyMachineState();
+    } else {
+      toast.error("Mint failed! Please try again!");
+      refreshCandyMachineState();
     }
   };
   return (
@@ -145,6 +202,7 @@ const DeezKits = React.forwardRef((props, ref) => {
                     type="number"
                     defaultValue="1"
                     placeholder="1"
+                    min="0"
                     max="10"
                     maxLength="10"
                     onChange={(e) => {

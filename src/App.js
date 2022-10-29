@@ -1,13 +1,12 @@
-import React from "react";
-import Router from "./router/routes";
-import './app.scss'
-import { PhantomWalletAdapter, SolflareWalletAdapter, SolletWalletAdapter, SlopeWalletAdapter,} from "@solana/wallet-adapter-wallets";
-import { ConnectionProvider, WalletProvider,} from "@solana/wallet-adapter-react";
-import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+import { PhantomWalletAdapter, SlopeWalletAdapter, SolflareWalletAdapter, SolletWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { useMemo } from "react";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './app.scss';
+import Router from "./router/routes";
 
 function App() {
   const network = WalletAdapterNetwork.Mainnet;

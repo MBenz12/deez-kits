@@ -1,11 +1,10 @@
-import { useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import {
-  WalletMultiButton,
-  WalletDisconnectButton,
+  WalletDisconnectButton, WalletMultiButton
 } from "@solana/wallet-adapter-react-ui";
-import style from '../assets/css/wallet.module.scss'
-import {toast}  from 'react-toastify';
+import { useEffect } from "react";
+import { toast } from 'react-toastify';
+import style from '../assets/css/wallet.module.scss';
 const WalletButton = () => {
 
   const wallet = useWallet();
@@ -18,8 +17,8 @@ const WalletButton = () => {
   }, [wallet]);
 
   const handleDisconnect = () => {
-    toast.success("Wallet Disconnected Successfully.",{position: "bottom-right",theme: "dark",
-    autoClose: 3000,})
+    // toast.success("Wallet Disconnected Successfully.",{position: "bottom-right",theme: "dark",
+    // autoClose: 3000,})
     console.log("Disconnecting from wallet");
   };
 
