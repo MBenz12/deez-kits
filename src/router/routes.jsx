@@ -6,7 +6,7 @@ import Audio from '../sharedComponent/Audio'
 import DeezSlotz from "../pages/deezslotz";
 import Staking from "../pages/staking";
 const Home = React.lazy(() => import("../pages/home/index"));
-const Deezkits = React.lazy(() => import("../pages/deezkits/index"));
+const Deezkits = React.lazy(() => import("../pages/deezkits"));
 
 const Router = () => {
   const MusicRef = useRef(null);

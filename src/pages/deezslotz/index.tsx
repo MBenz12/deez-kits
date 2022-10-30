@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as anchor from "@project-serum/anchor";
-import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import React, { useEffect, useState } from "react";
@@ -24,9 +23,10 @@ import "./index.scss";
 import Slots, { random } from "./Slots";
 import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
 import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
+import { Wallet } from "@project-serum/anchor";
 
 //const cluster = WalletAdapterNetwork.Devnet;
-const containerId = 113;
+const containerId = 114;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
 {
@@ -68,7 +68,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
 
   useEffect(() => {
     const fetchGame = async () => {
-      const wallet = new NodeWallet(anchor.web3.Keypair.generate());
+      const wallet = new Wallet(anchor.web3.Keypair.generate());
       const { program } = getProviderAndProgram(connection, wallet);
       const [game] = await getGameAddress(game_name, game_owner);
       const gameData = await program.account.game.fetchNullable(game);
