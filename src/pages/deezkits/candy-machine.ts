@@ -1,11 +1,9 @@
 /* eslint-disable */
 import * as anchor from "@project-serum/anchor";
 
-import { MintLayout, TOKEN_PROGRAM_ID, Token } from "@solana/spl-token";
+import { MintLayout, Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import {
-  SystemProgram,
-  Transaction,
-  SYSVAR_SLOT_HASHES_PUBKEY, PublicKey,
+  SystemProgram, SYSVAR_SLOT_HASHES_PUBKEY, Transaction
 } from "@solana/web3.js";
 import { sendTransactions, SequenceType } from "./connection";
 
@@ -14,7 +12,7 @@ import {
   getAtaForMint,
   getNetworkExpire,
   getNetworkToken,
-  SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,
+  SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID
 } from "./utils";
 
 export const CANDY_MACHINE_PROGRAM = new anchor.web3.PublicKey(
@@ -391,13 +389,15 @@ type MintResult = {
 
 export const mintOneToken = async (candyMachine: CandyMachineAccount, payer: anchor.web3.PublicKey, beforeTransactions: Transaction[] = [], afterTransactions: Transaction[] = [], setupState?: SetupState): Promise<MintResult | null> =>
 {
-  const instructions = [];
-  const signers: anchor.web3.Keypair[] = [];
   let metadataAddress: any = "";
+  const txs = [];
 
-  const multipleMints = 1; // larger than 1 won't work (Transaction too large: 1866 > 1232)
+  const multipleMints = 2; // larger than 1 won't work (Transaction too large: 1866 > 1232)
   for (let i=1; i <= multipleMints; i++)
   {
+    const instructions = [];
+    const signers: anchor.web3.Keypair[] = [];
+    const tx = new Transaction();
     const mint = setupState?.mint ?? anchor.web3.Keypair.generate();
     const userTokenAccountAddress = (await getAtaForMint(mint.publicKey, payer))[0];
     const userPayingAccountAddress = candyMachine.state.tokenMint ? (await getAtaForMint(candyMachine.state.tokenMint, payer))[0] :payer;
@@ -615,39 +615,57 @@ export const mintOneToken = async (candyMachine: CandyMachineAccount, payer: anc
         console.error(error);
       }
     }
+
+    // @ts-ignore
+    tx.instructions = instructions;
+    console.log(instructions);
+    tx.feePayer = candyMachine.program.provider.wallet.publicKey;
+    const latestBlockHash = await candyMachine.program.provider.connection.getLatestBlockhash("finalized");
+    tx.recentBlockhash = latestBlockHash.blockhash;
+    console.log(latestBlockHash.blockhash);
+    tx.sign(...signers);
+    txs.push(tx);
   }
 
-  const instructionsMatrix = [instructions];
-  const signersMatrix = [signers];
+  const signedTxs = await candyMachine.program.provider.wallet.signAllTransactions(txs);
 
-  try
-  {
-    const txns = (
-        await sendTransactions(
-            candyMachine.program.provider.connection,
-            candyMachine.program.provider.wallet,
-            instructionsMatrix,
-            signersMatrix,
-            SequenceType.StopOnFailure,
-            "singleGossip",
-            () =>
-            {
-            },
-            () => false,
-            undefined,
-            beforeTransactions,
-            afterTransactions
-        )
-    ).txs.map((t) => t.txid);
-
-    const mintTxn = txns[0];
-
-    return { mintTxId: mintTxn, metadataKey: metadataAddress };
+  for (const signedTx of signedTxs) {
+    const txSignature = await candyMachine.program.provider.connection.sendRawTransaction(signedTx.serialize());
+    console.log(txSignature);
+    await candyMachine.program.provider.connection.confirmTransaction(txSignature, "finalized");
   }
-  catch (e)
-  {
-    console.log(e);
-  }
+
+  // const instructionsMatrix = [instructions];
+  // const signersMatrix = [signers];
+
+  // try
+  // {
+  //   const txns = (
+  //       await sendTransactions(
+  //           candyMachine.program.provider.connection,
+  //           candyMachine.program.provider.wallet,
+  //           instructionsMatrix,
+  //           signersMatrix,
+  //           SequenceType.StopOnFailure,
+  //           "singleGossip",
+  //           () =>
+  //           {
+  //           },
+  //           () => false,
+  //           undefined,
+  //           beforeTransactions,
+  //           afterTransactions
+  //       )
+  //   ).txs.map((t) => t.txid);
+
+  //   const mintTxn = txns[0];
+
+  //   return { mintTxId: mintTxn, metadataKey: metadataAddress };
+  // }
+  // catch (e)
+  // {
+  //   console.log(e);
+  // }
   return null;
 };
 
