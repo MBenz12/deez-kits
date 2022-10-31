@@ -244,21 +244,31 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                                 </Typography>
                             </Box>
                             <Box>
-                                <button onClick={mintHandler} className={style.mint_button}>
-                  <span className={`${style.curly_open} ${style.zoom_in_out}`}>
-                    &#123;
-                  </span>{" "}
+                                
                                     {wallet.connected ? (
-                                        <span className={style.mint_btn}>MINT</span>
+                                        <button onClick={mintHandler} className={style.mint_button}>
+                                          <span className={`${style.curly_open} ${style.zoom_in_out}`}>
+                                            &#123;
+                                           </span>{" "}
+                                          <span className={style.mint_btn}>MINT</span>
+                                           <span className={`${style.curly_close} ${style.zoom_in_out}`}>
+                                            &#125;
+                                           </span>
+                                        </button>
                                     ) :(
+                                        <Box  className={style.mint_button}>
+                                        <span className={`${style.curly_open} ${style.zoom_in_out}`}>
+                                          &#123;
+                                         </span>{" "}
                                         <WalletMultiButton className={style.wallet_connect}>
                                             <span className="connect-text">Connect</span>
                                         </WalletMultiButton>
+                                        <span className={`${style.curly_close} ${style.zoom_in_out}`}>
+                                            &#125;
+                                           </span>
+                                        </Box>
                                     )}
-                                    <span className={`${style.curly_close} ${style.zoom_in_out}`}>
-                    &#125;
-                  </span>
-                                </button>
+                                    
                             </Box>
 
                             <Typography className={style.desc_text}>
