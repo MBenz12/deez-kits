@@ -601,7 +601,7 @@ export const mintTokens = async (candyMachine: CandyMachineAccount, payer: ancho
       tx.instructions = instructions;
       console.log(instructions);
       tx.feePayer = candyMachine.program.provider.wallet.publicKey;
-      const latestBlockHash = await candyMachine.program.provider.connection.getLatestBlockhash("finalized");
+      const latestBlockHash = await candyMachine.program.provider.connection.getLatestBlockhash("confirmed");
       tx.recentBlockhash = latestBlockHash.blockhash;
       console.log(latestBlockHash.blockhash);
       tx.sign(...signers);
@@ -620,8 +620,8 @@ export const mintTokens = async (candyMachine: CandyMachineAccount, payer: ancho
     }
 
     for (const txSignature of txSignatures) {
-      await candyMachine.program.provider.connection.confirmTransaction(txSignature, "finalized");
-      console.log(txSignature, "finalized");
+      await candyMachine.program.provider.connection.confirmTransaction(txSignature, "confirmed");
+      console.log(txSignature, "confirmed");
       let metadataStatus = null;
       metadataStatus = await candyMachine!.program.provider.connection.getAccountInfo(metadataAddresses[i], "processed");
       console.log("Metadata status: ", !!metadataStatus);
