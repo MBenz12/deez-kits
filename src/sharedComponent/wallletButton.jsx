@@ -9,17 +9,20 @@ const WalletButton = () => {
 
   const wallet = useWallet();
   useEffect(() => {
-   if(wallet?.publicKey?.toString()){
+   if(wallet?.publicKey?.toString() && wallet.connected){
+    // console.log();
+    toast.dismiss();
     toast.success("Wallet Connected Successfully.",{position: "bottom-right",theme: "dark",
     autoClose: 3000,})
-      console.log(wallet?.publicKey?.toString());
+      // console.log(wallet?.publicKey?.toString());
    }
-  }, [wallet]);
+  }, [wallet.connected]);
 
   const handleDisconnect = () => {
-    // toast.success("Wallet Disconnected Successfully.",{position: "bottom-right",theme: "dark",
-    // autoClose: 3000,})
-    console.log("Disconnecting from wallet");
+    toast.dismiss();
+    toast.success("Wallet Disconnected Successfully.",{position: "bottom-right",theme: "dark",
+    autoClose: 3000,})
+    // console.log("Disconnecting from wallet");
   };
 
   return (
