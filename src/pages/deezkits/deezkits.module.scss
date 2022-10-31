@@ -69,7 +69,7 @@
 
     //deezkits left kits style
     .deez_left_kits_wrapper{
-      max-width: 390px;
+      max-width: 370px;
       width: 100%;
       position: absolute;
       bottom: 0;
@@ -103,6 +103,9 @@
       max-width: 75%;
       width: 100%;
       transition: all 0.5s ease;
+      @media only screen and (max-width:1599px) {
+        max-width: 62%;
+      }
       .glitch__layers {
           visibility: hidden;
       }
@@ -150,11 +153,14 @@
       @media only screen and (max-width: 1799px) {
           max-width: 290px;
       }
+      @media only screen and (max-width: 1599px) {
+        max-width: 224px;
+    }
       @media only screen and (max-width: 1499px) {
-          max-width: 296px;
+          // max-width: 296px;
       }
       @media only screen and (max-width: 1299px) {
-          max-width: 248px;
+          // max-width: 248px;
       }
   }
   .glitch__layer:nth-child(1) {
@@ -276,6 +282,7 @@
       height: auto;
       @media only screen and (max-width: 767px) {
         width: 215px;
+        margin-top: 20px;
       }
     }
     @media only screen and (max-width: 1599px) {
@@ -467,11 +474,11 @@
       position: relative;
       transition: transform 0.2s; /* Animation */
       @media only screen and (max-width: 1599px) {
-        width: 287px;
+        width: 245px;
       }
-      @media only screen and (max-width: 767) {
-        height: 230px;
-        width: 260px;
+      @media only screen and (max-width: 767px) {
+        height: 200px;
+        width: 200px;
       }
       // &:hover {
       //   transform: scale(1.2);
@@ -630,6 +637,9 @@
     }
     .wallet_connect {
       background: none;
+      i {
+        display: none;
+      }
       span {
         font-size: 25px;
         color: #4aff2c;

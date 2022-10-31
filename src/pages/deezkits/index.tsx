@@ -328,7 +328,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                     <span>{!isMintState ? "Mint" :"countdown"}</span>
                 </Button>   
             </Box> */}
-            <Music ref={ref}/>
+            {/* <Music ref={ref}/> */}
             {/* couting audio */}
             <audio loop ref={audioCountRef} controls className="d-none">
                 <source src={audioUrl1}></source>
