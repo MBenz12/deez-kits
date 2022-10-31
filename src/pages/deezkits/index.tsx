@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Button, Typography } from "@mui/material";
-import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { Box, Typography } from "@mui/material";
+import { Wallet } from "@project-serum/anchor";
+import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import CountdownTimer from "../../components/deezkits/countdown/CountDownTImer";
@@ -12,9 +13,7 @@ import HighlightedText from "../../sharedComponent/HighlightedText";
 import Music from "../../sharedComponent/musicPlayer";
 import WalletButton from "../../sharedComponent/wallletButton";
 import { Images } from "../../static/images";
-import { awaitTransactionSignatureConfirmation, getCandyMachineState, mintOneToken, CandyMachineAccount, getCollectionPDA } from "./candy-machine";
-import { BN, Wallet } from "@project-serum/anchor";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { CandyMachineAccount, getCandyMachineState, getCollectionPDA, mintTokens } from "./candy-machine";
 // @ts-ignore
 import audioUrl1 from "../../assets/audio/counting.mp3";
 // @ts-ignore
@@ -157,36 +156,19 @@ const DeezKits = React.forwardRef((props:any, ref) =>
 
     const mintHandler = async () =>
     {
-        const mintResult = await mintOneToken(candyMachine!, wallet!.publicKey!, [], []);
-        console.log(mintResult);
+        const res = await mintTokens(candyMachine!, wallet!.publicKey!, parseInt(mint));
+        console.log(res);
 
-        let status : any = {err: true};
-        let metadataStatus = null;
-        if (mintResult)
-        {
-            status = await awaitTransactionSignatureConfirmation(mintResult.mintTxId, DEFAULT_TIMEOUT, connection, true);
-            console.log("TX Status:", status);
-
-            metadataStatus = await candyMachine!.program.provider.connection.getAccountInfo(mintResult.metadataKey, "processed");
-            console.log("Metadata status: ", !!metadataStatus);
-        }
-
-        if (status && !status.err && metadataStatus)
+        if (res)
         {
           // manual update since the refresh might not detect the change immediately
           toast.success("Congratulations! Mint succeeded!");
-          await refreshCandyMachineState();
-        }
-        else if (status && !status.err)
-        {
-          toast.error("Mint likely failed! Anti-bot SOL 0.01 fee potentially charged! Check the explorer to confirm the mint failed and if so, make sure you are eligible to mint before trying again.");
-          await refreshCandyMachineState();
-        }
+        }        
         else
         {
           toast.error("Mint failed! Please try again!");
-          await refreshCandyMachineState();
         }
+        await refreshCandyMachineState();
     };
 
     return (
