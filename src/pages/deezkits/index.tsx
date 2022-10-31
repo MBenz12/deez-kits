@@ -128,7 +128,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
             setCandyMachine(cndy);
             setItemsRedeemed(cndy.state.itemsRedeemed)
             setItemsAvailable(cndy.state.itemsAvailable)
-            // console.log(cndy.state.price);
+            // console.log(cndy.state.price.toNumber());
             // setItemPrice(cndy.state.price)
             console.log(`Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut}`);
         }
