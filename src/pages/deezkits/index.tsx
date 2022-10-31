@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Typography } from "@mui/material";
-import { Wallet } from "@project-serum/anchor";
+import { BN, Wallet } from "@project-serum/anchor";
 import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
@@ -21,7 +21,7 @@ import mintBtnaudio from "../../assets/audio/menu.mp3";
 // @ts-ignore
 import style from "./deezkits.module.scss";
 
-const CANDY_MACHINE_ID = "EwhGpgWSMhraYH17TFf11tNW32cV9uuaMY6b5vwgmdwr";
+const CANDY_MACHINE_ID = "GGaL9r4GHFfhLT9KFjFE3TPehJ1EHKAJ5JeCoUfvA9Hj";
 const DEFAULT_TIMEOUT = 60000;
 
 const DeezKits = React.forwardRef((props:any, ref) =>
@@ -32,8 +32,6 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     const anchorWallet = useAnchorWallet();
     const [isMintState, setMintState] = useState(props?.isMint);
     const [mint, setMint] = useState<string>("1");
-    // const totalTicket: number = 400;
-    // const [ticket, setTicket] = useState<number>(0);
     const audioCountRef = useRef(null);
     const audioMintRef = useRef(null);
     const MintDate = new Date("Mon, 31 Oct 2022 17:00:00 GMT");
@@ -42,7 +40,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     const [isActive, setIsActive] = useState(false);
     const [itemsRedeemed, setItemsRedeemed] = useState(0);
     const [itemsAvailable, setItemsAvailable] = useState(400);
-    const [itemPrice, setItemPrice] = useState(0.25);
+    const [itemPrice, setItemPrice] = useState<number>(0.25);
 
     useEffect(() =>
     {
@@ -128,10 +126,25 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     const mintHandler = async () =>
     {
         console.log("isSoldOut:", candyMachine?.state.isSoldOut);
+        console.log("itemPrice:", itemPrice);
 
-        const mintAmount = parseInt(mint);
+        const mintAmount : number = parseInt(mint);
+        const totalCost : BN = new BN(mintAmount).mul(candyMachine?.state!.price!);
+        const totalCostSOL = totalCost.toNumber() / LAMPORTS_PER_SOL;
 
-        console.log("Trying to mint", mintAmount);
+        const userBalance : BN = new BN(await connection.getBalance(wallet!.publicKey!));
+        const userBalanceSOL = userBalance.toNumber() / LAMPORTS_PER_SOL;
+
+        const isUserHasBalance = userBalance.gte(candyMachine?.state!.price!);
+        console.log(`Trying to mint ${mintAmount} with cost ${totalCostSOL} SOL, userBalance: ${userBalanceSOL} SOL`);
+        console.log(isUserHasBalance);
+
+        if (!isUserHasBalance)
+        {
+            toast.dismiss();
+            toast.error(`Not enough SOL, needs ${totalCostSOL} SOL to mint ${mintAmount}.`, {theme: "dark"});
+            return;
+        }
 
         if (!candyMachine?.state.isSoldOut)
         {
