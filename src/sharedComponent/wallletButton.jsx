@@ -1,26 +1,28 @@
-import { useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import {
-  WalletMultiButton,
-  WalletDisconnectButton,
+  WalletDisconnectButton, WalletMultiButton
 } from "@solana/wallet-adapter-react-ui";
-import style from '../assets/css/wallet.module.scss'
-import {toast}  from 'react-toastify';
+import { useEffect } from "react";
+import { toast } from 'react-toastify';
+import style from '../assets/css/wallet.module.scss';
 const WalletButton = () => {
 
   const wallet = useWallet();
   useEffect(() => {
-   if(wallet?.publicKey?.toString()){
+   if(wallet?.publicKey?.toString() && wallet.connected){
+    // console.log();
+    toast.dismiss();
     toast.success("Wallet Connected Successfully.",{position: "bottom-right",theme: "dark",
     autoClose: 3000,})
-      console.log(wallet?.publicKey?.toString());
+      // console.log(wallet?.publicKey?.toString());
    }
-  }, [wallet]);
+  }, [wallet.connected]);
 
   const handleDisconnect = () => {
+    toast.dismiss();
     toast.success("Wallet Disconnected Successfully.",{position: "bottom-right",theme: "dark",
     autoClose: 3000,})
-    console.log("Disconnecting from wallet");
+    // console.log("Disconnecting from wallet");
   };
 
   return (

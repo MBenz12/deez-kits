@@ -1,7 +1,6 @@
 import * as anchor from "@project-serum/anchor";
 import { Program, Provider } from "@project-serum/anchor";
-import { ASSOCIATED_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/token";
-import {NATIVE_MINT, Token, TOKEN_PROGRAM_ID, AccountInfo, AccountLayout} from "@solana/spl-token";
+import { NATIVE_MINT, Token, TOKEN_PROGRAM_ID, AccountInfo, AccountLayout, ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import {Connection, Keypair, PublicKey, SystemProgram, Transaction} from "@solana/web3.js";
 import axios from "axios";
@@ -171,14 +170,14 @@ export function getProviderAndProgram(connection: Connection, anchorWallet: anch
     idl_slots,
     programID,
     provider
-  ) as Program<Slots>;
+  ) as Program;
 
   return { provider, program };
 }
 
 export async function getAta(mint: PublicKey, owner: PublicKey, allowOffCurve: boolean = false) {
   return await Token.getAssociatedTokenAddress(
-    ASSOCIATED_PROGRAM_ID,
+      ASSOCIATED_TOKEN_PROGRAM_ID,
     TOKEN_PROGRAM_ID,
     mint,
     owner,
@@ -190,7 +189,7 @@ export async function getCreateAtaInstruction(provider: Provider, ata: PublicKey
   let account = await provider.connection.getAccountInfo(ata);
   if (!account) {
     return Token.createAssociatedTokenAccountInstruction(
-      ASSOCIATED_PROGRAM_ID,
+        ASSOCIATED_TOKEN_PROGRAM_ID,
       TOKEN_PROGRAM_ID,
       mint,
       ata,
@@ -200,7 +199,7 @@ export async function getCreateAtaInstruction(provider: Provider, ata: PublicKey
   }
 }
 
-async function getAddPlayerTransaction(program: Program<Slots>, provider: Provider, game_name: string, game_owner: PublicKey)
+async function getAddPlayerTransaction(program: Program, provider: Provider, game_name: string, game_owner: PublicKey)
 {
   const [game] = await getGameAddress(game_name, game_owner);
   const [player, bump] = await getPlayerAddress(provider.wallet.publicKey, game);
@@ -218,7 +217,7 @@ async function getAddPlayerTransaction(program: Program<Slots>, provider: Provid
     });
 }
 
-export async function playTransaction(program: Program<Slots>, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey, betNo: number, connection: Connection)
+export async function playTransaction(program: Program, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey, betNo: number, connection: Connection)
 {
   const [game] = await getGameAddress(game_name, game_owner);
   const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
@@ -285,7 +284,7 @@ export async function playTransaction(program: Program<Slots>, provider: Provide
   return { gameData, playerData };
 }
 
-export async function withdrawTransaction(program: Program<Slots>, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey)
+export async function withdrawTransaction(program: Program, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey)
 {
     const [game] = await getGameAddress(game_name, game_owner);
     const [player] = await getPlayerAddress(provider.wallet.publicKey, game);

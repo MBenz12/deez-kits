@@ -2,6 +2,7 @@
 import logoTrasnsparent from "../assets/images/deezKits/deezkits_card.png";
 import logo from "../assets/images/deezKits/logo.png";
 import MintBtn from "../assets/images/deezKits/mint_btn.png";
+import MintHoverbtn from '../assets/images/deezKits/mint_glitch.png'
 import MintTitle from "../assets/images/deezKits/title_deezkits.png";
 import MeIcon from "../assets/images/deezKits/me.svg";
 import twitterIcon from "../assets/images/deezKits/twitter.svg";
@@ -17,7 +18,6 @@ import fitGlitch from '../assets/images/deezKits/title/fit_glitch.png'
 import yrGlitch from '../assets/images/deezKits/title/yr_glitch.png'
 import deezGlitch from '../assets/images/deezKits/title/deez_glitch.png'
 import DeezKitsRightKitty from '../assets/images/deezKits/deezkits_right.png'
-
 export const Images = {
   MintBtn,
   logoTrasnsparent,
@@ -36,5 +36,6 @@ export const Images = {
   deezGlitch,
   kitGlitch,
   fitGlitch,
-  yrGlitch
+  yrGlitch,
+  MintHoverbtn
 };

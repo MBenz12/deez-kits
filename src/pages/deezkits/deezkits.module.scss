@@ -14,41 +14,41 @@
   height: 100vh;
   cursor: url("../../assets/images/cursor.png"), auto;
   @media only screen and (max-width: 991px) and (min-height: 1024px) {
-    height: 100%;
+      height: 100%;
   }
   @media only screen and (max-width: 991px) {
-    height: 100%;
+      height: 100%;
   }
   @media only screen and (min-width: 768px) and (max-width: 991px) and (min-height: 320px) and (max-height: 1000px) {
-    height: auto;
-    overflow-y: auto;
+      height: auto;
+      overflow-y: auto;
   }
   @media only screen and (max-width: 767px) {
-    // height: auto;
-    overflow-y: auto;
+      // height: auto;
+      overflow-y: auto;
   }
   @media only screen and (max-width: 767px) and (max-height: 575px) {
-    height: auto;
-    overflow-y: auto;
+      height: auto;
+      overflow-y: auto;
   }
-
-  &::before {
-    content: "";
-    background: url("../../assets/images/deezKits/clouds.png") right no-repeat;
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    z-index: -1;
-    background-size: 100%;
-    background-position: 0vw top;
-    // animation: toRight 20s ease infinite;
-    @media only screen and (max-width: 767px) {
-      // left: -180px;
-      // top: -200px;
-    }
-  }
+  //backgrounds clouds left and right
+  // &::before {
+  // content: "";
+  // background: url("../../assets/images/deezKits/clouds.png") right no-repeat;
+  // position: absolute;
+  // left: 0;
+  // top: 0;
+  // height: 100%;
+  // width: 100%;
+  // z-index: -1;
+  // background-size: 100%;
+  // background-position: 0vw top;
+  // animation: toRight 20s ease infinite;
+  // @media only screen and (max-width: 767px) {
+  //   left: -180px;
+  //   top: -200px;
+  // }
+  // }
   // &::after {
   //   content: "";
   //   background: url("../../assets/images/deezKits/smoke_right.png") right
@@ -70,102 +70,102 @@
   //deezkits left kits style
 
   .deez_kits_kitty {
-    max-width: 20%;
-    width: 100%;
-    margin: 0 auto;
-    position: absolute;
-    left: 20px;
-    bottom: -19px;
-    opacity: 1;
-    z-index: 5;
-    // overflow: hidden;
-    transition: all 500s ease;
-    div {
-      visibility: hidden;
-    }
-    &:hover {
+      max-width: 20%;
+      width: 100%;
+      margin: 0 auto;
+      position: absolute;
+      left: 20px;
+      bottom: -19px;
+      opacity: 1;
+      z-index: 5;
+      // overflow: hidden;
+      transition: all 500s ease;
       div {
-        visibility: visible;
+          visibility: hidden;
+      }
+      &:hover {
+          div {
+              visibility: visible;
+          }
+          img {
+              left: 0px;
+              opacity: 0.5;
+              animation-name: moveInleft;
+              @keyframes moveInleft {
+                  0% {
+                      opacity: 0;
+                      transform: translateX(-100px);
+                  }
+                  1.5% {
+                      opacity: 0.3;
+                  }
+                  100% {
+                      opacity: 0.5;
+                      transform: translate(0);
+                  }
+              }
+          }
       }
       img {
-        left: 0px;
-        opacity: 0.5;
-        animation-name: moveInleft;
-        @keyframes moveInleft {
-          0% {
-            opacity: 0;
-            transform: translateX(-100px);
-          }
-          1.5% {
-            opacity: 0.3;
-          }
-          100% {
-            opacity: 0.5;
-            transform: translate(0);
-          }
-        }
+          transition: all 1s ease;
+          height: 100%;
+          object-fit: contain;
+          position: relative;
+          opacity: 0;
+          width: 90%;
+          left: -112%;
       }
-    }
-    img {
-      transition: all 1s ease;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      position: relative;
-      left: -100%;
-      opacity: 0;
-    }
-    @media only screen and (max-width: 767px) {
-      max-width: 328px;
-      position: relative;
-      display: none;
-    }
+      @media only screen and (max-width: 767px) {
+          max-width: 328px;
+          position: relative;
+          display: none;
+      }
   }
   .deez_kits_kitty img {
-    position: relative;
-    z-index: 1;
-    display: block;
+      position: relative;
+      z-index: 1;
+      display: block;
   }
   .glitch__layers {
-    position: absolute;
-    z-index: 2;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+      position: absolute;
+      z-index: 2;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
   }
   .glitch__layer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-image: url("../../assets//images//deezKits/deezkits_kitty.png");
-    background-repeat: no-repeat;
-    background-position: 0 0;
-    background-size: 384px 384px;
-    opacity: 0.6;
-    @media only screen and (max-width: 1799px) {
-      background-size: 329px 329px;
-    }
-    @media only screen and (max-width: 1499px) {
-      background-size: 296px 296px;
-    }
-    @media only screen and (max-width: 1299px) {
-      background-size: 248px 248px;
-    }
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-image: url("../../assets//images//deezKits/deezkits_kitty.png");
+      background-repeat: no-repeat;
+      background-position: 0 0;
+      background-size: 345px 345px;
+      opacity: 0.6;
+      @media only screen and (max-width: 1799px) {
+          background-size: 329px 329px;
+      }
+      @media only screen and (max-width: 1499px) {
+          background-size: 296px 296px;
+      }
+      @media only screen and (max-width: 1299px) {
+          background-size: 248px 248px;
+      }
   }
   .glitch__layer:nth-child(1) {
-    transform: translateX(-5%);
-    animation: glitch-anim-1 2s infinite linear alternate;
+      transform: translateX(-5%);
+      animation: glitch-anim-1 2s infinite linear alternate;
   }
   .glitch__layer:nth-child(2) {
-    transform: translateX(3%) translateY(3%);
-    animation: glitch-anim-2 2.3s -0.8s infinite linear alternate;
+      transform: translateX(3%) translateY(3%);
+      animation: glitch-anim-2 2.3s -0.8s infinite linear alternate;
   }
   .glitch__layer:nth-child(3) {
-    transform: translateX(5%);
-    animation: glitch-anim-flash 1s infinite linear;
+      transform: translateX(5%);
+      animation: glitch-anim-flash 1s infinite linear;
   }
 
   // //deezkits rigtht kitty style
@@ -182,69 +182,63 @@
   //     height: auto;
   //   }
   // }
-  .deez_Right_kits_kitty {
-    position: absolute;
-    right: 15%;
-    max-width: 13%;
-    bottom: 0;
-    width: 100%;
-    margin: 0 auto;
-    opacity: 1;
-    z-index: 5;
-    // overflow: hidden;
-    transition: all 1s ease;
-    @media only screen and (max-width: 1599px) {
-      right: 10%;
-    }
-    @media only screen and (max-width: 1299px) {
-      max-width: 15%;
-    }
-    div {
-      visibility: hidden;
-    }
-    &:hover {
-      div {
-        visibility: visible;
-        z-index: 2;
-      }
-      img {
-        right: 0px;
-        opacity: 0.5;
-        animation-name: moveInRight;
-        @keyframes moveInRight {
-          0% {
-            opacity: 0;
-            transform: translateX(-100px);
-          }
-          1.5% {
-            opacity: 0.3;
-          }
-          100% {
-            opacity: 0.5;
-            transform: translate(0);
-          }
-        }
-      }
-    }
-    img {
-      transition: all 1s ease;
+  .deez_right_kits_wrapper {
+      max-width: 467px;
       width: 100%;
-      height: 100%;
-      object-fit: contain;
-      position: relative;
-      right: -115%;
-      opacity: 0;
-    }
-    @media only screen and (max-width: 767px) {
-      max-width: 328px;
-      position: relative;
-      display: none;
-    }
-  }
-  .deez_Right_kits_kitty img {
-    position: relative;
-    z-index: 1;
-    display: block;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      transition: all 0.5s ease;
+      &:hover {
+          .glitch_right_layers {
+              visibility: visible;
+              z-index: 2;
+          }
+          .deez_Right_kits_kitty {
+              img {
+                  right: 0px;
+                  opacity: 0.5;
+                  animation-name: moveInRight;
+                  @keyframes moveInRight {
+                      0% {
+                          opacity: 0;
+                          transform: translateX(-100px);
+                      }
+                      1.5% {
+                          opacity: 0.3;
+                      }
+                      100% {
+                          opacity: 0.5;
+                          transform: translate(0);
+                      }
+                  }
+              }
+          }
+      }
+      .deez_Right_kits_kitty {
+          max-width: 53%;
+          width: 100%;
+          @media only screen and (max-width: 1299px) {
+              max-width: 15%;
+          }
+          @media only screen and (max-width: 767px) {
+              max-width: 328px;
+              position: relative;
+              display: none;
+          }
+          img {
+              transition: all 1s ease;
+              width: 100%;
+              height: 100%;
+              object-fit: contain;
+              position: relative;
+              right: -115%;
+              opacity: 0;
+          }
+      }
+      .glitch_right_layers {
+          visibility: hidden;
+      }
   }
   // .glitch_right_layers {
   //   position: absolute;
@@ -280,331 +274,338 @@
   // }
 
   .deezkits_header {
-    max-width: 11%;
-    position: absolute;
-    left: 0;
-    img {
-      width: 100%;
-      height: auto;
-      @media only screen and (max-width: 767px) {
-        width: 215px;
+      max-width: 11%;
+      position: absolute;
+      left: 0;
+      img {
+          width: 100%;
+          height: auto;
+          @media only screen and (max-width: 767px) {
+              width: 215px;
+          }
       }
-    }
-    @media only screen and (max-width: 1599px) {
-      max-width: 14%;
-    }
-    @media only screen and (max-width: 899px) and (min-width: 767px) {
-      max-width: 25%;
-    }
-    @media only screen and (max-width: 767px) {
-      max-width: 60%;
-      position: relative;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+      @media only screen and (max-width: 1599px) {
+          max-width: 14%;
+      }
+      @media only screen and (max-width: 899px) and (min-width: 767px) {
+          max-width: 25%;
+      }
+      @media only screen and (max-width: 767px) {
+          max-width: 60%;
+          position: relative;
+          margin: 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
   }
   .deez_content_wrapper {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
   }
 
+  //right side kitty animations
   :root {
-    --color-text: #fff;
-    --color-bg: #000;
-    --color-link: #f9d77e;
-    --color-link-hover: #fff;
-    --color-info: #efc453;
-    --glitch-width: 100vw;
-    --glitch-height: 100vh;
-    --gap-horizontal: 10px;
-    --gap-vertical: 5px;
-    --time-anim: 5s;
-    --delay-anim: 0ms;
-    --blend-mode-1: none;
-    --blend-mode-2: none;
-    --blend-mode-3: none;
-    --blend-mode-4: none;
-    --blend-mode-5: overlay;
-    --blend-color-1: transparent;
-    --blend-color-2: transparent;
-    --blend-color-3: transparent;
-    --blend-color-4: transparent;
-    --blend-color-5: #af4949;
+      --color-text: #fff;
+      --color-bg: #000;
+      --color-link: #f9d77e;
+      --color-link-hover: #fff;
+      --color-info: #efc453;
+      --glitch-width: 100vw;
+      --glitch-height: 100vh;
+      --gap-horizontal: 10px;
+      --gap-vertical: 5px;
+      --time-anim: 4s;
+      --delay-anim: 0ms;
+      --blend-mode-1: none;
+      --blend-mode-2: none;
+      --blend-mode-3: none;
+      --blend-mode-4: none;
+      --blend-mode-5: overlay;
+      --blend-color-1: transparent;
+      --blend-color-2: transparent;
+      --blend-color-3: transparent;
+      --blend-color-4: transparent;
+      --blend-color-5: #af4949;
   }
 
   .glitch_right_layer {
-    background: url("../../assets/images//deezKits//deezkits_right.png")
-      no-repeat 50% 50% / cover;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    position: absolute;
+      background: url("../../assets/images//deezKits//deezkits_right.png")
+          no-repeat 50% 50% / cover;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      position: absolute;
+      background-position: left bottom;
+      max-width: 250px;
   }
 
   .glitch_right_layer:nth-child(n + 2) {
-    opacity: 0;
-    animation-duration: var(--time-anim);
-    animation-delay: var(--delay-anim);
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
+      opacity: 0;
+      animation-duration: var(--time-anim);
+      animation-delay: var(--delay-anim);
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
   }
 
   .glitch_right_layer:nth-child(2) {
-    background-color: var(--blend-color-2);
-    background-blend-mode: var(--blend-mode-2);
-    animation-name: glitch-anim-2;
+      background-color: var(--blend-color-2);
+      background-blend-mode: var(--blend-mode-2);
+      animation-name: glitch-anim-2;
   }
 
   .glitch_right_layer:nth-child(2) {
-    background-color: var(--blend-color-3);
-    background-blend-mode: var(--blend-mode-3);
-    animation-name: glitch-anim-3;
+      background-color: var(--blend-color-3);
+      background-blend-mode: var(--blend-mode-3);
+      animation-name: glitch-anim-3;
   }
 
   .glitch_right_layer:nth-child(4) {
-    background-color: var(--blend-color-4);
-    background-blend-mode: var(--blend-mode-4);
-    animation-name: glitch-anim-4;
+      background-color: var(--blend-color-4);
+      background-blend-mode: var(--blend-mode-4);
+      animation-name: glitch-anim-4;
   }
 
   .glitch_right_layer:nth-child(5) {
-    background-color: var(--blend-color-5);
-    background-blend-mode: var(--blend-mode-5);
-    animation-name: glitch-anim-flash;
+      background-color: var(--blend-color-5);
+      background-blend-mode: var(--blend-mode-5);
+      animation-name: glitch-anim-flash;
 
-    @keyframes glitch-anim-flash {
-      0%,
-      5% {
-        opacity: 0;
-        transform: translate3d(
-          var(--glitch-horizontal),
-          var(--glitch-height),
-          0
-        );
+      @keyframes glitch-anim-flash {
+          0%,
+          5% {
+              opacity: 0;
+              transform: translate3d(
+                  var(--glitch-horizontal),
+                  var(--glitch-height),
+                  0
+              );
+          }
+          5.5%,
+          100% {
+              opacity: 0;
+              transform: translate3d(0, 0, 0);
+          }
       }
-      5.5%,
-      100% {
-        opacity: 0;
-        transform: translate3d(0, 0, 0);
-      }
-    }
   }
   .deezkits_content_wrapper {
-    @media only screen and (min-width: 768px) and (max-width: 991px) and (min-height: 320px) and (max-height: 1000px) {
-      margin-top: 80px;
-    }
-
-    .deezkits_mint_title {
-      color: #7a58ff;
-      font-size: 25px;
-      max-width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      @media only screen and (max-width: 767px) {
-        font-size: 20px;
-        gap: 12px;
+      @media only screen and (min-width: 768px) and (max-width: 991px) and (min-height: 320px) and (max-height: 1000px) {
+          margin-top: 80px;
       }
 
-      .wallet {
-        max-width: 8%;
-        @media only screen and (max-width: 999px) {
-          max-width: 12%;
-        }
-        @media only screen and (max-width: 767px) {
-          max-width: 14%;
-        }
-        img {
-          width: 100%;
-          margin-top: -5px;
-          margin-left: -11px;
-        }
-      }
-      .gt_entity {
-        margin-left: -20px;
-      }
+      .deezkits_mint_title {
+          color: #7a58ff;
+          font-size: 25px;
+          max-width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          @media only screen and (max-width: 767px) {
+              font-size: 20px;
+              gap: 12px;
+          }
 
-      .can:hover,
-      .deez:hover,
-      .kits:hover,
-      .fit:hover,
-      .yr:hover,
-      .wallet:hover {
-        color: #fbff49;
-        text-shadow: 0px -5px 16.1649px #fff72c;
+          .wallet {
+              max-width: 8%;
+              @media only screen and (max-width: 999px) {
+                  max-width: 12%;
+              }
+              @media only screen and (max-width: 767px) {
+                  max-width: 14%;
+              }
+              img {
+                  width: 100%;
+                  margin-top: -5px;
+                  margin-left: -11px;
+              }
+          }
+          .gt_entity {
+              margin-left: -20px;
+          }
+
+          .can:hover,
+          .deez:hover,
+          .kits:hover,
+          .fit:hover,
+          .yr:hover,
+          .wallet:hover {
+              color: #fbff49;
+              text-shadow: 0px -5px 16.1649px #fff72c;
+          }
+          // img {
+          //   width:1.5%;
+          //   height: auto;
+          //   @media only screen and (max-width: 767px) {
+          //     width: 375px;
+          //   }
+          // }
       }
-      // img {
-      //   width:1.5%;
-      //   height: auto;
-      //   @media only screen and (max-width: 767px) {
-      //     width: 375px;
-      //   }
-      // }
-    }
   }
   .deezkits_content_logo {
-    max-width: 100%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 354px;
-    animation: UpDown 1s linear infinite;
-    @keyframes UpDown {
-      0% {
-        bottom: 0;
-      }
-      50% {
-        bottom: 1.1em;
-      }
-      100% {
-        bottom: 0;
-      }
-    }
-    img {
-      height: 245px;
-      z-index: 1;
-      position: relative;
-      transition: transform 0.2s; /* Animation */
-      @media only screen and (max-width: 1599px) {
-        width: 287px;
-      }
-      @media only screen and (max-width: 767) {
-        height: 230px;
-        width: 260px;
-      }
-      // &:hover {
-      //   transform: scale(1.2);
-      // }
-    }
-    &::before {
-      content: "";
-      background-image: url("../../assets/images/deezKits/black_bg_02\ copy\ 6.png");
-      background-repeat: no-repeat;
-      position: absolute;
-      height: 0px;
-      width: 0px;
-      z-index: 0;
       max-width: 100%;
-      box-shadow: 0px 0px 130px 120px rgb(206 78 255 / 40%);
-      border-radius: 1.5%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 354px;
+      animation: UpDown 1s linear infinite;
+      @keyframes UpDown {
+          0% {
+              bottom: 0;
+          }
+          50% {
+              bottom: 1.1em;
+          }
+          100% {
+              bottom: 0;
+          }
+      }
+      img {
+          height: 245px;
+          z-index: 1;
+          position: relative;
+          transition: transform 0.2s; /* Animation */
+          @media only screen and (max-width: 1599px) {
+              width: 287px;
+          }
+          @media only screen and (max-width: 767) {
+              height: 230px;
+              width: 260px;
+          }
+          // &:hover {
+          //   transform: scale(1.2);
+          // }
+      }
+      &::before {
+          content: "";
+          background-image: url("../../assets/images/deezKits/black_bg_02\ copy\ 6.png");
+          background-repeat: no-repeat;
+          position: absolute;
+          height: 0px;
+          width: 0px;
+          z-index: 0;
+          max-width: 100%;
+          box-shadow: 0px 0px 130px 120px rgb(206 78 255 / 40%);
+          border-radius: 1.5%;
 
-      // animation: colorChange 5s ease infinite;
-      // @keyframes colorChange {
-      //   0% {
-      //     box-shadow: 0px 0px 130px 100px rgb(206 78 255 / 40%);
-      //   }
-      //  1.5% {
-      //     box-shadow: 0px 0px 130px 100px rgb(122 88 255 / 40%);
-      //   }
-      //   100% {
-      //     box-shadow: 0px 0px 130px 100px rgb(206 78 255 / 40%);
-      //   }
-      // }
-    }
+          // animation: colorChange 5s ease infinite;
+          // @keyframes colorChange {
+          //   0% {
+          //     box-shadow: 0px 0px 130px 100px rgb(206 78 255 / 40%);
+          //   }
+          //  1.5% {
+          //     box-shadow: 0px 0px 130px 100px rgb(122 88 255 / 40%);
+          //   }
+          //   100% {
+          //     box-shadow: 0px 0px 130px 100px rgb(206 78 255 / 40%);
+          //   }
+          // }
+      }
   }
   .toggle_btn {
-    position: fixed;
-    top: 2%;
-    right: 0%;
-    border: none;
-    border-radius: 5px;
-    background: #ab2626;
-    width: auto;
-    height: auto;
-    color: white;
-    display: flex;
-    visibility: hidden;
-    @media only screen and (max-width: 767px) {
-      visibility: visible;
-      top: 9%;
-    }
-    span {
+      position: fixed;
+      top: 2%;
+      right: 0%;
+      border: none;
+      border-radius: 5px;
+      background: #ab2626;
+      width: auto;
+      height: auto;
       color: white;
-    }
+      display: flex;
+      visibility: hidden;
+      @media only screen and (max-width: 767px) {
+          visibility: visible;
+          top: 9%;
+      }
+      span {
+          color: white;
+      }
   }
   .progress_wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    margin-top: 12px;
-    @media only screen and (max-width: 1599px) {
-      // margin-top: -20px;
-    }
-    @media only screen and (max-width: 767px) {
-      // padding: 0 20px;
-    }
-    .progress_bar {
-      background-color: #19103d;
-      max-width: 15%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
-      margin: 0 auto;
-      height: 13px;
-      @media only screen and (max-width: 1199px) {
-        max-width: 25%;
-      }
-      @media only screen and (max-width: 991px) {
-        max-width: 30%;
+      margin-top: 12px;
+      @media only screen and (max-width: 1599px) {
+          // margin-top: -20px;
       }
       @media only screen and (max-width: 767px) {
-        max-width: 55%;
+          // padding: 0 20px;
       }
-      .progress_bar_inner {
-        height: 14px;
-        margin-left: -3px;
-        background: linear-gradient(269.91deg, #7a58ff 0.07%, #0f0623 100.69%);
-        margin-top: -1px;
-        position: relative;
-        &::before {
-          content: "";
-          height: 26px;
-          width: 4px;
-          right: 0px;
-          position: absolute;
-          top: -6px;
-          background: #51ed08;
-        }
-        &::after {
-          content: "";
-          height: 23px;
-          position: absolute;
-          right: 1px;
-          top: -5px;
-          width: 7px;
-          z-index: 0;
-          border-radius: 1.5%;
-          box-shadow: 4px 0px 11px 0px #4aff2c;
-          background-color: transparent;
-        }
+      .progress_bar {
+          background-color: #19103d;
+          max-width: 15%;
+          width: 100%;
+          margin: 0 auto;
+          height: 13px;
+          @media only screen and (max-width: 1199px) {
+              max-width: 25%;
+          }
+          @media only screen and (max-width: 991px) {
+              max-width: 30%;
+          }
+          @media only screen and (max-width: 767px) {
+              max-width: 55%;
+          }
+          .progress_bar_inner {
+              height: 14px;
+              margin-left: -3px;
+              background: linear-gradient(
+                  269.91deg,
+                  #7a58ff 0.07%,
+                  #0f0623 100.69%
+              );
+              margin-top: -1px;
+              position: relative;
+              &::before {
+                  content: "";
+                  height: 26px;
+                  width: 4px;
+                  right: 0px;
+                  position: absolute;
+                  top: -6px;
+                  background: #51ed08;
+              }
+              &::after {
+                  content: "";
+                  height: 23px;
+                  position: absolute;
+                  right: 1px;
+                  top: -5px;
+                  width: 7px;
+                  z-index: 0;
+                  border-radius: 1.5%;
+                  box-shadow: 4px 0px 11px 0px #4aff2c;
+                  background-color: transparent;
+              }
+          }
       }
-    }
   }
   .sold_mint_text {
-    font-family: "Share Tech Mono";
-    margin-top: 20px;
-    font-size: 23px;
-    line-height: inherit;
-    @media only screen and (max-width: 767px) {
-      font-size: 16px;
-    }
+      font-family: "Share Tech Mono";
+      margin-top: 20px;
+      font-size: 23px;
+      line-height: inherit;
+      @media only screen and (max-width: 767px) {
+          font-size: 16px;
+      }
   }
   .mint_text {
-    font-family: "Share Tech Mono";
-    font-size: 20px;
-    line-height: inherit;
-    @media only screen and (max-width: 767px) {
-      font-size: 13px;
-    }
+      font-family: "Share Tech Mono";
+      font-size: 20px;
+      line-height: inherit;
+      @media only screen and (max-width: 767px) {
+          font-size: 13px;
+      }
   }
   .mint_button {
-    margin-top: 40px;
+    // margin-top: 40px;
     font-size: 40px;
     line-height: 40px;
     font-family: "Share Tech Mono";
@@ -627,6 +628,16 @@
       margin-top: 15px;
       max-width: 45%;
     }
+    .mint_img_btn{
+      visibility: visible;
+      width: 45%;
+      height: 73px;
+    }
+    .mint_hover_btn{
+      display: none;
+      width: 45%;
+      height: 73px;
+    }
     .wallet_connect {
       background: none;
       span {
@@ -636,6 +647,12 @@
       }
     }
     &:hover {
+      .mint_img_btn{
+        display: none;
+      }
+      .mint_hover_btn{
+        display: block;
+      }
       .mint_btn {
         color: #fbff49;
         text-shadow: 0px 0px 16.1649px rgb(255 247 44 / 83%);
@@ -669,142 +686,142 @@
     }
   }
   .desc_text {
-    font-size: 25px;
-    font-family: "Share Tech Mono";
-    line-height: inherit;
-    text-transform: uppercase;
-    @media only screen and (max-width: 1799px) {
-      font-size: 23px;
-    }
-    @media only screen and (max-width: 767px) {
-      font-size: 19px;
-    }
+      font-size: 25px;
+      font-family: "Share Tech Mono";
+      line-height: inherit;
+      text-transform: uppercase;
+      @media only screen and (max-width: 1799px) {
+          font-size: 23px;
+      }
+      @media only screen and (max-width: 767px) {
+          font-size: 19px;
+      }
   }
   .amount_input {
-    input {
-      color: white;
-      padding: 0;
-      background-color: black;
-      width: 75px;
-      text-align: center;
-      border: 1px solid #fff;
-      padding-top: 2px;
-      padding-left: 10px;
-    }
+      input {
+          color: white;
+          padding: 0;
+          background-color: black;
+          width: 75px;
+          text-align: center;
+          border: 1px solid #fff;
+          padding-top: 2px;
+          padding-left: 10px;
+      }
   }
   .mint_supply,
   .mint_price {
-    @media only screen and (max-width: 767px) {
-      font-size: 23px;
-    }
+      @media only screen and (max-width: 767px) {
+          font-size: 23px;
+      }
   }
   .deezkits_timer {
-    margin: 30px auto 0;
-    @media only screen and (max-width: 1599px) {
-      margin: 15px auto 0;
-    }
+      margin: 30px auto 0;
+      @media only screen and (max-width: 1599px) {
+          margin: 15px auto 0;
+      }
   }
 }
 @keyframes toRight {
   0% {
-    background-position: 0vw top;
+      background-position: 0vw top;
   }
   1.5% {
-    background-position: 100vw top;
+      background-position: 100vw top;
   }
   100% {
-    background-position: 0vw top;
+      background-position: 0vw top;
   }
 }
 
 @keyframes toLeft {
   0% {
-    background-position: 51vw top;
+      background-position: 51vw top;
   }
   1.5% {
-    background-position: 0vw top;
+      background-position: 0vw top;
   }
   100% {
-    background-position: 51vw top;
+      background-position: 51vw top;
   }
 }
 @keyframes glitch-anim-1 {
   0% {
-    clip-path: polygon(0 0%, 100% 0%, 100% 5%, 0 5%);
+      clip-path: polygon(0 0%, 100% 0%, 100% 5%, 0 5%);
   }
   10% {
-    clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%);
+      clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%);
   }
   20% {
-    clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%);
+      clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%);
   }
   30% {
-    clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%);
+      clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%);
   }
   40% {
-    clip-path: polygon(0 35%, 100% 35%, 100% 35%, 0 35%);
+      clip-path: polygon(0 35%, 100% 35%, 100% 35%, 0 35%);
   }
   50% {
-    clip-path: polygon(0 45%, 100% 45%, 100% 46%, 0 46%);
+      clip-path: polygon(0 45%, 100% 45%, 100% 46%, 0 46%);
   }
   60% {
-    clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%);
+      clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%);
   }
   70% {
-    clip-path: polygon(0 70%, 100% 70%, 100% 70%, 0 70%);
+      clip-path: polygon(0 70%, 100% 70%, 100% 70%, 0 70%);
   }
   80% {
-    clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%);
+      clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%);
   }
   90% {
-    clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
+      clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
   }
   100% {
-    clip-path: polygon(0 60%, 100% 60%, 100% 70%, 0 70%);
+      clip-path: polygon(0 60%, 100% 60%, 100% 70%, 0 70%);
   }
 }
 @keyframes glitch-anim-2 {
   0% {
-    clip-path: polygon(0 15%, 100% 15%, 100% 30%, 0 30%);
+      clip-path: polygon(0 15%, 100% 15%, 100% 30%, 0 30%);
   }
   15% {
-    clip-path: polygon(0 3%, 100% 3%, 100% 3%, 0 3%);
+      clip-path: polygon(0 3%, 100% 3%, 100% 3%, 0 3%);
   }
   25% {
-    clip-path: polygon(0 8%, 100% 8%, 100% 20%, 0 20%);
+      clip-path: polygon(0 8%, 100% 8%, 100% 20%, 0 20%);
   }
   30% {
-    clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
+      clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
   }
   45% {
-    clip-path: polygon(0 45%, 100% 45%, 100% 45%, 0 45%);
+      clip-path: polygon(0 45%, 100% 45%, 100% 45%, 0 45%);
   }
   50% {
-    clip-path: polygon(0 50%, 100% 50%, 100% 57%, 0 57%);
+      clip-path: polygon(0 50%, 100% 50%, 100% 57%, 0 57%);
   }
   65% {
-    clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
+      clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
   }
   75% {
-    clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%);
+      clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%);
   }
   80% {
-    clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%);
+      clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%);
   }
   95% {
-    clip-path: polygon(0 45%, 100% 45%, 100% 60%, 0 60%);
+      clip-path: polygon(0 45%, 100% 45%, 100% 60%, 0 60%);
   }
   100% {
-    clip-path: polygon(0 11%, 100% 11%, 100% 15%, 0 15%);
+      clip-path: polygon(0 11%, 100% 11%, 100% 15%, 0 15%);
   }
 }
 @keyframes glitch-anim-flash {
   0% {
-    opacity: 0.2;
+      opacity: 0.2;
   }
   30%,
   100% {
-    opacity: 0;
+      opacity: 0;
   }
 }
 
@@ -833,8 +850,8 @@
 }
 
 .glitch_right_layer {
-  background: url("../../assets/images//deezKits//deezkits_right.png") no-repeat
-    50% 50% / cover;
+  background: url("../../assets/images//deezKits//deezkits_right.png")
+      no-repeat 50% 50% / cover;
   height: 100%;
   width: 100%;
   top: 0;
@@ -874,238 +891,242 @@
   animation-name: glitch-anim-flash;
 
   @keyframes glitch-anim-flash {
-    0%,
-    5% {
-      opacity: 0;
-      transform: translate3d(var(--glitch-horizontal), var(--glitch-height), 0);
-    }
-    5.5%,
-    100% {
-      opacity: 0;
-      transform: translate3d(0, 0, 0);
-    }
+      0%,
+      5% {
+          opacity: 0;
+          transform: translate3d(
+              var(--glitch-horizontal),
+              var(--glitch-height),
+              0
+          );
+      }
+      5.5%,
+      100% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0);
+      }
   }
 }
 
 @keyframes glitch-anim {
   $steps: 20;
   @for $i from 0 through $steps {
-    #{percentage($i*(1/$steps))} {
-      clip: rect(random(160) + px, 9999px, random(170) + px, 0);
-    }
+      #{percentage($i*(1/$steps))} {
+          clip: rect(random(160) + px, 9999px, random(170) + px, 0);
+      }
   }
 }
 
 @keyframes glitch-anim-2 {
   0% {
-    opacity: 1;
-    transform: translate3d(var(--gap-horizontal), 0, 0);
-    -webkit-clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%);
-    clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%);
+      opacity: 1;
+      transform: translate3d(var(--gap-horizontal), 0, 0);
+      -webkit-clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%);
+      clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%);
   }
   2% {
-    -webkit-clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%);
-    clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%);
+      -webkit-clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%);
+      clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%);
   }
   4% {
-    -webkit-clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%);
-    clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%);
+      -webkit-clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%);
+      clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%);
   }
   6% {
-    -webkit-clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%);
-    clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%);
+      -webkit-clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%);
+      clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%);
   }
   8% {
-    -webkit-clip-path: polygon(0 33%, 100% 33%, 100% 33%, 0 33%);
-    clip-path: polygon(0 33%, 100% 33%, 100% 33%, 0 33%);
+      -webkit-clip-path: polygon(0 33%, 100% 33%, 100% 33%, 0 33%);
+      clip-path: polygon(0 33%, 100% 33%, 100% 33%, 0 33%);
   }
   10% {
-    -webkit-clip-path: polygon(0 44%, 100% 44%, 100% 44%, 0 44%);
-    clip-path: polygon(0 44%, 100% 44%, 100% 44%, 0 44%);
+      -webkit-clip-path: polygon(0 44%, 100% 44%, 100% 44%, 0 44%);
+      clip-path: polygon(0 44%, 100% 44%, 100% 44%, 0 44%);
   }
   12% {
-    -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 20%, 0 20%);
-    clip-path: polygon(0 50%, 100% 50%, 100% 20%, 0 20%);
+      -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 20%, 0 20%);
+      clip-path: polygon(0 50%, 100% 50%, 100% 20%, 0 20%);
   }
   14% {
-    -webkit-clip-path: polygon(0 70%, 100% 70%, 100% 70%, 0 70%);
-    clip-path: polygon(0 70%, 100% 70%, 100% 70%, 0 70%);
+      -webkit-clip-path: polygon(0 70%, 100% 70%, 100% 70%, 0 70%);
+      clip-path: polygon(0 70%, 100% 70%, 100% 70%, 0 70%);
   }
   16% {
-    -webkit-clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%);
-    clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%);
+      -webkit-clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%);
+      clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%);
   }
   18% {
-    -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
-    clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
+      -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
+      clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
   }
   20% {
-    -webkit-clip-path: polygon(0 70%, 100% 70%, 100% 80%, 0 80%);
-    clip-path: polygon(0 70%, 100% 70%, 100% 80%, 0 80%);
+      -webkit-clip-path: polygon(0 70%, 100% 70%, 100% 80%, 0 80%);
+      clip-path: polygon(0 70%, 100% 70%, 100% 80%, 0 80%);
   }
   21.9% {
-    opacity: 1;
-    transform: translate3d(var(--gap-horizontal), 0, 0);
+      opacity: 1;
+      transform: translate3d(var(--gap-horizontal), 0, 0);
   }
   22%,
   100% {
-    opacity: 0;
-    transform: translate3d(0, 0, 0);
-    -webkit-clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
+      -webkit-clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+      clip-path: polygon(0 0, 0 0, 0 0, 0 0);
   }
 }
 
 @keyframes glitch-anim-3 {
   0% {
-    opacity: 1;
-    transform: translate3d(calc(-1 * var(--gap-horizontal)), 0, 0);
-    -webkit-clip-path: polygon(0 25%, 100% 25%, 100% 30%, 0 30%);
-    clip-path: polygon(0 25%, 100% 25%, 100% 30%, 0 30%);
+      opacity: 1;
+      transform: translate3d(calc(-1 * var(--gap-horizontal)), 0, 0);
+      -webkit-clip-path: polygon(0 25%, 100% 25%, 100% 30%, 0 30%);
+      clip-path: polygon(0 25%, 100% 25%, 100% 30%, 0 30%);
   }
   3% {
-    -webkit-clip-path: polygon(0 3%, 100% 3%, 100% 3%, 0 3%);
-    clip-path: polygon(0 3%, 100% 3%, 100% 3%, 0 3%);
+      -webkit-clip-path: polygon(0 3%, 100% 3%, 100% 3%, 0 3%);
+      clip-path: polygon(0 3%, 100% 3%, 100% 3%, 0 3%);
   }
   5% {
-    -webkit-clip-path: polygon(0 5%, 100% 5%, 100% 20%, 0 20%);
-    clip-path: polygon(0 5%, 100% 5%, 100% 20%, 0 20%);
+      -webkit-clip-path: polygon(0 5%, 100% 5%, 100% 20%, 0 20%);
+      clip-path: polygon(0 5%, 100% 5%, 100% 20%, 0 20%);
   }
   7% {
-    -webkit-clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
-    clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
+      -webkit-clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
+      clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
   }
   9% {
-    -webkit-clip-path: polygon(0 40%, 100% 40%, 100% 40%, 0 40%);
-    clip-path: polygon(0 40%, 100% 40%, 100% 40%, 0 40%);
+      -webkit-clip-path: polygon(0 40%, 100% 40%, 100% 40%, 0 40%);
+      clip-path: polygon(0 40%, 100% 40%, 100% 40%, 0 40%);
   }
   11% {
-    -webkit-clip-path: polygon(0 52%, 100% 52%, 100% 59%, 0 59%);
-    clip-path: polygon(0 52%, 100% 52%, 100% 59%, 0 59%);
+      -webkit-clip-path: polygon(0 52%, 100% 52%, 100% 59%, 0 59%);
+      clip-path: polygon(0 52%, 100% 52%, 100% 59%, 0 59%);
   }
   13% {
-    -webkit-clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
-    clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
+      -webkit-clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
+      clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
   }
   15% {
-    -webkit-clip-path: polygon(0 75%, 100% 75%, 100% 75%, 0 75%);
-    clip-path: polygon(0 75%, 100% 75%, 100% 75%, 0 75%);
+      -webkit-clip-path: polygon(0 75%, 100% 75%, 100% 75%, 0 75%);
+      clip-path: polygon(0 75%, 100% 75%, 100% 75%, 0 75%);
   }
   17% {
-    -webkit-clip-path: polygon(0 65%, 100% 65%, 100% 40%, 0 40%);
-    clip-path: polygon(0 65%, 100% 65%, 100% 40%, 0 40%);
+      -webkit-clip-path: polygon(0 65%, 100% 65%, 100% 40%, 0 40%);
+      clip-path: polygon(0 65%, 100% 65%, 100% 40%, 0 40%);
   }
   19% {
-    -webkit-clip-path: polygon(0 45%, 100% 45%, 100% 50%, 0 50%);
-    clip-path: polygon(0 45%, 100% 45%, 100% 50%, 0 50%);
+      -webkit-clip-path: polygon(0 45%, 100% 45%, 100% 50%, 0 50%);
+      clip-path: polygon(0 45%, 100% 45%, 100% 50%, 0 50%);
   }
   20% {
-    -webkit-clip-path: polygon(0 14%, 100% 14%, 100% 33%, 0 33%);
-    clip-path: polygon(0 14%, 100% 14%, 100% 33%, 0 33%);
+      -webkit-clip-path: polygon(0 14%, 100% 14%, 100% 33%, 0 33%);
+      clip-path: polygon(0 14%, 100% 14%, 100% 33%, 0 33%);
   }
   21.9% {
-    opacity: 1;
-    transform: translate3d(calc(-1 * var(--gap-horizontal)), 0, 0);
+      opacity: 1;
+      transform: translate3d(calc(-1 * var(--gap-horizontal)), 0, 0);
   }
   22%,
   100% {
-    opacity: 0;
-    transform: translate3d(0, 0, 0);
-    -webkit-clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
+      -webkit-clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+      clip-path: polygon(0 0, 0 0, 0 0, 0 0);
   }
 }
 
 @keyframes glitch-anim-4 {
   0% {
-    opacity: 1;
-    transform: translate3d(0, calc(-1 * var(--gap-vertical)), 0)
-      scale3d(-1, -1, 1);
-    -webkit-clip-path: polygon(0 1%, 100% 1%, 100% 3%, 0 3%);
-    clip-path: polygon(0 1%, 100% 1%, 100% 3%, 0 3%);
+      opacity: 1;
+      transform: translate3d(0, calc(-1 * var(--gap-vertical)), 0)
+          scale3d(-1, -1, 1);
+      -webkit-clip-path: polygon(0 1%, 100% 1%, 100% 3%, 0 3%);
+      clip-path: polygon(0 1%, 100% 1%, 100% 3%, 0 3%);
   }
   1.5% {
-    -webkit-clip-path: polygon(0 10%, 100% 10%, 100% 9%, 0 9%);
-    clip-path: polygon(0 10%, 100% 10%, 100% 9%, 0 9%);
+      -webkit-clip-path: polygon(0 10%, 100% 10%, 100% 9%, 0 9%);
+      clip-path: polygon(0 10%, 100% 10%, 100% 9%, 0 9%);
   }
   2% {
-    -webkit-clip-path: polygon(0 5%, 100% 5%, 100% 6%, 0 6%);
-    clip-path: polygon(0 5%, 100% 5%, 100% 6%, 0 6%);
+      -webkit-clip-path: polygon(0 5%, 100% 5%, 100% 6%, 0 6%);
+      clip-path: polygon(0 5%, 100% 5%, 100% 6%, 0 6%);
   }
   2.5% {
-    -webkit-clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
-    clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
+      -webkit-clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
+      clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
   }
   3% {
-    -webkit-clip-path: polygon(0 10%, 100% 10%, 100% 10%, 0 10%);
-    clip-path: polygon(0 10%, 100% 10%, 100% 10%, 0 10%);
+      -webkit-clip-path: polygon(0 10%, 100% 10%, 100% 10%, 0 10%);
+      clip-path: polygon(0 10%, 100% 10%, 100% 10%, 0 10%);
   }
   5% {
-    -webkit-clip-path: polygon(0 30%, 100% 30%, 100% 25%, 0 25%);
-    clip-path: polygon(0 30%, 100% 30%, 100% 25%, 0 25%);
+      -webkit-clip-path: polygon(0 30%, 100% 30%, 100% 25%, 0 25%);
+      clip-path: polygon(0 30%, 100% 30%, 100% 25%, 0 25%);
   }
   5.5% {
-    -webkit-clip-path: polygon(0 15%, 100% 15%, 100% 16%, 0 16%);
-    clip-path: polygon(0 15%, 100% 15%, 100% 16%, 0 16%);
+      -webkit-clip-path: polygon(0 15%, 100% 15%, 100% 16%, 0 16%);
+      clip-path: polygon(0 15%, 100% 15%, 100% 16%, 0 16%);
   }
   7% {
-    -webkit-clip-path: polygon(0 40%, 100% 40%, 100% 39%, 0 39%);
-    clip-path: polygon(0 40%, 100% 40%, 100% 39%, 0 39%);
+      -webkit-clip-path: polygon(0 40%, 100% 40%, 100% 39%, 0 39%);
+      clip-path: polygon(0 40%, 100% 40%, 100% 39%, 0 39%);
   }
   8% {
-    -webkit-clip-path: polygon(0 20%, 100% 20%, 100% 21%, 0 21%);
-    clip-path: polygon(0 20%, 100% 20%, 100% 21%, 0 21%);
+      -webkit-clip-path: polygon(0 20%, 100% 20%, 100% 21%, 0 21%);
+      clip-path: polygon(0 20%, 100% 20%, 100% 21%, 0 21%);
   }
   9% {
-    -webkit-clip-path: polygon(0 60%, 100% 60%, 100% 55%, 0 55%);
-    clip-path: polygon(0 60%, 100% 60%, 100% 55%, 0 55%);
+      -webkit-clip-path: polygon(0 60%, 100% 60%, 100% 55%, 0 55%);
+      clip-path: polygon(0 60%, 100% 60%, 100% 55%, 0 55%);
   }
   10.5% {
-    -webkit-clip-path: polygon(0 30%, 100% 30%, 100% 31%, 0 31%);
-    clip-path: polygon(0 30%, 100% 30%, 100% 31%, 0 31%);
+      -webkit-clip-path: polygon(0 30%, 100% 30%, 100% 31%, 0 31%);
+      clip-path: polygon(0 30%, 100% 30%, 100% 31%, 0 31%);
   }
   11% {
-    -webkit-clip-path: polygon(0 70%, 100% 70%, 100% 69%, 0 69%);
-    clip-path: polygon(0 70%, 100% 70%, 100% 69%, 0 69%);
+      -webkit-clip-path: polygon(0 70%, 100% 70%, 100% 69%, 0 69%);
+      clip-path: polygon(0 70%, 100% 70%, 100% 69%, 0 69%);
   }
   13% {
-    -webkit-clip-path: polygon(0 40%, 100% 40%, 100% 41%, 0 41%);
-    clip-path: polygon(0 40%, 100% 40%, 100% 41%, 0 41%);
+      -webkit-clip-path: polygon(0 40%, 100% 40%, 100% 41%, 0 41%);
+      clip-path: polygon(0 40%, 100% 40%, 100% 41%, 0 41%);
   }
   14% {
-    -webkit-clip-path: polygon(0 80%, 100% 80%, 100% 75%, 0 75%);
-    clip-path: polygon(0 80%, 100% 80%, 100% 75%, 0 75%);
+      -webkit-clip-path: polygon(0 80%, 100% 80%, 100% 75%, 0 75%);
+      clip-path: polygon(0 80%, 100% 80%, 100% 75%, 0 75%);
   }
   14.5% {
-    -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 51%, 0 51%);
-    clip-path: polygon(0 50%, 100% 50%, 100% 51%, 0 51%);
+      -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 51%, 0 51%);
+      clip-path: polygon(0 50%, 100% 50%, 100% 51%, 0 51%);
   }
   15% {
-    -webkit-clip-path: polygon(0 90%, 100% 90%, 100% 90%, 0 90%);
-    clip-path: polygon(0 90%, 100% 90%, 100% 90%, 0 90%);
+      -webkit-clip-path: polygon(0 90%, 100% 90%, 100% 90%, 0 90%);
+      clip-path: polygon(0 90%, 100% 90%, 100% 90%, 0 90%);
   }
   16% {
-    -webkit-clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
-    clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
+      -webkit-clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
+      clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
   }
   18% {
-    -webkit-clip-path: polygon(0 100%, 100% 100%, 100% 99%, 0 99%);
-    clip-path: polygon(0 100%, 100% 100%, 100% 99%, 0 99%);
+      -webkit-clip-path: polygon(0 100%, 100% 100%, 100% 99%, 0 99%);
+      clip-path: polygon(0 100%, 100% 100%, 100% 99%, 0 99%);
   }
   20% {
-    -webkit-clip-path: polygon(0 70%, 100% 70%, 100% 71%, 0 71%);
-    clip-path: polygon(0 70%, 100% 70%, 100% 71%, 0 71%);
+      -webkit-clip-path: polygon(0 70%, 100% 70%, 100% 71%, 0 71%);
+      clip-path: polygon(0 70%, 100% 70%, 100% 71%, 0 71%);
   }
   21.9% {
-    opacity: 1;
-    transform: translate3d(0, calc(-1 * var(--gap-vertical)), 0)
-      scale3d(-1, -1, 1);
+      opacity: 1;
+      transform: translate3d(0, calc(-1 * var(--gap-vertical)), 0)
+          scale3d(-1, -1, 1);
   }
   22%,
   100% {
-    opacity: 0;
-    transform: translate3d(0, 0, 0);
-    -webkit-clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
+      -webkit-clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+      clip-path: polygon(0 0, 0 0, 0 0, 0 0);
   }
 }
