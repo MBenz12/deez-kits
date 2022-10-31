@@ -14,7 +14,7 @@ import WalletButton from "../../sharedComponent/wallletButton";
 import { Images } from "../../static/images";
 import { awaitTransactionSignatureConfirmation, getCandyMachineState, mintOneToken, CandyMachineAccount, getCollectionPDA } from "./candy-machine";
 import { BN, Wallet } from "@project-serum/anchor";
-
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 // @ts-ignore
 import audioUrl1 from "../../assets/audio/counting.mp3";
 // @ts-ignore
@@ -128,8 +128,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
             setCandyMachine(cndy);
             setItemsRedeemed(cndy.state.itemsRedeemed)
             setItemsAvailable(cndy.state.itemsAvailable)
-            // console.log(cndy.state.price.toNumber());
-            // setItemPrice(cndy.state.price)
+            setItemPrice(cndy.state.price.toNumber()/LAMPORTS_PER_SOL)
             console.log(`Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut}`);
         }
         catch (e)
