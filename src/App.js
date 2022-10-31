@@ -25,7 +25,7 @@ function App() {
   return (
     <>
       <ConnectionProvider endpoint={endpoint}>
-        <WalletProvider wallets={wallets} onError={walletConnectionErr} autoConnect={false} >
+        <WalletProvider wallets={wallets} onError={walletConnectionErr} autoConnect={true}>
           <WalletModalProvider>
             <Router />
             <ToastContainer />
