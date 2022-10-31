@@ -25,13 +25,13 @@ import style from "./deezkits.module.scss";
 const CANDY_MACHINE_ID = "7o75TEegRfoWTMSqMs1zLCmGVgstwh1Vu42ETzAp7Dkd";
 const DEFAULT_TIMEOUT = 60000;
 
-const DeezKits = React.forwardRef((props, ref) =>
+const DeezKits = React.forwardRef((props:any, ref) =>
 {
     //const { connection } = useConnection();// new Connection(clusterApiUrl("devnet"), "confirmed"); // mainnet
     const connection = new Connection(clusterApiUrl("devnet"), "confirmed"); // devnet
     const wallet = useWallet();
     const anchorWallet = useAnchorWallet();
-    const [isMintState, setMintState] = useState(true);
+    const [isMintState, setMintState] = useState(props?.isMint);
     const [mint, setMint] = useState<string>("0");
     const totalTicket: number = 400;
     const [ticket, setTicket] = useState<number>(0);
@@ -41,7 +41,7 @@ const DeezKits = React.forwardRef((props, ref) =>
     const [candyMachine, setCandyMachine] = useState<CandyMachineAccount>();
     const [itemsRemaining, setItemsRemaining] = useState<number>();
     const [isActive, setIsActive] = useState(false);
-
+    
     useEffect(() =>
     {
         const increaseTicket = () =>
@@ -330,11 +330,11 @@ const DeezKits = React.forwardRef((props, ref) =>
                 </div>
             </Box>
             <Footer/>
-            <Box className={style.toggle_btn}>
+            {/* <Box className={style.toggle_btn}>
                 <Button onClick={() => setMintState(!isMintState)}>
                     <span>{!isMintState ? "Mint" :"countdown"}</span>
-                </Button>
-            </Box>
+                </Button>   
+            </Box> */}
             <Music ref={ref}/>
             {/* couting audio */}
             <audio loop ref={audioCountRef} controls className="d-none">

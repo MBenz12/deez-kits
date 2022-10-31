@@ -31,24 +31,24 @@
     height: auto;
     overflow-y: auto;
   }
-
-  &::before {
-    content: "";
-    background: url("../../assets/images/deezKits/clouds.png") right no-repeat;
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    z-index: -1;
-    background-size: 100%;
-    background-position: 0vw top;
+//backgrounds clouds left and right
+  // &::before {
+    // content: "";
+    // background: url("../../assets/images/deezKits/clouds.png") right no-repeat;
+    // position: absolute;
+    // left: 0;
+    // top: 0;
+    // height: 100%;
+    // width: 100%;
+    // z-index: -1;
+    // background-size: 100%;
+    // background-position: 0vw top;
     // animation: toRight 20s ease infinite;
-    @media only screen and (max-width: 767px) {
-      // left: -180px;
-      // top: -200px;
-    }
-  }
+    // @media only screen and (max-width: 767px) {
+    //   left: -180px;
+    //   top: -200px;
+    // }
+  // }
   // &::after {
   //   content: "";
   //   background: url("../../assets/images/deezKits/smoke_right.png") right
@@ -312,6 +312,7 @@
     align-items: center;
   }
 
+  //right side kitty animations
   :root {
     --color-text: #fff;
     --color-bg: #000;
