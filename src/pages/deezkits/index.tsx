@@ -246,13 +246,15 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                                 
                                     {wallet.connected ? (
                                         <button onClick={mintHandler} className={style.mint_button}>
-                                          <span className={`${style.curly_open} ${style.zoom_in_out}`}>
+                                          {/* <span className={`${style.curly_open} ${style.zoom_in_out}`}>
                                             &#123;
                                            </span>{" "}
                                           <span className={style.mint_btn}>MINT</span>
                                            <span className={`${style.curly_close} ${style.zoom_in_out}`}>
                                             &#125;
-                                           </span>
+                                           </span> */}
+                                            <img src={Images.MintBtn} alt="deezkits-mint-button" className={style.mint_img_btn}/>
+                                            <img src={Images.MintHoverbtn} alt="deezkits-mint-button" className={style.mint_hover_btn}/>
                                         </button>
                                     ) :(
                                         <Box  className={style.mint_button}>
@@ -335,15 +337,17 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                 </div>
             </Box>
 
-            <Box className={style.deez_Right_kits_kitty}>
-                <img src={Images?.DeezKitsRightKitty} alt="deez-kits-right-kitty"/>
-                <div className={style.glitch_right_layers}>
-                    <div className={style.glitch_right_layer}></div>
-                    <div className={style.glitch_right_layer}></div>
-                    <div className={style.glitch_right_layer}></div>
-                    <div className={style.glitch_right_layer}></div>
-                    <div className={style.glitch_right_layer}></div>
-                </div>
+            <Box className={style.deez_right_kits_wrapper} >
+                <Box className={style.deez_Right_kits_kitty}>
+                    <img src={Images?.DeezKitsRightKitty} alt="deez-kits-right-kitty"/>
+                    <div className={style.glitch_right_layers}>
+                        <div className={style.glitch_right_layer}></div>
+                        <div className={style.glitch_right_layer}></div>
+                        <div className={style.glitch_right_layer}></div>
+                        <div className={style.glitch_right_layer}></div>
+                        <div className={style.glitch_right_layer}></div>
+                    </div>
+                </Box>
             </Box>
             <Footer/>
             {/* <Box className={style.toggle_btn}>
