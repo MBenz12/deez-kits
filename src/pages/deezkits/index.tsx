@@ -21,7 +21,7 @@ import mintBtnaudio from "../../assets/audio/menu.mp3";
 // @ts-ignore
 import style from "./deezkits.module.scss";
 
-const CANDY_MACHINE_ID = "3fPJdJvrY9Jccq6FstBo5D1vvUFw5jrdAbBwY4CvRGyh";
+const CANDY_MACHINE_ID = "EwhGpgWSMhraYH17TFf11tNW32cV9uuaMY6b5vwgmdwr";
 const DEFAULT_TIMEOUT = 60000;
 
 const DeezKits = React.forwardRef((props:any, ref) =>
