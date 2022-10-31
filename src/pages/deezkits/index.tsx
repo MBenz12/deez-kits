@@ -239,7 +239,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                                             <img src={Images.MintHoverbtn} alt="deezkits-mint-button" className={style.mint_hover_btn}/>
                                         </button>
                                     ) :(
-                                        <Box  className={style.mint_button}>
+                                        <Box  className={`${style.mint_button} ${style.mint_connect_button}`}>
                                         <span className={`${style.curly_open} ${style.zoom_in_out}`}>
                                           &#123;
                                          </span>{" "}
@@ -310,13 +310,15 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                     )}
                 </Box>
             </Box>
-            <Box className={style.deez_kits_kitty}>
-                <img src={Images?.DeezKitsKitty} alt="deez-kits-kitty"/>
-                <div className={style.glitch__layers}>
-                    <div className={style.glitch__layer}></div>
-                    <div className={style.glitch__layer}></div>
-                    <div className={style.glitch__layer}></div>
-                </div>
+            <Box className={style.deez_left_kits_wrapper} >
+                <Box className={style.deez_kits_kitty}>
+                    <img src={Images?.DeezKitsKitty} alt="deez-kits-kitty"/>
+                    <div className={style.glitch__layers}>
+                        <div className={style.glitch__layer}></div>
+                        <div className={style.glitch__layer}></div>
+                        <div className={style.glitch__layer}></div>
+                    </div>
+                </Box>
             </Box>
 
             <Box className={style.deez_right_kits_wrapper} >
