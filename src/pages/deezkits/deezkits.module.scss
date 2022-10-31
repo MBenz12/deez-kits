@@ -148,7 +148,7 @@
       max-width: 280px;
       opacity: 1;
       @media only screen and (max-width: 1799px) {
-          max-width: 329px;
+          max-width: 290px;
       }
       @media only screen and (max-width: 1499px) {
           max-width: 296px;
@@ -213,7 +213,7 @@
       max-width: 45%;
       width: 100%;
       @media only screen and (max-width: 1299px) {
-        max-width: 15%;
+        // max-width: 15%;
       }
       @media only screen and (max-width: 767px) {
         max-width: 328px;
@@ -336,7 +336,7 @@
     background-position: left bottom;
     max-width: 210px;
     @media only screen and (max-width:1599px) {
-        max-width: 190px;
+        max-width: 165px;
     }
   }
 
