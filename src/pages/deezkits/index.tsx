@@ -33,42 +33,46 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     const anchorWallet = useAnchorWallet();
     const [isMintState, setMintState] = useState(props?.isMint);
     const [mint, setMint] = useState<string>("0");
-    const totalTicket: number = 400;
-    const [ticket, setTicket] = useState<number>(0);
+    // const totalTicket: number = 400;
+    // const [ticket, setTicket] = useState<number>(0);
     const audioCountRef = useRef(null);
     const audioMintRef = useRef(null);
     const MintDate = new Date("Mon, 31 Oct 2022 17:00:00 GMT");
     const [candyMachine, setCandyMachine] = useState<CandyMachineAccount>();
     const [itemsRemaining, setItemsRemaining] = useState<number>();
     const [isActive, setIsActive] = useState(false);
-    
-    useEffect(() =>
-    {
-        const increaseTicket = () =>
-        {
-            if (ticket < 0)
-            {
-                setTicket(ticket + 1);
-                if (ticket === 1)
-                {
-                    //audioCountRef?.current.play();
-                }
-            } else
-            {
-                //audioCountRef?.current.pause();
-                return true;
-            }
-        };
-        const interval = setInterval(() =>
-        {
-            increaseTicket();
-        }, 1);
+    const [itemsRedeemed,setItemsRedeemed] =useState(0);
+    const [itemsAvailable,setItemsAvailable] =useState(400);
+    const [itemPrice,setItemPrice] =useState(0.25);
 
-        return () =>
-        {
-            clearInterval(interval);
-        };
-    }, [ticket]);
+    
+    // useEffect(() =>
+    // {
+    //     const increaseTicket = () =>
+    //     {
+    //         if (itemsRedeemed < 0)
+    //         {
+    //             setTicket(ticket + 1);
+    //             if (ticket === 1)
+    //             {
+    //                 //audioCountRef?.current.play();
+    //             }
+    //         } else
+    //         {
+    //             //audioCountRef?.current.pause();
+    //             return true;
+    //         }
+    //     };
+    //     const interval = setInterval(() =>
+    //     {
+    //         increaseTicket();
+    //     }, 1);
+
+    //     return () =>
+    //     {
+    //         clearInterval(interval);
+    //     };
+    // }, [ticket]);
 
     useEffect(() =>
     {
@@ -122,7 +126,10 @@ const DeezKits = React.forwardRef((props:any, ref) =>
 
             setIsActive((cndy.state.isActive = active));
             setCandyMachine(cndy);
-
+            setItemsRedeemed(cndy.state.itemsRedeemed)
+            setItemsAvailable(cndy.state.itemsAvailable)
+            // console.log(cndy.state.price);
+            // setItemPrice(cndy.state.price)
             console.log(`Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut}`);
         }
         catch (e)
@@ -222,7 +229,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                                     <Box
                                         className={style.progress_bar_inner}
                                         sx={{
-                                            width: `${((100 * ticket) / totalTicket)}%`,
+                                            width: `${((100 * itemsRedeemed) / itemsAvailable)}%`,
                                         }}
                                     ></Box>
                                 </Box>
@@ -230,7 +237,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
 
                             <Box className={style.sold_mint_wrapper}>
                                 <Typography className={style.sold_mint_text}>
-                                    {ticket} / {totalTicket} SOLD
+                                    {itemsRedeemed} / {itemsAvailable} SOLD
                                 </Typography>
                                 <Typography className={style.mint_text}>
                                     400 ALREADY AIRDROPPED TO KIT HOLDERS
@@ -258,7 +265,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                                 <HighlightedText className="highlightedText">
                                     Price{" "}
                                 </HighlightedText>{" "}
-                                - {`${"0.25"}`} SOL
+                                -{itemPrice} SOL
                             </Typography>
 
                             <Typography className={style.desc_text}>
