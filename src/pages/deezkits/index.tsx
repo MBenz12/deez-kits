@@ -21,7 +21,7 @@ import mintBtnaudio from "../../assets/audio/menu.mp3";
 // @ts-ignore
 import style from "./deezkits.module.scss";
 
-const CANDY_MACHINE_ID = "7o75TEegRfoWTMSqMs1zLCmGVgstwh1Vu42ETzAp7Dkd";
+const CANDY_MACHINE_ID = "EwhGpgWSMhraYH17TFf11tNW32cV9uuaMY6b5vwgmdwr";
 const DEFAULT_TIMEOUT = 60000;
 
 const DeezKits = React.forwardRef((props:any, ref) =>
@@ -31,7 +31,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     const wallet = useWallet();
     const anchorWallet = useAnchorWallet();
     const [isMintState, setMintState] = useState(props?.isMint);
-    const [mint, setMint] = useState<string>("0");
+    const [mint, setMint] = useState<string>("1");
     // const totalTicket: number = 400;
     // const [ticket, setTicket] = useState<number>(0);
     const audioCountRef = useRef(null);
@@ -40,38 +40,9 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     const [candyMachine, setCandyMachine] = useState<CandyMachineAccount>();
     const [itemsRemaining, setItemsRemaining] = useState<number>();
     const [isActive, setIsActive] = useState(false);
-    const [itemsRedeemed,setItemsRedeemed] =useState(0);
-    const [itemsAvailable,setItemsAvailable] =useState(400);
-    const [itemPrice,setItemPrice] =useState(0.25);
-
-    
-    // useEffect(() =>
-    // {
-    //     const increaseTicket = () =>
-    //     {
-    //         if (itemsRedeemed < 0)
-    //         {
-    //             setTicket(ticket + 1);
-    //             if (ticket === 1)
-    //             {
-    //                 //audioCountRef?.current.play();
-    //             }
-    //         } else
-    //         {
-    //             //audioCountRef?.current.pause();
-    //             return true;
-    //         }
-    //     };
-    //     const interval = setInterval(() =>
-    //     {
-    //         increaseTicket();
-    //     }, 1);
-
-    //     return () =>
-    //     {
-    //         clearInterval(interval);
-    //     };
-    // }, [ticket]);
+    const [itemsRedeemed, setItemsRedeemed] = useState(0);
+    const [itemsAvailable, setItemsAvailable] = useState(400);
+    const [itemPrice, setItemPrice] = useState(0.25);
 
     useEffect(() =>
     {
@@ -156,19 +127,37 @@ const DeezKits = React.forwardRef((props:any, ref) =>
 
     const mintHandler = async () =>
     {
-        const res = await mintTokens(candyMachine!, wallet!.publicKey!, parseInt(mint));
-        console.log(res);
+        console.log("isSoldOut:", candyMachine?.state.isSoldOut);
 
-        if (res)
+        const mintAmount = parseInt(mint);
+
+        console.log("Trying to mint", mintAmount);
+
+        if (!candyMachine?.state.isSoldOut)
         {
-          // manual update since the refresh might not detect the change immediately
-          toast.success("Congratulations! Mint succeeded!");
-        }        
+            toast.success(`Minting ${mintAmount} in progress...`, {theme: "dark", autoClose: 15000, bodyStyle: { width: "500px"}});
+
+            const res = await mintTokens(candyMachine!, wallet!.publicKey!, mintAmount);
+            console.log(res);
+
+            if (res)
+            {
+                // manual update since the refresh might not detect the change immediately
+                toast.dismiss();
+                toast.success(`Congratulations! ${mintAmount} minted successfully.`, {theme: "dark"});
+            }
+            else
+            {
+                toast.dismiss();
+                toast.error("Mint failed! Please try again!", {theme: "dark"});
+            }
+
+            await refreshCandyMachineState();
+        }
         else
         {
-          toast.error("Mint failed! Please try again!");
+            toast.success("SOLD OUT!");
         }
-        await refreshCandyMachineState();
     };
 
     return (
@@ -258,7 +247,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                                 <HighlightedText className="highlightedText">
                                     Price{" "}
                                 </HighlightedText>{" "}
-                                -{itemPrice} SOL
+                                - {itemPrice} SOL
                             </Typography>
 
                             <Typography className={style.desc_text}>
