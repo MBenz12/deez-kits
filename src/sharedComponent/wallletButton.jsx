@@ -36,7 +36,7 @@ const WalletButton = () => {
               className={style.wallet_wrapper}
             >
               <WalletDisconnectButton onClick={handleDisconnect} className={style.diss_connect}>
-                <p> disconnect Wallet</p>
+                {wallet?.publicKey?.toString().slice(0,4)}....{wallet?.publicKey?.toString().substr(-4)}
               </WalletDisconnectButton>
             </div>
           ) : (

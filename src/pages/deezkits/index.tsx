@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Typography } from "@mui/material";
-import { Wallet } from "@project-serum/anchor";
-import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
+import { BN, Wallet } from "@project-serum/anchor";
+import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import React, { useEffect, useRef, useState } from "react";
@@ -21,28 +21,28 @@ import mintBtnaudio from "../../assets/audio/menu.mp3";
 // @ts-ignore
 import style from "./deezkits.module.scss";
 
-const CANDY_MACHINE_ID = "EwhGpgWSMhraYH17TFf11tNW32cV9uuaMY6b5vwgmdwr";
+
+// const CANDY_MACHINE_ID = "2KdHyE7aD6hjAD9kZhX9U5XSKFQJsTyPdpCz37M5Dwjs"; //devnet
+const CANDY_MACHINE_ID = "BcBNrnxCpQ15KJ1gDMhiPSgFXPnbccu1SpAJjGgzAuUE"; //mainnet
 const DEFAULT_TIMEOUT = 60000;
 
 const DeezKits = React.forwardRef((props:any, ref) =>
 {
-    //const { connection } = useConnection();// new Connection(clusterApiUrl("devnet"), "confirmed"); // mainnet
-    const connection = new Connection(clusterApiUrl("devnet"), "confirmed"); // devnet
+    const { connection } = useConnection();
+    // const connection = new Connection(clusterApiUrl("devnet"), "confirmed"); // devnet
     const wallet = useWallet();
     const anchorWallet = useAnchorWallet();
     const [isMintState, setMintState] = useState(props?.isMint);
     const [mint, setMint] = useState<string>("1");
-    // const totalTicket: number = 400;
-    // const [ticket, setTicket] = useState<number>(0);
     const audioCountRef = useRef(null);
     const audioMintRef = useRef(null);
     const MintDate = new Date("Mon, 31 Oct 2022 17:00:00 GMT");
     const [candyMachine, setCandyMachine] = useState<CandyMachineAccount>();
     const [itemsRemaining, setItemsRemaining] = useState<number>();
     const [isActive, setIsActive] = useState(false);
-    const [itemsRedeemed, setItemsRedeemed] = useState(0);
-    const [itemsAvailable, setItemsAvailable] = useState(400);
-    const [itemPrice, setItemPrice] = useState(0.25);
+    const [itemsRedeemed, setItemsRedeemed] = useState(300);
+    const [itemsAvailable, setItemsAvailable] = useState(800);
+    const [itemPrice, setItemPrice] = useState<number>(0.25);
 
     useEffect(() =>
     {
@@ -99,11 +99,11 @@ const DeezKits = React.forwardRef((props:any, ref) =>
             setItemsRedeemed(cndy.state.itemsRedeemed)
             setItemsAvailable(cndy.state.itemsAvailable)
             setItemPrice(cndy.state.price.toNumber()/LAMPORTS_PER_SOL)
-            console.log(`Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut}`);
+            console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut}`);
         }
         catch (e)
         {
-            toast.error("CandyMachine Error:" + e);
+            toast.error("CandyMachine Error " + e, {theme: "dark", style: {blockSize: "max-content", backgroundSize: "300px", maxWidth: "max-content" }, bodyStyle: {blockSize: "max-content", backgroundSize: "300px", maxWidth: "max-content"}});
             console.error("CandyMachine Error:", e);
         }
     }
@@ -128,10 +128,25 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     const mintHandler = async () =>
     {
         console.log("isSoldOut:", candyMachine?.state.isSoldOut);
+        console.log("itemPrice:", itemPrice);
 
-        const mintAmount = parseInt(mint);
+        const mintAmount : number = parseInt(mint);
+        const totalCost : BN = new BN(mintAmount).mul(candyMachine?.state!.price!);
+        const totalCostSOL = totalCost.toNumber() / LAMPORTS_PER_SOL;
 
-        console.log("Trying to mint", mintAmount);
+        const userBalance : BN = new BN(await connection.getBalance(wallet!.publicKey!));
+        const userBalanceSOL = userBalance.toNumber() / LAMPORTS_PER_SOL;
+
+        const isUserHasBalance = userBalance.gte(candyMachine?.state!.price!);
+        console.log(`Trying to mint ${mintAmount} with cost ${totalCostSOL} SOL, userBalance: ${userBalanceSOL} SOL`);
+        console.log(isUserHasBalance);
+
+        if (!isUserHasBalance)
+        {
+            toast.dismiss();
+            toast.error(`Not enough SOL, needs ${totalCostSOL} SOL to mint ${mintAmount}.`, {theme: "dark"});
+            return;
+        }
 
         if (!candyMachine?.state.isSoldOut)
         {
@@ -228,7 +243,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                                             <img src={Images.MintHoverbtn} alt="deezkits-mint-button" className={style.mint_hover_btn}/>
                                         </button>
                                     ) :(
-                                        <Box  className={style.mint_button}>
+                                        <Box  className={`${style.mint_button} ${style.mint_connect_button}`}>
                                         <span className={`${style.curly_open} ${style.zoom_in_out}`}>
                                           &#123;
                                          </span>{" "}
@@ -299,13 +314,15 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                     )}
                 </Box>
             </Box>
-            <Box className={style.deez_kits_kitty}>
-                <img src={Images?.DeezKitsKitty} alt="deez-kits-kitty"/>
-                <div className={style.glitch__layers}>
-                    <div className={style.glitch__layer}></div>
-                    <div className={style.glitch__layer}></div>
-                    <div className={style.glitch__layer}></div>
-                </div>
+            <Box className={style.deez_left_kits_wrapper} >
+                <Box className={style.deez_kits_kitty}>
+                    <img src={Images?.DeezKitsKitty} alt="deez-kits-kitty"/>
+                    <div className={style.glitch__layers}>
+                        <div className={style.glitch__layer}></div>
+                        <div className={style.glitch__layer}></div>
+                        <div className={style.glitch__layer}></div>
+                    </div>
+                </Box>
             </Box>
 
             <Box className={style.deez_right_kits_wrapper} >
@@ -326,7 +343,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                     <span>{!isMintState ? "Mint" :"countdown"}</span>
                 </Button>   
             </Box> */}
-            <Music ref={ref}/>
+            {/* <Music ref={ref}/> */}
             {/* couting audio */}
             <audio loop ref={audioCountRef} controls className="d-none">
                 <source src={audioUrl1}></source>
