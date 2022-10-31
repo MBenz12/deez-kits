@@ -45,6 +45,18 @@ body {
   }
 }
 
+.Toastify{
+  div {
+    font-size: 15px;
+    width: fit-content !important;
+    max-width: 480px;
+  }
+
+  div svg {
+    width: 32px;
+  }
+}
+
 .desktop_view {
   @media only screen and (min-width: 768px) {
     display: block;
@@ -53,19 +65,31 @@ body {
     display: none;
   }
 }
+
 .mobile_view {
   @media only screen and (min-width: 768px) {
     display: none;
   }
+
   @media only screen and (max-width: 767px) {
     display: block;
   }
 }
+
 .d-none{
   display: none;
 }
-.Toastify{
-  div{
-    font-size: 15px;
+
+@media only screen and (max-width: 767px) {
+  .Toastify {
+    div {
+      font-size: 12px;
+      width: fit-content !important;
+      max-width: 380px;
+    }
+
+    div svg {
+      width: 24px;
+    }
   }
 }

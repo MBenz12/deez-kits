@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Typography } from "@mui/material";
 import { BN, Wallet } from "@project-serum/anchor";
-import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
+import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import React, { useEffect, useRef, useState } from "react";
@@ -21,13 +21,15 @@ import mintBtnaudio from "../../assets/audio/menu.mp3";
 // @ts-ignore
 import style from "./deezkits.module.scss";
 
-const CANDY_MACHINE_ID = "GGaL9r4GHFfhLT9KFjFE3TPehJ1EHKAJ5JeCoUfvA9Hj";
+
+// const CANDY_MACHINE_ID = "2KdHyE7aD6hjAD9kZhX9U5XSKFQJsTyPdpCz37M5Dwjs"; //devnet
+const CANDY_MACHINE_ID = "BcBNrnxCpQ15KJ1gDMhiPSgFXPnbccu1SpAJjGgzAuUE"; //mainnet
 const DEFAULT_TIMEOUT = 60000;
 
 const DeezKits = React.forwardRef((props:any, ref) =>
 {
-    //const { connection } = useConnection();// new Connection(clusterApiUrl("devnet"), "confirmed"); // mainnet
-    const connection = new Connection(clusterApiUrl("devnet"), "confirmed"); // devnet
+    const { connection } = useConnection();
+    // const connection = new Connection(clusterApiUrl("devnet"), "confirmed"); // devnet
     const wallet = useWallet();
     const anchorWallet = useAnchorWallet();
     const [isMintState, setMintState] = useState(props?.isMint);
@@ -38,8 +40,8 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     const [candyMachine, setCandyMachine] = useState<CandyMachineAccount>();
     const [itemsRemaining, setItemsRemaining] = useState<number>();
     const [isActive, setIsActive] = useState(false);
-    const [itemsRedeemed, setItemsRedeemed] = useState(0);
-    const [itemsAvailable, setItemsAvailable] = useState(400);
+    const [itemsRedeemed, setItemsRedeemed] = useState(300);
+    const [itemsAvailable, setItemsAvailable] = useState(800);
     const [itemPrice, setItemPrice] = useState<number>(0.25);
 
     useEffect(() =>
@@ -97,11 +99,11 @@ const DeezKits = React.forwardRef((props:any, ref) =>
             setItemsRedeemed(cndy.state.itemsRedeemed)
             setItemsAvailable(cndy.state.itemsAvailable)
             setItemPrice(cndy.state.price.toNumber()/LAMPORTS_PER_SOL)
-            console.log(`Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut}`);
+            console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut}`);
         }
         catch (e)
         {
-            toast.error("CandyMachine Error:" + e);
+            toast.error("CandyMachine Error " + e, {theme: "dark", style: {blockSize: "max-content", backgroundSize: "300px", maxWidth: "max-content" }, bodyStyle: {blockSize: "max-content", backgroundSize: "300px", maxWidth: "max-content"}});
             console.error("CandyMachine Error:", e);
         }
     }
