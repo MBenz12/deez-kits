@@ -25,7 +25,8 @@ export const CommunityFunds = ({
 
   const timeout = () =>
   {
-    const targetDate = new Date('November 01, 2022 00:00:00').getTime();
+    let currentMonth = new Date().getMonth()+1; //starts at zero
+    const targetDate = new Date(`${currentMonth+1} 01, 2022 00:00:00`).getTime();
     const now2 = new Date().getTime();
     const now = new Date(targetDate - now2);
     setDay(now.getDate());
@@ -33,13 +34,16 @@ export const CommunityFunds = ({
     setMins(now.getMinutes() + 1);
     setSec(now.getSeconds());
   };
-  useEffect(() => {
+
+  useEffect(() =>
+  {
     timeout();
     const interval = setInterval(timeout, 1000);
     return () => {
       clearInterval(interval);
     };
   }, []);
+
   return (
     <div>
       <div className="relative cursor-context-menu rounded-md border-[#371761] border-2 min-w-[224px]">
