@@ -28,7 +28,8 @@ function App() {
         <WalletProvider wallets={wallets} onError={walletConnectionErr} autoConnect={true}>
           <WalletModalProvider>
             <Router />
-            <ToastContainer />
+            {/*Not safe to put here toast container, it wont allow custom toast on each page, removed*/}
+            {/*<ToastContainer/>*/}
           </WalletModalProvider>
         </WalletProvider>
       </ConnectionProvider>

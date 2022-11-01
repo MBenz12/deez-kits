@@ -14,6 +14,10 @@ const programId = new PublicKey(idl_slots.metadata.address);
 const slots_pda_seed = "slots_game_pda";
 const player_pda_seed = "player_pda";
 
+export const sleep = (ms: number): Promise<void> => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 export const getNetworkFromConnection: (connection: Connection) => WalletAdapterNetwork.Devnet | WalletAdapterNetwork.Mainnet = (connection: Connection) =>
 {
     // @ts-ignore
@@ -274,14 +278,37 @@ export async function playTransaction(program: Program, provider: Provider, wall
   }
 
   const txSignature = await wallet.sendTransaction(transaction, provider.connection);
+  await confirmTransactionSafe(provider, txSignature, "confirmed");
 
-  await provider.connection.confirmTransaction(txSignature, "confirmed");
-  console.log(txSignature);
 
   gameData = await program.account.game.fetchNullable(game);
   const playerData = await program.account.player.fetchNullable(player);
 
   return { gameData, playerData };
+}
+
+/* Will retry to confirm tx for 10 times, 1 sec sleep between retires */
+export async function confirmTransactionSafe(provider: Provider, txSignature: string, commitment: string, retries: number = 10, sleepMS: number = 1000)
+{
+    let isConfirmed = false;
+    while (!isConfirmed && retries > 0)
+    {
+        try
+        {
+            console.log(`Confirm ${txSignature}... retries: ${retries}`);
+            await provider.connection.confirmTransaction(txSignature, "confirmed");
+
+            console.log(txSignature);
+            isConfirmed = true;
+        }
+        catch (e)
+        {
+            console.info("Failed confirmation:", e);
+
+            retries--;
+            await sleep(sleepMS);
+        }
+    }
 }
 
 export async function withdrawTransaction(program: Program, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey)
@@ -324,7 +351,7 @@ export async function withdrawTransaction(program: Program, provider: Provider, 
         provider.connection
     );
 
-    await provider.connection.confirmTransaction(txSignature, "confirmed");
+    await confirmTransactionSafe(provider, txSignature, "confirmed");
     console.log(txSignature);
 
     return txSignature;
