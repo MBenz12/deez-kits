@@ -194,7 +194,9 @@ const DeezSlotz = React.forwardRef((props, ref) =>
 
   const play = async () =>
   {
-      toast.info("Maintenance break");
+      const toastClassName2 = "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px] xl:right-[-30px]"
+
+      toast.info("Maintenance break", {containerId});//: {maxWidth: "inherit", minWidth: "inherit", width: "inherit"}});
       return;
 
       if (loading) return;
@@ -333,8 +335,9 @@ const DeezSlotz = React.forwardRef((props, ref) =>
           containerId={containerId}
           position="top-right"
           autoClose={5000}
+          // style={{maxWidth: "inherit", minWidth: "inherit", width: "inherit"}}
           toastClassName={() =>
-            "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px] xl:right-[0px]"
+            "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer xl:top-[150px] xl:right-[0px]"
           }
         />
       </div>
