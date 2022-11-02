@@ -131,185 +131,195 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       return gameData;
   }
 
-  const finished = async () => {
-    if (!wallet.publicKey) return;
-    const counts = {};
-    targets.forEach((target) => {
-      // @ts-ignore
-      counts[target] = (counts[target] || 0) + 1;
-    });
-    let maxCount = 0;
-    // let equalNum = -1;
-    Object.keys(counts).forEach((num) => {
-      // @ts-ignore
-      if (maxCount < counts[num]) {
-        // @ts-ignore
-        maxCount = counts[num];
-        // equalNum = parseInt(num);
-      }
-    });
+  const finished = async () =>
+  {
+      if (!wallet.publicKey) return;
 
-    if (maxCount >= 3 && multiplier) {
-      setWon(true);
-      // setEqualNum(equalNum);
-      toast.dismiss();
-      toast.success(
-        `You won ${((price * multiplier) / 10).toLocaleString("en-us", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 3,
-        })} ${tokenType ? "$SKT" : "SOL"} (x${multiplier / 10} multipler)`,
-        { containerId }
-      );
-      setRun(true);
-      setCycle(true);
-      setTimeout(() => setCycle(false), 4000);
-      await postWinLoseToDiscordAPI(
-        wallet.publicKey,
-        (multiplier * price) / 10,
-        price,
-        connection
-      );
-    } else {
-      setLoading(false);
-      setWon(false);
-      toast.dismiss();
-      toast.error(
-        `You almost won! better luck next time.`,
-        { containerId }
-      );
-      await postWinLoseToDiscordAPI(
-        wallet.publicKey,
-        -price,
-        price,
-        connection
-      );
-    }
-    setLost(true);
-    setTimeout(() => {
-      setWon(false);
-      setLost(false);
-    }, 1000);
-    fetchData();
-  };
+      const counts = {};
+      targets.forEach((target) =>
+      {
+          // @ts-ignore
+          counts[target] = (counts[target] || 0) + 1;
+      });
+
+      let maxCount = 0;
+      Object.keys(counts).forEach((num) =>
+      {
+          // @ts-ignore
+          if (maxCount < counts[num])
+          {
+              // @ts-ignore
+              maxCount = counts[num];
+              // equalNum = parseInt(num);
+          }
+      });
+
+      if (maxCount >= 3 && multiplier)
+      {
+          setWon(true);
+          // setEqualNum(equalNum);
+          toast.dismiss();
+          toast.success(
+              `You won ${((price * multiplier) / 10).toLocaleString("en-us", {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 3,
+              })} ${tokenType ? "$SKT" : "SOL"} (x${multiplier / 10} multipler)`,
+              {containerId}
+          );
+
+          setRun(true);
+          setCycle(true);
+          setTimeout(() => setCycle(false), 4000);
+
+          await postWinLoseToDiscordAPI(wallet.publicKey, (multiplier * price) / 10, price, connection);
+      }
+      else
+      {
+          setLoading(false);
+          setWon(false);
+          toast.dismiss();
+          toast.error(`You almost won! better luck next time.`, {containerId});
+
+          await postWinLoseToDiscordAPI(wallet.publicKey, -price, price, connection);
+      }
+
+      setLost(true);
+      setTimeout(() =>
+      {
+          setWon(false);
+          setLost(false);
+      }, 1000);
+      fetchData();
+  }
 
   const play = async () =>
   {
-    if (loading) return;
-    if (!wallet.connected) {
-      toast.dismiss();
-      toast.error("Please connect wallet to play.", { containerId });
-      return;
-    }
+      // const toastClassName2 = "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px] xl:right-[-30px]"
 
-    if (solBalance < price) {
-      toast.dismiss();
-      toast.error(`Not enough funds to bet.`, { containerId });
-      return;
-    }
+      // toast.info("Maintenance break", {containerId});//: {maxWidth: "inherit", minWidth: "inherit", width: "inherit"}});
+      // return;
 
-    setLoading(true);
-    setWon(false);
+      if (loading) return;
 
-    try
-    {
-      const { provider, program } = getProviderAndProgram(
-        connection,
-        anchorWallet
-      );
-      // @ts-ignore
-      const { gameData, playerData } = await playTransaction(
-        program,
-        provider,
-        wallet,
-        game_name,
-        game_owner,
-        betNo,
-        connection
-      );
+      if (!wallet.connected)
+      {
+          toast.dismiss();
+          toast.error("Please connect wallet to play.", {containerId});
+          return;
+      }
 
-      let status = playerData?.status;
-      // console.log(status);
-      if (!status) return;
-      // const status = Math.floor(Math.random() * 1000);
-      const targets = [];
-      let equal_no = status % 10;
-      let max = (status % 2) + 1;
-      for (let i = 0; i < 3; i++) {
-        let low = 0;
-        if (i < 2) {
-          low = gameData.winPercents[betNo][i + 1];
-        }
-        if (status >= low && status < gameData.winPercents[betNo][i]) {
-          max = i + 3;
-        }
+      if (solBalance < price)
+      {
+          toast.dismiss();
+          toast.error(`Not enough funds to bet.`, {containerId});
+          return;
       }
-      if (
-        gameData.loseCounter &&
-        gameData.loseCounter <= gameData.minRoundsBeforeWin
-      ) {
-        max = (status % 2) + 1;
+
+      setLoading(true);
+      setWon(false);
+
+      try
+      {
+          const {provider, program} = getProviderAndProgram(connection, anchorWallet);
+
+          // @ts-ignore
+          const {gameData, playerData} = await playTransaction(program, provider, wallet, game_name, game_owner, betNo, connection);
+
+          let status = playerData?.status;
+
+          // console.log(status);
+          if (!status) return;
+
+          const targets = [];
+          let equal_no = status % 10;
+          let max = (status % 2) + 1;
+          for (let i = 0; i < 3; i++) {
+            let low = 0;
+            if (i < 2) {
+              low = gameData.winPercents[betNo][i + 1];
+            }
+            if (status >= low && status < gameData.winPercents[betNo][i]) {
+              max = i + 3;
+            }
+          }
+
+          if (gameData.loseCounter && gameData.loseCounter <= gameData.minRoundsBeforeWin)
+          {
+              max = (status % 2) + 1;
+          }
+
+          setMultiplier((max - 1) * 10 - (status % 10));
+          if (max === 5 && betNo > 3 && gameData.jackpot.toNumber() > 0)
+          {
+              setJackpot(jackpotAmount);
+          }
+          else
+          {
+              setJackpot(0);
+          }
+
+          for (let i = 0; i < 5; i++)
+          {
+              let rd = random();
+              while (
+                  rd === equal_no ||
+                  // eslint-disable-next-line no-loop-func
+                  targets.filter((target) => target === rd).length
+                  )
+              {
+                  rd = random();
+              }
+              targets[i] = rd;
+          }
+
+          for (let i = 0; i < max; i++)
+          {
+              let rd = random() % 5;
+              while (targets[rd] === equal_no)
+              {
+                  rd = random() % 5;
+              }
+              targets[rd] = equal_no;
+          }
+
+          setTargets(targets);
+          setRoll({});
       }
-      setMultiplier((max - 1) * 10 - (status % 10));
-      if (max === 5 && betNo > 3 && gameData.jackpot.toNumber() > 0) {
-        setJackpot(jackpotAmount);
-      } else {
-        setJackpot(0);
+      catch (error)
+      {
+          console.log(error);
+          setLoading(false);
       }
-      for (let i = 0; i < 5; i++) {
-        let rd = random();
-        while (
-          rd === equal_no ||
-          // eslint-disable-next-line no-loop-func
-          targets.filter((target) => target === rd).length
-        ) {
-          rd = random();
-        }
-        targets[i] = rd;
-      }
-      for (let i = 0; i < max; i++) {
-        let rd = random() % 5;
-        while (targets[rd] === equal_no) {
-          rd = random() % 5;
-        }
-        targets[rd] = equal_no;
-      }
-      // console.log(status, targets);
-      // setLoading(true);
-      setTargets(targets);
-      setRoll({});
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
+  }
 
   const withdrawPlayerMoney = async () =>
   {
-    if (!playerBalance)
-    {
+      if (!playerBalance)
+      {
+          toast.dismiss();
+          toast.error("No funds available for withdrawal.", {containerId});
+          return;
+      }
+
+      if (playerBalance > mainBalance)
+      {
+          toast.dismiss();
+          toast.error("Bank is being filled, please try to withdraw again shortly.", {containerId});
+          return;
+      }
+
+      const {provider, program} = getProviderAndProgram(connection, anchorWallet);
+      const txSignature = await withdrawTransaction(program, provider, wallet, game_name, game_owner);
+
       toast.dismiss();
-      toast.error("No funds available for withdrawal.", { containerId });
-      return;
-    }
+      toast.success("Funds sent to your wallet successfully.", {containerId});
 
-    if (playerBalance > mainBalance)
-    {
-      toast.dismiss();
-      toast.error("Bank is being filled, please try to withdraw again shortly.", { containerId });
-      return;
-    }
+      const gameData = await fetchData();
+      const bankBalance = gameData!.mainBalance.toNumber() / LAMPORTS_PER_SOL;
 
-    const { provider, program } = getProviderAndProgram(connection, anchorWallet);
-    const txSignature = await withdrawTransaction(program, provider, wallet, game_name, game_owner);
+      await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance, connection, bankBalance, txSignature);
+  }
 
-    toast.dismiss();
-    toast.success("Funds sent to your wallet successfully.", { containerId });
-
-    const gameData = await fetchData();
-    const bankBalance = gameData!.mainBalance.toNumber() / LAMPORTS_PER_SOL;
-
-    await postWithdrawToDiscordAPI(wallet.publicKey, playerBalance, connection, bankBalance, txSignature);
-  };
   return (
     <div className="slots flex flex-col items-center bg-black min-h-[100vh] lg:p-6 sm:p-4 p-2 font-['Share Tech Mono'] relative">
       <Confetti
@@ -330,8 +340,9 @@ const DeezSlotz = React.forwardRef((props, ref) =>
           containerId={containerId}
           position="top-right"
           autoClose={5000}
+          // style={{maxWidth: "inherit", minWidth: "inherit", width: "inherit"}}
           toastClassName={() =>
-            "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px] xl:right-[40px]"
+            "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer xl:top-[150px] xl:right-[0px]"
           }
         />
       </div>

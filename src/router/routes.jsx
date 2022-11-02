@@ -5,6 +5,7 @@ import Loading from "../sharedComponent/Loading";
 import Audio from '../sharedComponent/Audio'
 import DeezSlotz from "../pages/deezslotz";
 import Staking from "../pages/staking";
+import {ToastContainer} from "react-toastify";
 const Home = React.lazy(() => import("../pages/home/index"));
 const Deezkits = React.lazy(() => import("../pages/deezkits"));
 
@@ -36,7 +37,7 @@ const Router = () => {
               </Suspense>
           }>
       </Route>
-      <Route path="/mint" element={<Suspense fallback={<Loading />}><Deezkits isMint={true} ref={MusicRef} isMusicPlayer={true}/></Suspense>}></Route>
+      <Route path="/mint" element={<Suspense fallback={<Loading />}><ToastContainer/><Deezkits isMint={true} ref={MusicRef} isMusicPlayer={true}/></Suspense>}></Route>
       <Route path="/deezslotz" element={<Suspense fallback={<Loading />}><DeezSlotz /></Suspense>}></Route>
       <Route path="/staking" element={<Suspense fallback={<Loading />}><Staking/></Suspense>}></Route>
       <Route path="/countdown" element={<Suspense fallback={<Loading />}><Deezkits isMint={false} ref={MusicRef} isMusicPlayer={true}/></Suspense>}>
