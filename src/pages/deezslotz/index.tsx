@@ -15,6 +15,7 @@ import discordIcon from "../../assets/images/discord_icon.svg";
 // @ts-ignore
 import meIcon from "../../assets/images/me_icon.svg";
 // @ts-ignore
+import { Wallet } from "@project-serum/anchor";
 import twitterIcon from "../../assets/images/twitter_icon.svg";
 import { game_name, game_owner } from "./constants";
 import Header from "./Header";
@@ -23,7 +24,6 @@ import "./index.scss";
 import Slots, { random } from "./Slots";
 import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
 import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
-import { Wallet } from "@project-serum/anchor";
 
 //const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 114;
@@ -234,9 +234,15 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       const targets = [];
       let equal_no = status % 10;
       let max = (status % 2) + 1;
-      gameData.winPercents[betNo].forEach((percent: number, index: number) => {
-        if (status < percent) max = index + 3;
-      });
+      for (let i = 0; i < 3; i++) {
+        let low = 0;
+        if (i < 2) {
+          low = gameData.winPercents[betNo][i + 1];
+        }
+        if (status >= low && status < gameData.winPercents[betNo][i]) {
+          max = i + 3;
+        }
+      }
       if (
         gameData.loseCounter &&
         gameData.loseCounter <= gameData.minRoundsBeforeWin
