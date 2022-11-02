@@ -501,6 +501,26 @@ export type Slots = {
             "type": "u32"
           },
           {
+            "name": "isWin",
+            "type": "bool"
+          },
+          {
+            "name": "isJackpot",
+            "type": "bool"
+          },
+          {
+            "name": "equalNo",
+            "type": "u32"
+          },
+          {
+            "name": "equalCount",
+            "type": "u32"
+          },
+          {
+            "name": "multipler",
+            "type": "u32"
+          },
+          {
             "name": "bump",
             "type": "u8"
           }
@@ -1022,6 +1042,26 @@ export const IDL: Slots = {
           },
           {
             "name": "status",
+            "type": "u32"
+          },
+          {
+            "name": "isWin",
+            "type": "bool"
+          },
+          {
+            "name": "isJackpot",
+            "type": "bool"
+          },
+          {
+            "name": "equalNo",
+            "type": "u32"
+          },
+          {
+            "name": "equalCount",
+            "type": "u32"
+          },
+          {
+            "name": "multipler",
             "type": "u32"
           },
           {

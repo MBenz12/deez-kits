@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as anchor from "@project-serum/anchor";
-import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { Wallet } from "@project-serum/anchor";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
+import { clusterApiUrl, Connection, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
@@ -15,7 +17,6 @@ import discordIcon from "../../assets/images/discord_icon.svg";
 // @ts-ignore
 import meIcon from "../../assets/images/me_icon.svg";
 // @ts-ignore
-import { Wallet } from "@project-serum/anchor";
 import twitterIcon from "../../assets/images/twitter_icon.svg";
 import { game_name, game_owner } from "./constants";
 import Header from "./Header";
@@ -25,13 +26,13 @@ import Slots, { random } from "./Slots";
 import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
 import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
 
-//const cluster = WalletAdapterNetwork.Devnet;
+const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 114;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
 {
-  const { connection } = useConnection();
-  // const connection = new Connection(clusterApiUrl(cluster), "confirmed");
+  // const { connection } = useConnection();
+  const connection = new Connection(clusterApiUrl(cluster), "confirmed");
   const wallet = useWallet();
   const anchorWallet = useAnchorWallet() as anchor.Wallet;
 
@@ -223,7 +224,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
           const {provider, program} = getProviderAndProgram(connection, anchorWallet);
 
           // @ts-ignore
-          const {gameData, playerData} = await playTransaction(program, provider, wallet, game_name, game_owner, betNo, connection);
+          const { playerData } = await playTransaction(program, provider, wallet, game_name, game_owner, betNo, connection);
 
           let status = playerData?.status;
 
@@ -231,38 +232,15 @@ const DeezSlotz = React.forwardRef((props, ref) =>
           if (!status) return;
 
           const targets = [];
-          let equal_no = status % 10;
-          let max = (status % 2) + 1;
-          for (let i = 0; i < 3; i++) {
-            let low = 0;
-            if (i < 2) {
-              low = gameData.winPercents[betNo][i + 1];
-            }
-            if (status >= low && status < gameData.winPercents[betNo][i]) {
-              max = i + 3;
-            }
-          }
-
-          if (gameData.loseCounter && gameData.loseCounter <= gameData.minRoundsBeforeWin)
-          {
-              max = (status % 2) + 1;
-          }
-
-          setMultiplier((max - 1) * 10 - (status % 10));
-          if (max === 5 && betNo > 3 && gameData.jackpot.toNumber() > 0)
-          {
-              setJackpot(jackpotAmount);
-          }
-          else
-          {
-              setJackpot(0);
-          }
-
+          let equalNo = playerData.equalNo;
+          let equalCount = playerData.equalCount;
+          setMultiplier(playerData.multipler);
+          setJackpot(playerData.isJackpot ? jackpotAmount : 0);
           for (let i = 0; i < 5; i++)
           {
               let rd = random();
               while (
-                  rd === equal_no ||
+                  rd === equalNo ||
                   // eslint-disable-next-line no-loop-func
                   targets.filter((target) => target === rd).length
                   )
@@ -272,14 +250,14 @@ const DeezSlotz = React.forwardRef((props, ref) =>
               targets[i] = rd;
           }
 
-          for (let i = 0; i < max; i++)
+          for (let i = 0; i < equalCount; i++)
           {
               let rd = random() % 5;
-              while (targets[rd] === equal_no)
+              while (targets[rd] === equalNo)
               {
                   rd = random() % 5;
               }
-              targets[rd] = equal_no;
+              targets[rd] = equalNo;
           }
 
           setTargets(targets);

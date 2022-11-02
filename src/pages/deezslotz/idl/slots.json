@@ -501,6 +501,26 @@
             "type": "u32"
           },
           {
+            "name": "isWin",
+            "type": "bool"
+          },
+          {
+            "name": "isJackpot",
+            "type": "bool"
+          },
+          {
+            "name": "equalNo",
+            "type": "u32"
+          },
+          {
+            "name": "equalCount",
+            "type": "u32"
+          },
+          {
+            "name": "multipler",
+            "type": "u32"
+          },
+          {
             "name": "bump",
             "type": "u8"
           }
@@ -521,6 +541,6 @@
     }
   ],
   "metadata": {
-    "address": "3BJdzqUKD2bTTxDP7x7odQ2u4SBiHu3VncZQwmvHre34"
+    "address": "6sE2DYexXa8oBPfGjgoCkNceHgH3xXnXD2nBz7i3NTWE"
   }
 }
