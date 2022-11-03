@@ -157,6 +157,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
 
       if (maxCount >= 3 && multiplier)
       {
+          setLoading(false);
           setWon(true);
           // setEqualNum(equalNum);
           toast.dismiss();
@@ -309,7 +310,6 @@ const DeezSlotz = React.forwardRef((props, ref) =>
         tweenDuration={6000}
         onConfettiComplete={() => {
           setRun(false);
-          setLoading(false);
         }}
       />
       <div className="z-[2]">
