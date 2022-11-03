@@ -4,7 +4,7 @@ import { Wallet } from "@project-serum/anchor";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
 import { clusterApiUrl, Connection, LAMPORTS_PER_SOL } from "@solana/web3.js";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -53,10 +53,16 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   const [lost, setLost] = useState(false);
   const [multiplier, setMultiplier] = useState(0);
   const [tokenType, setTokenType] = useState(false);
+  const pageLoaded = useRef<boolean>(false);
+
 
   useEffect(() =>
   {
-    console.log(connection);
+      if (!pageLoaded.current) {
+          console.log(connection);
+      }
+      pageLoaded.current = true;
+
   }, []);
 
   useEffect(() => {
@@ -102,8 +108,14 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       const playerData = await program.account.player.fetchNullable(player);
       const gameData = await program.account.game.fetchNullable(game);
 
+
       if (gameData)
       {
+          if (isAdmin(provider.wallet.publicKey))
+          {
+              console.log("Bank Address:", game.toString());
+          }
+          
           console.log("Game Data:", convertLog(gameData, isAdmin(provider.wallet.publicKey)));
       }
 

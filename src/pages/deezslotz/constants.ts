@@ -1,7 +1,7 @@
 import { PublicKey } from "@solana/web3.js";
 
-export const game_name = "test1";
-export const game_owner = new PublicKey("3qWq2ehELrVJrTg2JKKERm67cN6vYjm1EyhCEzfQ6jMd");
+export const game_name = "deez_game_6_token";
+export const game_owner = new PublicKey("SERVUJeqsyaJTuVuXAmmko6kTigJmxzTxUMSThpC2LZ");
 export const usdcMint = new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
 export const deezMint = new PublicKey("DEEZx3JkAuLwt5ir7eodVSFTnxHDRSBoabX9szQMK3RM");
 export const splTokenMint = deezMint;
