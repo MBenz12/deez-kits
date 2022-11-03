@@ -270,7 +270,7 @@ export const PlayerFunds = ({
         </div>
       </div>
       <div
-        className={`absolute w-[100px] left-[50%] top-[52px] translate-x-[-50%] text-[14px] text-[#47C3D7] duration-1000 flex justify-center ${
+        className={`absolute w-[100px] left-[50%] top-[56px] translate-x-[-50%] text-[14px] text-[#47C3D7] duration-1000 flex justify-center ${
           !won ? "opacity-0" : ""
         }`}
       >
