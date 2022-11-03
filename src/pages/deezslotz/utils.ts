@@ -207,8 +207,7 @@ async function getAddPlayerTransaction(program: Program, provider: Provider, gam
   const [game] = await getGameAddress(game_name, game_owner);
   const [player, bump] = await getPlayerAddress(provider.wallet.publicKey, game);
 
-  console.log(player.toString());
-  console.log(game.toString());
+  console.log("Player:", player.toString(), "Game:", game.toString());
   return program.transaction.addPlayer(bump,
     {
       accounts: {
@@ -234,7 +233,7 @@ export async function playTransaction(program: Program, provider: Provider, wall
   let gameData = await program.account.game.fetchNullable(game);
   if (!gameData) return;
 
-  console.log("tokenType", gameData.tokenType);
+  //console.log("tokenType", gameData.tokenType);
 
   const mint = gameData.tokenType ? splTokenMint : SystemProgram.programId;
   const payerAta = await getAta(mint, provider.wallet.publicKey);
@@ -294,10 +293,10 @@ export async function confirmTransactionSafe(provider: Provider, txSignature: st
     {
         try
         {
-            console.log(`Confirm ${txSignature}... retries: ${retries}`);
+            console.log(`Confirming ${txSignature}... retries: ${retries}`);
             await provider.connection.confirmTransaction(txSignature, "confirmed");
 
-            console.log(txSignature);
+            console.log(`Confirmed ${txSignature}`);
             isConfirmed = true;
         }
         catch (e)
@@ -346,13 +345,8 @@ export async function withdrawTransaction(program: Program, provider: Provider, 
         })
     );    
 
-    const txSignature = await wallet.sendTransaction(
-        transaction,
-        provider.connection
-    );
-
+    const txSignature = await wallet.sendTransaction(transaction, provider.connection);
     await confirmTransactionSafe(provider, txSignature, "confirmed");
-    console.log(txSignature);
 
     return txSignature;
 }
