@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as anchor from "@project-serum/anchor";
-import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import React, { useEffect, useState } from "react";
+import { Wallet } from "@project-serum/anchor";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
+import { clusterApiUrl, Connection, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import React, { useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,15 +25,14 @@ import "./index.scss";
 import Slots, { random } from "./Slots";
 import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
 import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
-import { Wallet } from "@project-serum/anchor";
 
-//const cluster = WalletAdapterNetwork.Devnet;
+const cluster = WalletAdapterNetwork.Mainnet;
 const containerId = 114;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
 {
-  const { connection } = useConnection();
-  // const connection = new Connection(clusterApiUrl(cluster), "confirmed");
+  // const { connection } = useConnection();
+  const connection = new Connection(clusterApiUrl(cluster), "confirmed");
   const wallet = useWallet();
   const anchorWallet = useAnchorWallet() as anchor.Wallet;
 
@@ -52,10 +53,16 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   const [lost, setLost] = useState(false);
   const [multiplier, setMultiplier] = useState(0);
   const [tokenType, setTokenType] = useState(false);
+  const pageLoaded = useRef<boolean>(false);
+
 
   useEffect(() =>
   {
-    console.log(connection);
+      if (!pageLoaded.current) {
+          console.log(connection);
+      }
+      pageLoaded.current = true;
+
   }, []);
 
   useEffect(() => {
@@ -101,8 +108,14 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       const playerData = await program.account.player.fetchNullable(player);
       const gameData = await program.account.game.fetchNullable(game);
 
+
       if (gameData)
       {
+          if (isAdmin(provider.wallet.publicKey))
+          {
+              console.log("Bank Address:", game.toString());
+          }
+          
           console.log("Game Data:", convertLog(gameData, isAdmin(provider.wallet.publicKey)));
       }
 
@@ -156,6 +169,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
 
       if (maxCount >= 3 && multiplier)
       {
+          setLoading(false);
           setWon(true);
           // setEqualNum(equalNum);
           toast.dismiss();
@@ -194,10 +208,10 @@ const DeezSlotz = React.forwardRef((props, ref) =>
 
   const play = async () =>
   {
-      const toastClassName2 = "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px] xl:right-[-30px]"
+      // const toastClassName2 = "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px] xl:right-[-30px]"
 
-      toast.info("Maintenance break", {containerId});//: {maxWidth: "inherit", minWidth: "inherit", width: "inherit"}});
-      return;
+      // toast.info("Maintenance break", {containerId});//: {maxWidth: "inherit", minWidth: "inherit", width: "inherit"}});
+      // return;
 
       if (loading) return;
 
@@ -223,7 +237,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
           const {provider, program} = getProviderAndProgram(connection, anchorWallet);
 
           // @ts-ignore
-          const {gameData, playerData} = await playTransaction(program, provider, wallet, game_name, game_owner, betNo, connection);
+          const { playerData } = await playTransaction(program, provider, wallet, game_name, game_owner, betNo, connection);
 
           let status = playerData?.status;
 
@@ -231,33 +245,15 @@ const DeezSlotz = React.forwardRef((props, ref) =>
           if (!status) return;
 
           const targets = [];
-          let equal_no = status % 10;
-          let max = (status % 2) + 1;
-          gameData.winPercents[betNo].forEach((percent: number, index: number) =>
-          {
-              if (status < percent) max = index + 3;
-          });
-
-          if (gameData.loseCounter && gameData.loseCounter <= gameData.minRoundsBeforeWin)
-          {
-              max = (status % 2) + 1;
-          }
-
-          setMultiplier((max - 1) * 10 - (status % 10));
-          if (max === 5 && betNo > 3 && gameData.jackpot.toNumber() > 0)
-          {
-              setJackpot(jackpotAmount);
-          }
-          else
-          {
-              setJackpot(0);
-          }
-
+          let equalNo = playerData.equalNo;
+          let equalCount = playerData.equalCount;
+          setMultiplier(playerData.multipler);
+          setJackpot(playerData.isJackpot ? jackpotAmount : 0);
           for (let i = 0; i < 5; i++)
           {
               let rd = random();
               while (
-                  rd === equal_no ||
+                  rd === equalNo ||
                   // eslint-disable-next-line no-loop-func
                   targets.filter((target) => target === rd).length
                   )
@@ -267,14 +263,14 @@ const DeezSlotz = React.forwardRef((props, ref) =>
               targets[i] = rd;
           }
 
-          for (let i = 0; i < max; i++)
+          for (let i = 0; i < equalCount; i++)
           {
               let rd = random() % 5;
-              while (targets[rd] === equal_no)
+              while (targets[rd] === equalNo)
               {
                   rd = random() % 5;
               }
-              targets[rd] = equal_no;
+              targets[rd] = equalNo;
           }
 
           setTargets(targets);
@@ -326,7 +322,6 @@ const DeezSlotz = React.forwardRef((props, ref) =>
         tweenDuration={6000}
         onConfettiComplete={() => {
           setRun(false);
-          setLoading(false);
         }}
       />
       <div className="z-[2]">

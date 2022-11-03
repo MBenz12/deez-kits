@@ -297,6 +297,11 @@ export type Slots = {
           "isSigner": false
         },
         {
+          "name": "instructionSysvarAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
@@ -501,6 +506,26 @@ export type Slots = {
             "type": "u32"
           },
           {
+            "name": "isWin",
+            "type": "bool"
+          },
+          {
+            "name": "isJackpot",
+            "type": "bool"
+          },
+          {
+            "name": "equalNo",
+            "type": "u32"
+          },
+          {
+            "name": "equalCount",
+            "type": "u32"
+          },
+          {
+            "name": "multipler",
+            "type": "u32"
+          },
+          {
             "name": "bump",
             "type": "u8"
           }
@@ -518,6 +543,11 @@ export type Slots = {
       "code": 6001,
       "name": "MinimumPrice",
       "msg": "You should bet at least 0.05 sol"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidInstructionAdded",
+      "msg": "Invalid Instruction Added"
     }
   ]
 };
@@ -821,6 +851,11 @@ export const IDL: Slots = {
           "isSigner": false
         },
         {
+          "name": "instructionSysvarAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
@@ -1025,6 +1060,26 @@ export const IDL: Slots = {
             "type": "u32"
           },
           {
+            "name": "isWin",
+            "type": "bool"
+          },
+          {
+            "name": "isJackpot",
+            "type": "bool"
+          },
+          {
+            "name": "equalNo",
+            "type": "u32"
+          },
+          {
+            "name": "equalCount",
+            "type": "u32"
+          },
+          {
+            "name": "multipler",
+            "type": "u32"
+          },
+          {
             "name": "bump",
             "type": "u8"
           }
@@ -1042,6 +1097,11 @@ export const IDL: Slots = {
       "code": 6001,
       "name": "MinimumPrice",
       "msg": "You should bet at least 0.05 sol"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidInstructionAdded",
+      "msg": "Invalid Instruction Added"
     }
   ]
 };

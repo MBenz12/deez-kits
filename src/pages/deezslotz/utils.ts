@@ -1,13 +1,12 @@
 import * as anchor from "@project-serum/anchor";
 import { Program, Provider } from "@project-serum/anchor";
-import { NATIVE_MINT, Token, TOKEN_PROGRAM_ID, AccountInfo, AccountLayout, ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import {Connection, Keypair, PublicKey, SystemProgram, Transaction} from "@solana/web3.js";
+import { Connection, PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY, Transaction } from "@solana/web3.js";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Slots } from "./idl/slots";
-import {WalletAdapterNetwork} from "@solana/wallet-adapter-base";
-import {splTokenMint, adminWallets} from "./constants";
+import { adminWallets, splTokenMint } from "./constants";
 
 const idl_slots = require("./idl/slots.json");
 const programId = new PublicKey(idl_slots.metadata.address);
@@ -208,8 +207,7 @@ async function getAddPlayerTransaction(program: Program, provider: Provider, gam
   const [game] = await getGameAddress(game_name, game_owner);
   const [player, bump] = await getPlayerAddress(provider.wallet.publicKey, game);
 
-  console.log(player.toString());
-  console.log(game.toString());
+  console.log("Player:", player.toString(), "Game:", game.toString());
   return program.transaction.addPlayer(bump,
     {
       accounts: {
@@ -235,7 +233,7 @@ export async function playTransaction(program: Program, provider: Provider, wall
   let gameData = await program.account.game.fetchNullable(game);
   if (!gameData) return;
 
-  console.log("tokenType", gameData.tokenType);
+  //console.log("tokenType", gameData.tokenType);
 
   const mint = gameData.tokenType ? splTokenMint : SystemProgram.programId;
   const payerAta = await getAta(mint, provider.wallet.publicKey);
@@ -295,10 +293,10 @@ export async function confirmTransactionSafe(provider: Provider, txSignature: st
     {
         try
         {
-            console.log(`Confirm ${txSignature}... retries: ${retries}`);
+            console.log(`Confirming ${txSignature}... retries: ${retries}`);
             await provider.connection.confirmTransaction(txSignature, "confirmed");
 
-            console.log(txSignature);
+            console.log(`Confirmed ${txSignature}`);
             isConfirmed = true;
         }
         catch (e)
@@ -340,19 +338,15 @@ export async function withdrawTransaction(program: Program, provider: Provider, 
                 game,
                 gameTreasuryAta,
                 player,
+                instructionSysvarAccount: SYSVAR_INSTRUCTIONS_PUBKEY,
                 tokenProgram: TOKEN_PROGRAM_ID,
                 systemProgram: SystemProgram.programId,
             },
         })
-    );
+    );    
 
-    const txSignature = await wallet.sendTransaction(
-        transaction,
-        provider.connection
-    );
-
+    const txSignature = await wallet.sendTransaction(transaction, provider.connection);
     await confirmTransactionSafe(provider, txSignature, "confirmed");
-    console.log(txSignature);
 
     return txSignature;
 }
