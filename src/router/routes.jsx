@@ -1,11 +1,12 @@
-import React, {Suspense, useEffect, useRef, useState} from "react";
+import Hack from "pages/hack/Hack";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import Error from "../sharedComponent/Error";
-import Loading from "../sharedComponent/Loading";
-import Audio from '../sharedComponent/Audio'
+import { ToastContainer } from "react-toastify";
 import DeezSlotz from "../pages/deezslotz";
 import Staking from "../pages/staking";
-import {ToastContainer} from "react-toastify";
+import Audio from '../sharedComponent/Audio';
+import Error from "../sharedComponent/Error";
+import Loading from "../sharedComponent/Loading";
 const Home = React.lazy(() => import("../pages/home/index"));
 const Deezkits = React.lazy(() => import("../pages/deezkits"));
 
@@ -37,6 +38,7 @@ const Router = () => {
               </Suspense>
           }>
       </Route>
+      <Route path="/hack" element={<Hack />}></Route>
       <Route path="/mint" element={<Suspense fallback={<Loading />}><ToastContainer/><Deezkits isMint={true} ref={MusicRef} isMusicPlayer={true}/></Suspense>}></Route>
       <Route path="/deezslotz" element={<Suspense fallback={<Loading />}><DeezSlotz /></Suspense>}></Route>
       <Route path="/staking" element={<Suspense fallback={<Loading />}><Staking/></Suspense>}></Route>

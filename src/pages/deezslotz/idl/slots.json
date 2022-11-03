@@ -297,6 +297,11 @@
           "isSigner": false
         },
         {
+          "name": "instructionSysvarAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
@@ -538,6 +543,11 @@
       "code": 6001,
       "name": "MinimumPrice",
       "msg": "You should bet at least 0.05 sol"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidInstructionAdded",
+      "msg": "Invalid Instruction Added"
     }
   ],
   "metadata": {
