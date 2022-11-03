@@ -26,7 +26,7 @@ import Slots, { random } from "./Slots";
 import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
 import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
 
-const cluster = WalletAdapterNetwork.Devnet;
+const cluster = WalletAdapterNetwork.Mainnet;
 const containerId = 114;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
