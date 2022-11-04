@@ -244,8 +244,9 @@ export const LoadingIcon = ({
     </svg>
   );
 
-export const BetButton = () => (
-  <img width={194} height={82} alt="" src={Images.BetBtn} />
+export const BetButton = ({betHoverd}: any) => (
+  <img width={194} height={82} alt="" src={betHoverd ?   Images.AnimatedBetBtn : Images.BetBtn} />
+
 );
 
 export const WithdrawIcon = () => (

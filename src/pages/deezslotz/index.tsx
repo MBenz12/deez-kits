@@ -72,6 +72,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   const { width, height } = useWindowDimensions();
   const [run, setRun] = useState(false);
   const [cycle, setCycle] = useState(false);
+  const [betHoverd, setBetHovered] = useState(false)
 
   useEffect(() => {
     const fetchGame = async () => {
@@ -405,8 +406,8 @@ const DeezSlotz = React.forwardRef((props, ref) =>
         onClick={play}
         className="relative mt-3 mb-10 w-[175px] h-[52px] flex items-center justify-center text-[22px] font-bold text-[#96FFF9] cursor-pointer"
       >
-        <div className="absolute l-0 t-0">
-          <BetButton />
+        <div className="absolute l-0 t-0" onMouseOver={() => setBetHovered(true)} onMouseLeave={() => setBetHovered(false)}>
+          <BetButton betHoverd={betHoverd}/>
         </div>
 
         {/* {loading ? (
