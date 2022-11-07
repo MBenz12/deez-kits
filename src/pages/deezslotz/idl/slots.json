@@ -553,9 +553,14 @@
       "code": 6002,
       "name": "InvalidInstructionAdded",
       "msg": "Invalid Instruction Added"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidProgramId",
+      "msg": "Invalid Program"
     }
   ],
   "metadata": {
-    "address": "6sE2DYexXa8oBPfGjgoCkNceHgH3xXnXD2nBz7i3NTWE"
+    "address": "3BJdzqUKD2bTTxDP7x7odQ2u4SBiHu3VncZQwmvHre34"
   }
 }
