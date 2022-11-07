@@ -215,6 +215,11 @@
           "isSigner": false
         },
         {
+          "name": "instructionSysvarAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
@@ -551,6 +556,6 @@
     }
   ],
   "metadata": {
-    "address": "3BJdzqUKD2bTTxDP7x7odQ2u4SBiHu3VncZQwmvHre34"
+    "address": "6sE2DYexXa8oBPfGjgoCkNceHgH3xXnXD2nBz7i3NTWE"
   }
 }

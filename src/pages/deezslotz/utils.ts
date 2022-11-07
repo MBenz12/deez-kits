@@ -252,6 +252,7 @@ export async function playTransaction(program: Program, provider: Provider, wall
         gameTreasuryAta,
         commissionTreasury,
         commissionTreasuryAta,
+        instructionSysvarAccount: SYSVAR_INSTRUCTIONS_PUBKEY,
         tokenProgram: TOKEN_PROGRAM_ID,
         systemProgram: SystemProgram.programId,
       },
