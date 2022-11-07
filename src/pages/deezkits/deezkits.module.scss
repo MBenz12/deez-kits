@@ -69,7 +69,7 @@
 
     //deezkits left kits style
     .deez_left_kits_wrapper{
-      max-width: 370px;
+      max-width: 390px;
       width: 100%;
       position: absolute;
       bottom: 0;
@@ -179,15 +179,15 @@
 
   // //deezkits rigtht kitty style
   .deez_right_kits_wrapper {
-    max-width: 467px;
+    max-width: 465px;
     width: 100%;
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: -210px;
     transition: all 0.5s ease;
     @media only screen and (max-width: 1599px) {
       max-width: 370px;
-      right: -50px;
+      right: -150px;
     }
     &:hover {
       .glitch_right_layers {
@@ -456,18 +456,6 @@
     align-items: center;
     justify-content: center;
     min-height: 354px;
-    animation: UpDown 1s linear infinite;
-    @keyframes UpDown {
-      0% {
-        bottom: 0;
-      }
-      50% {
-        bottom: 1.1em;
-      }
-      100% {
-        bottom: 0;
-      }
-    }
     img {
       height: 245px;
       z-index: 1;

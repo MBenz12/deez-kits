@@ -245,7 +245,10 @@ export const LoadingIcon = ({
   );
 
 export const BetButton = ({betHoverd}: any) => (
-  <img width={194} height={82} alt="" src={betHoverd ?   Images.AnimatedBetBtn : Images.BetBtn} />
+  betHoverd ?
+  <img width={194} height={82} alt="" src={Images.AnimatedBetBtn } />
+  :
+  <img width={194} height={82} alt="" src={Images.BetBtn} />
 
 );
 

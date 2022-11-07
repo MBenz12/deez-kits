@@ -36,13 +36,13 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     const [mint, setMint] = useState<string>("1");
     const audioCountRef = useRef(null);
     const audioMintRef = useRef(null);
-    const MintDate = new Date("Mon, 31 Oct 2022 17:00:00 GMT");
+    const MintDate = new Date("Thu, 10 Nov 2022 17:00:00 UTC");
     const [candyMachine, setCandyMachine] = useState<CandyMachineAccount>();
     const [itemsRemaining, setItemsRemaining] = useState<number>();
     const [isActive, setIsActive] = useState(false);
     const [itemsRedeemed, setItemsRedeemed] = useState(800);
     const [itemsAvailable, setItemsAvailable] = useState(800);
-    const [itemPrice, setItemPrice] = useState<number>(0.25);
+    const [itemPrice, setItemPrice] = useState<number>(0.44);
 
     useEffect(() =>
     {
@@ -297,14 +297,14 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                                     {" "}
                                     Supply{" "}
                                 </HighlightedText>{" "}
-                                - {`${"400"}`}
+                                - {`${"800"}`}
                             </Typography>
                             <Typography className={`${style.desc_text} ${style.mint_price}`}>
                                 <HighlightedText className="highlightedText">
                                     {" "}
                                     Price{" "}
                                 </HighlightedText>{" "}
-                                - {`${"0.25"}`} SOL
+                                - {`${"0.44"}`} SOL
                             </Typography>
 
                             <Box className={style.deezkits_timer}>
