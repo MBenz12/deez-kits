@@ -14,7 +14,7 @@ const DateTimeDisplay = ({ value, type, isDanger }) => {
         </Typography>
         <span className={style.countdown_type}>{type}</span>
       </Box>
-      {type !== "Sec" && <span className={style.countdown_dot}>:</span>}
+      {type !== "Sec" && <div className={style.countdown_dot}>:</div>}
     </>
   );
 };
@@ -24,13 +24,25 @@ const ShowCounter = ({ days, hours, minutes, seconds }) => {
     <Box className={style.timer_wrapper}>
       <Box className={style.curlyBracket}>
         <img src={CurlyOpen} alt="curly-open-icon" />
+        <div  className={style.glitch__layers_left}>
+		      <div className={style.glitch__layer}></div>
+		      <div className={style.glitch__layer}></div>
+		      <div className={style.glitch__layer}></div>
+	      </div>
       </Box>
-      <DateTimeDisplay value={days} type={"Days"} isDanger={days <= 3} />
-      <DateTimeDisplay value={hours} type={"Hours"} isDanger={false} />
-      <DateTimeDisplay value={minutes} type={"Min"} isDanger={false} />
-      <DateTimeDisplay value={seconds} type={"Sec"} isDanger={false} />
+      <Box className={style.timer_box}>
+          <DateTimeDisplay value={days} type={"Days"} isDanger={days <= 3} />
+          <DateTimeDisplay value={hours} type={"Hours"} isDanger={false} />
+          <DateTimeDisplay value={minutes} type={"Min"} isDanger={false} />
+          <DateTimeDisplay value={seconds} type={"Sec"} isDanger={false} />
+      </Box>
       <Box className={style.curlyBracket}>
         <img src={CurlyClose} alt="curly-close-icon" />
+        <div  className={style.glitch__layers_right}>
+		      <div className={style.glitch__layer}></div>
+		      <div className={style.glitch__layer}></div>
+		      <div className={style.glitch__layer}></div>
+	      </div>
       </Box>
     </Box>
   );

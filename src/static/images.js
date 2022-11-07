@@ -1,5 +1,5 @@
 // deezkits page images
-import logoTrasnsparent from "../assets/images/deezKits/deezkits_card.png";
+import logoTrasnsparent from "../assets/images/deezKits/deezkits_card.gif";
 import logo from "../assets/images/deezKits/logo.png";
 import MintBtn from "../assets/images/deezKits/mint_btn.png";
 import MintHoverbtn from '../assets/images/deezKits/mint_glitch.png'
