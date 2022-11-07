@@ -1,5 +1,5 @@
 // deezkits page images
-import logoTrasnsparent from "../assets/images/deezKits/deezkits_card.png";
+import logoTrasnsparent from "../assets/images/deezKits/deezkits_card.gif";
 import logo from "../assets/images/deezKits/logo.png";
 import MintBtn from "../assets/images/deezKits/mint_btn.png";
 import MintHoverbtn from '../assets/images/deezKits/mint_glitch.png'
@@ -10,7 +10,8 @@ import discordIcon from "../assets/images/deezKits/discord.svg";
 import MobileMenuLogo from "../assets/images/site-icon.png";
 import DeezKitsKitty from '../assets/images/deezKits/deezkits_kitty.png'
 import slotzLogo from "../assets/images/deezKits/deez_slotz_logo.png";
-import BetBtn from "../assets/images/deezKits/bet_btn.png";
+import BetBtn from "../assets/images/deezKits/BET-static.png";
+import AnimatedBetBtn from "../assets/images/deezKits/BET.png";
 import canGlitch from '../assets/images/deezKits/title/can_glitch.png'
 import walletGlitch from '../assets/images/deezKits/title/wallet_glitch.png'
 import kitGlitch from '../assets/images/deezKits/title/kits_glitch.png'
@@ -28,6 +29,7 @@ export const Images = {
   discordIcon,
   slotzLogo,
   BetBtn,
+  AnimatedBetBtn,
   MobileMenuLogo,
   DeezKitsKitty,
   DeezKitsRightKitty,
