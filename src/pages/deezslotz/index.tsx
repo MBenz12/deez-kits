@@ -60,6 +60,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   {
       if (!pageLoaded.current) {
           console.log(connection);
+          console.log("Game Name:", game_name);
       }
       pageLoaded.current = true;
 
@@ -80,7 +81,9 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       const { program } = getProviderAndProgram(connection, wallet);
       const [game] = await getGameAddress(game_name, game_owner);
       const gameData = await program.account.game.fetchNullable(game);
-      if (gameData) {
+
+      if (gameData)
+      {
         setTokenType(gameData.tokenType);
         setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
         setRoyalty(gameData.royalties[0] / 100);

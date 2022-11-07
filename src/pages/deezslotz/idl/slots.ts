@@ -548,6 +548,11 @@ export type Slots = {
       "code": 6002,
       "name": "InvalidInstructionAdded",
       "msg": "Invalid Instruction Added"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidProgramId",
+      "msg": "Invalid Program"
     }
   ]
 };
@@ -1102,6 +1107,11 @@ export const IDL: Slots = {
       "code": 6002,
       "name": "InvalidInstructionAdded",
       "msg": "Invalid Instruction Added"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidProgramId",
+      "msg": "Invalid Program"
     }
   ]
 };

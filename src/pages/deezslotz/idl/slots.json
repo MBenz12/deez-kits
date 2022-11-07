@@ -548,6 +548,11 @@
       "code": 6002,
       "name": "InvalidInstructionAdded",
       "msg": "Invalid Instruction Added"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidProgramId",
+      "msg": "Invalid Program"
     }
   ],
   "metadata": {
