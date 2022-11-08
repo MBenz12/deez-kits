@@ -275,7 +275,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                                     MOUSE WL CAN MINT 10 MINUTES EARLIER
                                 </Typography>
                             </Box>
-                            <Box>
+                            <Box className={style.mint_button_wrapper}>
                                     
                                     {wallet.connected ? (
                                         <button onClick={mintHandler} className={style.mint_button}>
