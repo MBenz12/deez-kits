@@ -31,8 +31,8 @@ export type Slots = {
           "type": "u8"
         },
         {
-          "name": "tokenType",
-          "type": "bool"
+          "name": "tokenMint",
+          "type": "publicKey"
         },
         {
           "name": "communityWallets",
@@ -200,11 +200,6 @@ export type Slots = {
           "isSigner": false
         },
         {
-          "name": "commissionTreasury",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "commissionTreasuryAta",
           "isMut": true,
           "isSigner": false
@@ -221,11 +216,6 @@ export type Slots = {
         },
         {
           "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
           "isMut": false,
           "isSigner": false
         }
@@ -251,22 +241,12 @@ export type Slots = {
           "isSigner": false
         },
         {
-          "name": "communityWallet",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "communityTreasuryAta",
           "isMut": true,
           "isSigner": false
         },
         {
           "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
           "isMut": false,
           "isSigner": false
         }
@@ -310,11 +290,6 @@ export type Slots = {
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
         }
       ],
       "args": []
@@ -344,11 +319,6 @@ export type Slots = {
         },
         {
           "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
           "isMut": false,
           "isSigner": false
         }
@@ -387,11 +357,6 @@ export type Slots = {
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
         }
       ],
       "args": [
@@ -421,8 +386,8 @@ export type Slots = {
             "type": "u8"
           },
           {
-            "name": "tokenType",
-            "type": "bool"
+            "name": "tokenMint",
+            "type": "publicKey"
           },
           {
             "name": "royalties",
@@ -595,8 +560,8 @@ export const IDL: Slots = {
           "type": "u8"
         },
         {
-          "name": "tokenType",
-          "type": "bool"
+          "name": "tokenMint",
+          "type": "publicKey"
         },
         {
           "name": "communityWallets",
@@ -764,11 +729,6 @@ export const IDL: Slots = {
           "isSigner": false
         },
         {
-          "name": "commissionTreasury",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "commissionTreasuryAta",
           "isMut": true,
           "isSigner": false
@@ -785,11 +745,6 @@ export const IDL: Slots = {
         },
         {
           "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
           "isMut": false,
           "isSigner": false
         }
@@ -815,22 +770,12 @@ export const IDL: Slots = {
           "isSigner": false
         },
         {
-          "name": "communityWallet",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "communityTreasuryAta",
           "isMut": true,
           "isSigner": false
         },
         {
           "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
           "isMut": false,
           "isSigner": false
         }
@@ -874,11 +819,6 @@ export const IDL: Slots = {
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
         }
       ],
       "args": []
@@ -908,11 +848,6 @@ export const IDL: Slots = {
         },
         {
           "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
           "isMut": false,
           "isSigner": false
         }
@@ -951,11 +886,6 @@ export const IDL: Slots = {
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
         }
       ],
       "args": [
@@ -985,8 +915,8 @@ export const IDL: Slots = {
             "type": "u8"
           },
           {
-            "name": "tokenType",
-            "type": "bool"
+            "name": "tokenMint",
+            "type": "publicKey"
           },
           {
             "name": "royalties",

@@ -24,9 +24,9 @@ import { Information } from "./HeaderItems";
 import "./index.scss";
 import Slots, { random } from "./Slots";
 import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
-import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
+import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, prices, useWindowDimensions, withdrawTransaction } from "./utils";
 
-const cluster = WalletAdapterNetwork.Mainnet;
+const cluster = WalletAdapterNetwork.Devnet;
 const containerId = 114;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
@@ -38,7 +38,6 @@ const DeezSlotz = React.forwardRef((props, ref) =>
 
   const [targets, setTargets] = useState([-1, -1, -1, -1, -1]);
   const [roll, setRoll] = useState<any>({});
-  const prices = [0.05, 0.1, 0.25, 0.5, 1, 2];
   const [price, setPrice] = useState(0.05);
   const [betNo, setBetNo] = useState(0);
   const [jackpotAmount, setJackpotAmount] = useState(0);

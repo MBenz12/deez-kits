@@ -1,9 +1,9 @@
 import * as anchor from "@project-serum/anchor";
 import { Program, Provider } from "@project-serum/anchor";
-import { ASSOCIATED_TOKEN_PROGRAM_ID, Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { createAssociatedTokenAccountInstruction, createSyncNativeInstruction, getAssociatedTokenAddress, NATIVE_MINT, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import { Connection, PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY, Transaction } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY, Transaction } from "@solana/web3.js";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { adminWallets, splTokenMint } from "./constants";
@@ -12,6 +12,8 @@ const idl_slots = require("./idl/slots.json");
 const programId = new PublicKey(idl_slots.metadata.address);
 const slots_pda_seed = "slots_game_pda";
 const player_pda_seed = "player_pda";
+
+export const prices = [0.05, 0.1, 0.25, 0.5, 1, 2];
 
 export const sleep = (ms: number): Promise<void> => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -179,9 +181,7 @@ export function getProviderAndProgram(connection: Connection, anchorWallet: anch
 }
 
 export async function getAta(mint: PublicKey, owner: PublicKey, allowOffCurve: boolean = false) {
-  return await Token.getAssociatedTokenAddress(
-      ASSOCIATED_TOKEN_PROGRAM_ID,
-    TOKEN_PROGRAM_ID,
+  return await getAssociatedTokenAddress(      
     mint,
     owner,
     allowOffCurve
@@ -191,13 +191,11 @@ export async function getAta(mint: PublicKey, owner: PublicKey, allowOffCurve: b
 export async function getCreateAtaInstruction(provider: Provider, ata: PublicKey, mint: PublicKey, owner: PublicKey) {
   let account = await provider.connection.getAccountInfo(ata);
   if (!account) {
-    return Token.createAssociatedTokenAccountInstruction(
-        ASSOCIATED_TOKEN_PROGRAM_ID,
-      TOKEN_PROGRAM_ID,
-      mint,
+    return createAssociatedTokenAccountInstruction(
+      provider.wallet.publicKey,
       ata,
       owner,
-      provider.wallet.publicKey
+      mint,
     );
   }
 }
@@ -235,26 +233,35 @@ export async function playTransaction(program: Program, provider: Provider, wall
 
   //console.log("tokenType", gameData.tokenType);
 
-  const mint = gameData.tokenType ? splTokenMint : SystemProgram.programId;
+  const mint = gameData.tokenMint;
   const payerAta = await getAta(mint, provider.wallet.publicKey);
   const gameTreasuryAta = await getAta(mint, game, true);
 
   const commissionTreasury = gameData.commissionWallet;
   const commissionTreasuryAta = await getAta(mint, commissionTreasury);
-
+  let instruction = await getCreateAtaInstruction(provider, payerAta, mint, provider.wallet.publicKey);
+  if (instruction) transaction.add(instruction);
+  if (mint.toString() === NATIVE_MINT.toString()) {
+    transaction.add(
+      SystemProgram.transfer({
+        fromPubkey: provider.wallet.publicKey,
+        toPubkey: payerAta,
+        lamports: prices[betNo] * LAMPORTS_PER_SOL
+      }),
+      createSyncNativeInstruction(payerAta)
+    )
+  }
   transaction.add(
     program.transaction.play(betNo, {
       accounts: {
         payer: provider.wallet.publicKey,
         payerAta,
-        player,
         game,
         gameTreasuryAta,
-        commissionTreasury,
         commissionTreasuryAta,
+        player,
         instructionSysvarAccount: SYSVAR_INSTRUCTIONS_PUBKEY,
         tokenProgram: TOKEN_PROGRAM_ID,
-        systemProgram: SystemProgram.programId,
       },
     })
   );
@@ -267,10 +274,8 @@ export async function playTransaction(program: Program, provider: Provider, wall
         accounts: {
           game,
           gameTreasuryAta,
-          communityWallet,
           communityTreasuryAta,
           tokenProgram: TOKEN_PROGRAM_ID,
-          systemProgram: SystemProgram.programId,
         },
       })
     );
