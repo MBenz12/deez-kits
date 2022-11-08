@@ -48,7 +48,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     const [candyMachine, setCandyMachine] = useState<CandyMachineAccount>();
     const [itemsRemaining, setItemsRemaining] = useState<number>();
     const [isActive, setIsActive] = useState(false);
-    const [itemsRedeemed, setItemsRedeemed] = useState(800);
+    const [itemsRedeemed, setItemsRedeemed] = useState(0);
     const [itemsAvailable, setItemsAvailable] = useState(800);
     const [itemPrice, setItemPrice] = useState<number>(0.44);
     const [isWLUser, setIsWLUser] = useState(false);
