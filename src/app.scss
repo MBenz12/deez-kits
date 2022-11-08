@@ -55,6 +55,26 @@ body {
   div svg {
     width: 32px;
   }
+
+  .Toastify__progress-bar{
+    width: 100% !important;
+  }
+
+    .Toastify__progress-bar--success {
+      background-color: #07bc0c;
+    }
+  
+    .Toastify__progress-bar--error {
+      background-color: #e74c3c;
+    }
+  
+    .Toastify__progress-bar--warning {
+      background-color: #f1c40f;
+    }
+  
+    .Toastify__progress-bar--info {
+      background-color: #3498db;
+    }
 }
 
 .desktop_view {
