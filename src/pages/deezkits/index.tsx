@@ -189,47 +189,49 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                             <>
                                 <Box className={style.deezkits_mint_title}>
                                     <span> &lt; </span>
-                                    <span className={style.can}>CAN</span>{" "}
-                                    <span className={style.deez}>DEEZ</span>{" "}
-                                    <span className={style.kits}>KITS</span>{" "}
-                                    <span className={style.fit}>FIT</span>{" "}
-                                    <span className={style.yr}>YO</span>{" "}
+                                    <span className={style.can}>WUUT?</span>{" "}
+                                    <span className={style.deez}>MICE!</span>{" "}
+                                    <span className={style.kits}>YACH!</span>{" "}
+                                    <span className={style.fit}>OR</span>{" "}
+                                    <span className={style.yr}>YUM?</span>{" "}
                                     <span className={style.wallet}>
-                    <img src={Images?.walletGlitch} alt="wallet-glitch"/>
-                  </span>
-                                    <span className={style.gt_entity}>&gt; &#63;</span>
+                                        {/* <img src={Images?.walletGlitch} alt="wallet-glitch"/> */}
+                                    </span>
+                                    <span className={style.gt_entity}>&gt; </span>
                                 </Box>
                             </>
                         ) :(
                             <CommonTitle MintDate={MintDate}/>
                         )}
                     </Box>
-                    <Box className={style.deezkits_content_logo}>
-                        <img src={Images?.logoTrasnsparent} alt="deezkits-mint-title"/>
+                    <Box className={style.deezkits_logo_content_wrapper}>
+                        <Box className={style.deezkits_content_logo}>
+                            <img src={Images?.logoTrasnsparent} alt="deezkits-mint-title" />
+                        </Box>
+                        {isMintState && <Box className={style.progress_wrapper}>
+                            <Box className={style.progress_bar}>
+                                <Box
+                                    className={style.progress_bar_inner}
+                                    sx={{
+                                        width: `${((100 * itemsRedeemed) / itemsAvailable)}%`,
+                                    }}
+                                ></Box>
+                            </Box>
+                        </Box>
+                        }
                     </Box>
                     {isMintState ? (
                         <>
-                            <Box className={style.progress_wrapper}>
-                                <Box className={style.progress_bar}>
-                                    <Box
-                                        className={style.progress_bar_inner}
-                                        sx={{
-                                            width: `${((100 * itemsRedeemed) / itemsAvailable)}%`,
-                                        }}
-                                    ></Box>
-                                </Box>
-                            </Box>
-
                             <Box className={style.sold_mint_wrapper}>
                                 <Typography className={style.sold_mint_text}>
                                     {itemsRedeemed} / {itemsAvailable} SOLD
                                 </Typography>
                                 <Typography className={style.mint_text}>
-                                    400 ALREADY AIRDROPPED TO KIT HOLDERS
+                                    MOUSE WL CAN MINT 10 MINUTES EARLIER
                                 </Typography>
                             </Box>
                             <Box>
-                                
+                                    
                                     {wallet.connected ? (
                                         <button onClick={mintHandler} className={style.mint_button}>
                                           {/* <span className={`${style.curly_open} ${style.zoom_in_out}`}>
