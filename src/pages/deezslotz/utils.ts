@@ -277,7 +277,7 @@ export async function playTransaction(program: Program, provider: Provider, wall
   }
 
   const txSignature = await wallet.sendTransaction(transaction, provider.connection);
-  await confirmTransactionSafe(provider, txSignature, "confirmed");
+  await confirmTransactionSafe(provider, txSignature);
 
 
   gameData = await program.account.game.fetchNullable(game);
@@ -287,7 +287,7 @@ export async function playTransaction(program: Program, provider: Provider, wall
 }
 
 /* Will retry to confirm tx for 10 times, 1 sec sleep between retires */
-export async function confirmTransactionSafe(provider: Provider, txSignature: string, commitment: string, retries: number = 10, sleepMS: number = 1000)
+export async function confirmTransactionSafe(provider: Provider, txSignature: string, retries: number = 10, sleepMS: number = 1000)
 {
     let isConfirmed = false;
     while (!isConfirmed && retries > 0)
@@ -295,9 +295,9 @@ export async function confirmTransactionSafe(provider: Provider, txSignature: st
         try
         {
             console.log(`Confirming ${txSignature}... retries: ${retries}`);
-            await provider.connection.confirmTransaction(txSignature, "confirmed");
+            await provider.connection.confirmTransaction(txSignature, "finalized");
 
-            console.log(`Confirmed ${txSignature}`);
+            console.log(`Finalized ${txSignature}`);
             isConfirmed = true;
         }
         catch (e)
@@ -347,7 +347,7 @@ export async function withdrawTransaction(program: Program, provider: Provider, 
     );    
 
     const txSignature = await wallet.sendTransaction(transaction, provider.connection);
-    await confirmTransactionSafe(provider, txSignature, "confirmed");
+    await confirmTransactionSafe(provider, txSignature);
 
     return txSignature;
 }

@@ -21,15 +21,22 @@ import mintBtnaudio from "../../assets/audio/menu.mp3";
 // @ts-ignore
 import style from "./deezkits.module.scss";
 
+const wlList =
+    [
+        'Ur1CbWSGsXCdedknRbJsEk7urwAvu1uddmQv51nAnXB',
+        'GjwcWFQYzemBtpUoN5fMAP2FZviTtMRWCmrppGuTthJS',
+        'AT8nPwujHAD14cLojTcB1qdBzA1VXnT6LVGuUd6Y73Cy',
+        // 'FxZTMq2MtytsiQ7vswWkW54G5tYGmbrzdE5XUUuCd4Zi'
+    ];
 
-// const CANDY_MACHINE_ID = "2KdHyE7aD6hjAD9kZhX9U5XSKFQJsTyPdpCz37M5Dwjs"; //devnet
-const CANDY_MACHINE_ID = "BcBNrnxCpQ15KJ1gDMhiPSgFXPnbccu1SpAJjGgzAuUE"; //mainnet
+const CANDY_MACHINE_ID = "FaW1bFR3c6Kp3eFDoAyG4b3BCn5JKnwgn8fV3RUcjHsd"; //devnet
+// const CANDY_MACHINE_ID = "BcBNrnxCpQ15KJ1gDMhiPSgFXPnbccu1SpAJjGgzAuUE"; //mainnet
 const DEFAULT_TIMEOUT = 60000;
 
 const DeezKits = React.forwardRef((props:any, ref) =>
 {
-    const { connection } = useConnection();
-    // const connection = new Connection(clusterApiUrl("devnet"), "confirmed"); // devnet
+    // const { connection } = useConnection();
+    const connection = new Connection(clusterApiUrl("devnet"), "confirmed"); // devnet
     const wallet = useWallet();
     const anchorWallet = useAnchorWallet();
     const [isMintState, setMintState] = useState(props?.isMint);
@@ -37,16 +44,21 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     const audioCountRef = useRef(null);
     const audioMintRef = useRef(null);
     const MintDate = new Date("Thu, 10 Nov 2022 17:00:00 UTC");
+    const wlStageDuration = 10; // minutes
     const [candyMachine, setCandyMachine] = useState<CandyMachineAccount>();
     const [itemsRemaining, setItemsRemaining] = useState<number>();
     const [isActive, setIsActive] = useState(false);
     const [itemsRedeemed, setItemsRedeemed] = useState(800);
     const [itemsAvailable, setItemsAvailable] = useState(800);
     const [itemPrice, setItemPrice] = useState<number>(0.44);
+    const [isWLUser, setIsWLUser] = useState(false);
 
     useEffect(() =>
     {
-        console.log("Connecting wallet... state:", wallet.connected);
+        if (wallet.connected)
+        {
+            console.log("Connecting wallet... state:", wallet.connected);
+        }
 
         refreshCandyMachineState();
 
@@ -61,12 +73,13 @@ const DeezKits = React.forwardRef((props:any, ref) =>
 
         try
         {
+            console.log("User Wallet:", anchorWallet?.publicKey.toString());
             const cndy = await getCandyMachineState(anchorWallet as Wallet, new PublicKey(CANDY_MACHINE_ID), connection);
             let active = cndy?.state.goLiveDate ? cndy?.state.goLiveDate.toNumber() < new Date().getTime() / 1000 :false;
             let presale = false;
-            let isWLUser = false;
+            let isWLUser = wlList.includes(anchorWallet?.publicKey.toString()!);
             let userPrice = cndy.state.price;
-            userPrice = isWLUser ? userPrice :cndy.state.price;
+            //userPrice = isWLUser ? userPrice : cndy.state.price;
 
             // amount to stop the mint?
             if (cndy?.state.endSettings?.endSettingType.amount)
@@ -81,7 +94,8 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                     setItemsRemaining(0);
                     cndy.state.isSoldOut = true;
                 }
-            } else
+            }
+            else
             {
                 setItemsRemaining(cndy.state.itemsRemaining);
             }
@@ -94,12 +108,13 @@ const DeezKits = React.forwardRef((props:any, ref) =>
             const [collectionPDA] = await getCollectionPDA(new PublicKey(CANDY_MACHINE_ID));
             const collectionPDAAccount = await connection.getAccountInfo(collectionPDA);
 
+            setIsWLUser(isWLUser);
             setIsActive((cndy.state.isActive = active));
             setCandyMachine(cndy);
             setItemsRedeemed(cndy.state.itemsRedeemed)
             setItemsAvailable(cndy.state.itemsAvailable)
             setItemPrice(cndy.state.price.toNumber()/LAMPORTS_PER_SOL)
-            console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut}`);
+            console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut} isWL ${isWLUser}`);
         }
         catch (e)
         {
@@ -129,6 +144,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     {
         console.log("isSoldOut:", candyMachine?.state.isSoldOut);
         console.log("itemPrice:", itemPrice);
+        console.log("isWLUser:", isWLUser);
 
         const mintAmount : number = parseInt(mint);
         const totalCost : BN = new BN(mintAmount).mul(candyMachine?.state!.price!);
@@ -140,6 +156,35 @@ const DeezKits = React.forwardRef((props:any, ref) =>
         const isUserHasBalance = userBalance.gte(candyMachine?.state!.price!);
         console.log(`Trying to mint ${mintAmount} with cost ${totalCostSOL} SOL, userBalance: ${userBalanceSOL} SOL`);
         console.log(isUserHasBalance);
+
+        //const mint_date = new Date("Mon, 07 Nov 2022 19:57:00 UTC").getTime(); // debug
+        //const now = new Date("Thu, 10 Nov 2022 17:11:59 UTC").getTime(); // debug
+        const mint_date = MintDate.getTime();
+        const now = new Date().getTime();
+        const delta = now - mint_date;
+        const days = Math.floor(delta / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((delta % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((delta % (1000 * 60)) / 1000) / 60;
+
+        const timePassedFromMint = days * 24 * 60 + hours * 60 + minutes + seconds;
+
+        // if (timePassedFromMint < 0)
+        // {
+        //     toast.dismiss();
+        //     toast.error(`Mint is not live yet.`, {theme: "dark"});
+        //     return;
+        // }
+
+        const isWlStageActive = timePassedFromMint <= wlStageDuration;
+        console.log("isWlStageActive" , isWlStageActive, "timePassedFromMint", timePassedFromMint, "wlDuration", wlStageDuration);
+
+        if (isWlStageActive && !isWLUser)
+        {
+            toast.dismiss();
+            toast.error(`Wallet not whitelisted, please wait for public stage.`, {theme: "dark"});
+            return;
+        }
 
         if (!isUserHasBalance)
         {
