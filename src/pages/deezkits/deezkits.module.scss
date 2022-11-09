@@ -472,13 +472,13 @@
       width: 260px;
     }
     @media only screen and (max-width: 1399px) {
-      width: 200px;
+      width: 250px;
     }
     @media only screen and (max-width: 992px) {
-      width: 175px;
+      width: 200px;
     }
-    @media only screen and (max-width: 757px) {
-      width: 145px;
+    @media only screen and (max-width: 767px) {
+      width: 200px;
     }
   }
   .deezkits_content_logo {
@@ -573,7 +573,7 @@
       // margin-top: -20px;
     }
     @media only screen and (max-width: 767px) {
-      // padding: 0 20px;
+     margin-top: 12px;
     }
     .progress_bar {
       background-color: #19103d;
