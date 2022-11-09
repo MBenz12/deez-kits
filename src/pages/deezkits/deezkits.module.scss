@@ -466,10 +466,13 @@
     }
   }
   .deezkits_logo_content_wrapper {
-    width: 290px;
+    width: 430px;
     margin: 0 auto;
     @media only screen and (max-width: 1799px) {
-      width: 260px;
+      width: 380px;
+    }
+    @media only screen and (max-width: 1599px) {
+      width: 320px;
     }
     @media only screen and (max-width: 1399px) {
       width: 250px;
@@ -747,6 +750,9 @@
     @media only screen and (max-width: 767px) {
       font-size: 19px;
     }
+  }
+ .amount_text{
+    margin-top: 5px;
   }
   .amount_input {
     input {
