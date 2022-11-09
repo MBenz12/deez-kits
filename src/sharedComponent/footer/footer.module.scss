@@ -6,7 +6,7 @@
   flex-direction: row;
   gap: 8px;
   max-width: 100%;
-  margin-top: 20px;
+  margin-top: 15px;
   // margin-bottom: 10px;
   justify-content: center;
   flex-wrap: wrap;
@@ -35,31 +35,36 @@
     font-size: 13px;
     @media only screen and (max-width: 1499px) {
       gap: 3px;
-     
     }
     @media only screen and (max-width: 349px) {
       gap: 1px;
       font-size: 12px;
     }
     img {
-      color: #fbff49;
+      height: 16px;
+      width: 16px;
     }
   }
-  // .me_link {
-  //   min-width: 106px;
-
-  // }
-  // .twitter_link {
-  //   min-width: 70px; 
-  // }
-  // .discord_link {
-  //   min-width: 70px;
-  // }
-  .staking_link,
-  .coinflip_link {
+  .me_link {
     img {
-      width: 17px;
-      height: 20px;
+      margin-top: -6px;
     }
   }
+  .twitter_link {
+    img {
+      margin-top: -2px;
+    }
+  }
+  .discord_link {
+    img {
+      margin-top: -4px;
+    }
+  }
+  // .staking_link,
+  // .coinflip_link {
+  //   img {
+  //     width: 17px;
+  //     height: 20px;
+  //   }
+  // }
 }

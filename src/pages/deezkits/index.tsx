@@ -305,14 +305,14 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                                     
                             </Box>
 
-                            <Typography className={style.desc_text}>
+                            <Typography className={`${style.desc_text} ${style.mint_price_text}`}>
                                 <HighlightedText className="highlightedText">
                                     Price{" "}
                                 </HighlightedText>{" "}
                                 - {itemPrice} SOL
                             </Typography>
 
-                            <Typography className={style.desc_text}>
+                            <Typography  className={`${style.desc_text} ${style.amount_text}`}>
                                 <HighlightedText className="highlightedText">
                                     Amount{" "}
                                 </HighlightedText>{" "}
@@ -338,7 +338,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                         <Box>
                             <Typography
                                 className={`${style.desc_text} ${style.mint_supply}`}
-                                sx={{marginBottom: "16px"}}
+                                sx={{marginBottom: "5px"}}
                             >
                                 <HighlightedText className="highlightedText">
                                     {" "}
