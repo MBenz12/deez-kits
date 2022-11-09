@@ -338,7 +338,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                         <Box>
                             <Typography
                                 className={`${style.desc_text} ${style.mint_supply}`}
-                                sx={{marginBottom: "16px"}}
+                                sx={{marginBottom: "5px"}}
                             >
                                 <HighlightedText className="highlightedText">
                                     {" "}
