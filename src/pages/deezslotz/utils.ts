@@ -1,6 +1,6 @@
 import * as anchor from "@project-serum/anchor";
 import { Program, Provider } from "@project-serum/anchor";
-import { createAssociatedTokenAccountInstruction, createSyncNativeInstruction, getAssociatedTokenAddress, NATIVE_MINT, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { createAssociatedTokenAccountInstruction, createCloseAccountInstruction, createSyncNativeInstruction, getAssociatedTokenAddress, NATIVE_MINT, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY, Transaction } from "@solana/web3.js";
@@ -300,9 +300,9 @@ export async function confirmTransactionSafe(provider: Provider, txSignature: st
         try
         {
             console.log(`Confirming ${txSignature}... retries: ${retries}`);
-            await provider.connection.confirmTransaction(txSignature, "finalized");
+            await provider.connection.confirmTransaction(txSignature, "confirmed");
 
-            console.log(`Finalized ${txSignature}`);
+            console.log(`Confirmed ${txSignature}`);
             isConfirmed = true;
         }
         catch (e)
@@ -348,8 +348,17 @@ export async function withdrawTransaction(program: Program, provider: Provider, 
                 tokenProgram: TOKEN_PROGRAM_ID,
                 systemProgram: SystemProgram.programId,
             },
-        })
+        })       
     );    
+    if (mint.toString() === NATIVE_MINT.toString()) {
+      transaction.add(
+        createCloseAccountInstruction(
+          claimerAta,
+          provider.wallet.publicKey,
+          provider.wallet.publicKey,
+        )
+      );
+    }
 
     const txSignature = await wallet.sendTransaction(transaction, provider.connection);
     await confirmTransactionSafe(provider, txSignature);
