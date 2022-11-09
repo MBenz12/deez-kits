@@ -305,14 +305,15 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
-    // @media only screen and (max-width: 1299px) {
     min-height: calc(100vh - 70px);
-    // }
+
     @media only screen and (max-width: 991px) {
       min-height: calc(100vh - 60px);
     }
     @media only screen and (max-width: 767px) {
       min-height: calc(100vh - 210px);
+      align-items: flex-start;
+      padding: 50px 0 0px;
     }
   }
 
@@ -576,7 +577,7 @@
       // margin-top: -20px;
     }
     @media only screen and (max-width: 767px) {
-     margin-top: 12px;
+      margin-top: 12px;
     }
     .progress_bar {
       background-color: #19103d;
@@ -751,7 +752,7 @@
       font-size: 19px;
     }
   }
- .amount_text{
+  .amount_text {
     margin-top: 5px;
   }
   .amount_input {
