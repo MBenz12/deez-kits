@@ -324,7 +324,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
             setItemsAvailable(cndy.state.itemsAvailable);
             setItemPrice(cndy.state.price.toNumber()/LAMPORTS_PER_SOL);
 
-            console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut} isWL ${isWLUser} isActive ${isActive}`);
+            console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut} isWL ${isWLUser} (${wlList.length}) isActive ${isActive}`);
         }
         catch (e)
         {
