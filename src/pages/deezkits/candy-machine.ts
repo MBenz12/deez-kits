@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as anchor from "@project-serum/anchor";
 
-import { MintLayout, Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { createInitializeMintInstruction, createMintToInstruction, MintLayout, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import {
   SystemProgram, SYSVAR_SLOT_HASHES_PUBKEY, Transaction
 } from "@solana/web3.js";
@@ -338,8 +338,7 @@ export const createAccountsForMint = async (
         ),
       programId: TOKEN_PROGRAM_ID,
     }),
-    Token.createInitMintInstruction(
-      TOKEN_PROGRAM_ID,
+    createInitializeMintInstruction(
       mint.publicKey,
       0,
       payer,
@@ -351,13 +350,12 @@ export const createAccountsForMint = async (
       payer,
       mint.publicKey
     ),
-    Token.createMintToInstruction(
-      TOKEN_PROGRAM_ID,
+    createMintToInstruction(
       mint.publicKey,
       userTokenAccountAddress,
       payer,
+      1,
       [],
-      1
     ),
   ];
 
@@ -412,8 +410,7 @@ export const mintTokens = async (candyMachine: CandyMachineAccount, payer: ancho
                 ),
               programId: TOKEN_PROGRAM_ID,
             }),
-            Token.createInitMintInstruction(
-              TOKEN_PROGRAM_ID,
+            createInitializeMintInstruction(
               mint.publicKey,
               0,
               payer,
@@ -425,13 +422,12 @@ export const mintTokens = async (candyMachine: CandyMachineAccount, payer: ancho
               payer,
               mint.publicKey
             ),
-            Token.createMintToInstruction(
-              TOKEN_PROGRAM_ID,
+            createMintToInstruction(
               mint.publicKey,
               userTokenAccountAddress,
               payer,
+              1,
               [],
-              1
             ),
           ]
         );

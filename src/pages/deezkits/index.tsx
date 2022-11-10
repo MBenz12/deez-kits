@@ -20,10 +20,18 @@ import audioUrl1 from "../../assets/audio/counting.mp3";
 import mintBtnaudio from "../../assets/audio/menu.mp3";
 // @ts-ignore
 import style from "./deezkits.module.scss";
+import moment from "moment";
 
+const wlList =
+    [
+        'Ur1CbWSGsXCdedknRbJsEk7urwAvu1uddmQv51nAnXB',
+        'GjwcWFQYzemBtpUoN5fMAP2FZviTtMRWCmrppGuTthJS',
+        'AT8nPwujHAD14cLojTcB1qdBzA1VXnT6LVGuUd6Y73Cy',
+        'B2j1yKcnFYPcTRypbrSxn3SEuWmpHYfPM3KJ8D1wi4rh'
+    ];
 
-// const CANDY_MACHINE_ID = "2KdHyE7aD6hjAD9kZhX9U5XSKFQJsTyPdpCz37M5Dwjs"; //devnet
-const CANDY_MACHINE_ID = "BcBNrnxCpQ15KJ1gDMhiPSgFXPnbccu1SpAJjGgzAuUE"; //mainnet
+// const CANDY_MACHINE_ID = "7PVFN7YbyZEaKcmysA6MNwt1GHJBUdXVvwAVLqX2UYuo"; //devnet
+const CANDY_MACHINE_ID = "DjiCMwCepLYHnEE1hAzgXjnUTDAJcsiBTMaQA1GyxM2K"; //mainnet
 const DEFAULT_TIMEOUT = 60000;
 
 const DeezKits = React.forwardRef((props:any, ref) =>
@@ -37,16 +45,21 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     const audioCountRef = useRef(null);
     const audioMintRef = useRef(null);
     const MintDate = new Date("Thu, 10 Nov 2022 17:00:00 UTC");
+    const wlStageDuration = 10; // minutes
     const [candyMachine, setCandyMachine] = useState<CandyMachineAccount>();
     const [itemsRemaining, setItemsRemaining] = useState<number>();
     const [isActive, setIsActive] = useState(false);
-    const [itemsRedeemed, setItemsRedeemed] = useState(800);
+    const [itemsRedeemed, setItemsRedeemed] = useState(0);
     const [itemsAvailable, setItemsAvailable] = useState(800);
     const [itemPrice, setItemPrice] = useState<number>(0.44);
+    const [isWLUser, setIsWLUser] = useState(false);
 
     useEffect(() =>
     {
-        console.log("Connecting wallet... state:", wallet.connected);
+        if (wallet.connected)
+        {
+            console.log("Connecting wallet... state:", wallet.connected);
+        }
 
         refreshCandyMachineState();
 
@@ -61,12 +74,13 @@ const DeezKits = React.forwardRef((props:any, ref) =>
 
         try
         {
+            console.log("User Wallet:", anchorWallet?.publicKey.toString());
             const cndy = await getCandyMachineState(anchorWallet as Wallet, new PublicKey(CANDY_MACHINE_ID), connection);
-            let active = cndy?.state.goLiveDate ? cndy?.state.goLiveDate.toNumber() < new Date().getTime() / 1000 :false;
+            let active = cndy?.state.goLiveDate ? cndy?.state.goLiveDate.toNumber() < new Date().getTime() / 1000 : false;
             let presale = false;
-            let isWLUser = false;
+            let isWLUser = wlList.includes(anchorWallet?.publicKey.toString()!);
             let userPrice = cndy.state.price;
-            userPrice = isWLUser ? userPrice :cndy.state.price;
+            //userPrice = isWLUser ? userPrice : cndy.state.price;
 
             // amount to stop the mint?
             if (cndy?.state.endSettings?.endSettingType.amount)
@@ -81,7 +95,8 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                     setItemsRemaining(0);
                     cndy.state.isSoldOut = true;
                 }
-            } else
+            }
+            else
             {
                 setItemsRemaining(cndy.state.itemsRemaining);
             }
@@ -94,12 +109,14 @@ const DeezKits = React.forwardRef((props:any, ref) =>
             const [collectionPDA] = await getCollectionPDA(new PublicKey(CANDY_MACHINE_ID));
             const collectionPDAAccount = await connection.getAccountInfo(collectionPDA);
 
+            setIsWLUser(isWLUser);
             setIsActive((cndy.state.isActive = active));
             setCandyMachine(cndy);
-            setItemsRedeemed(cndy.state.itemsRedeemed)
-            setItemsAvailable(cndy.state.itemsAvailable)
-            setItemPrice(cndy.state.price.toNumber()/LAMPORTS_PER_SOL)
-            console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut}`);
+            setItemsRedeemed(cndy.state.itemsRedeemed);
+            setItemsAvailable(cndy.state.itemsAvailable);
+            setItemPrice(cndy.state.price.toNumber()/LAMPORTS_PER_SOL);
+
+            console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut} isWL ${isWLUser} isActive ${isActive}`);
         }
         catch (e)
         {
@@ -129,6 +146,8 @@ const DeezKits = React.forwardRef((props:any, ref) =>
     {
         console.log("isSoldOut:", candyMachine?.state.isSoldOut);
         console.log("itemPrice:", itemPrice);
+        console.log("isWLUser:", isWLUser);
+        console.log(`is CM Active? ${isActive}`, new Date(Number(candyMachine?.state!.goLiveDate!.toNumber()) * 1000).toISOString());
 
         const mintAmount : number = parseInt(mint);
         const totalCost : BN = new BN(mintAmount).mul(candyMachine?.state!.price!);
@@ -139,7 +158,37 @@ const DeezKits = React.forwardRef((props:any, ref) =>
 
         const isUserHasBalance = userBalance.gte(candyMachine?.state!.price!);
         console.log(`Trying to mint ${mintAmount} with cost ${totalCostSOL} SOL, userBalance: ${userBalanceSOL} SOL`);
-        console.log(isUserHasBalance);
+        console.log(`User has balance? ${isUserHasBalance}`);
+
+        //const mint_date = new Date("Mon, 07 Nov 2022 19:57:00 UTC").getTime(); // debug
+        //const now = new Date("Thu, 10 Nov 2022 17:11:59 UTC").getTime(); // debug
+
+        const mint_date = MintDate.getTime();
+        const now = new Date().getTime();
+        const diff = moment.duration(moment(now).diff(moment(mint_date)));
+        const diffMS = diff.asMilliseconds();
+        const diffMins = diffMS / 1000 / 60;
+
+        //console.log(diff)
+        console.log("Minutes from mint:", diffMins)
+        const timePassedFromMint = diffMins;
+
+        if (timePassedFromMint < 0)
+        {
+            toast.dismiss();
+            toast.error(`Mint is not live yet.`, {theme: "dark"});
+            return;
+        }
+
+        const isWlStageActive = timePassedFromMint <= wlStageDuration;
+        console.log("isWlStageActive" , isWlStageActive, "timePassedFromMint", timePassedFromMint, "wlDuration", wlStageDuration);
+
+        if (isWlStageActive && !isWLUser)
+        {
+            toast.dismiss();
+            toast.error(`Wallet not whitelisted, please wait for public stage.`, {theme: "dark"});
+            return;
+        }
 
         if (!isUserHasBalance)
         {
@@ -189,47 +238,49 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                             <>
                                 <Box className={style.deezkits_mint_title}>
                                     <span> &lt; </span>
-                                    <span className={style.can}>CAN</span>{" "}
-                                    <span className={style.deez}>DEEZ</span>{" "}
-                                    <span className={style.kits}>KITS</span>{" "}
-                                    <span className={style.fit}>FIT</span>{" "}
-                                    <span className={style.yr}>YO</span>{" "}
+                                    <span className={style.can}>WUUT?</span>{" "}
+                                    <span className={style.deez}>MICE!</span>{" "}
+                                    <span className={style.kits}>YACH!</span>{" "}
+                                    <span className={style.fit}>OR</span>{" "}
+                                    <span className={style.yr}>YUM?</span>{" "}
                                     <span className={style.wallet}>
-                    <img src={Images?.walletGlitch} alt="wallet-glitch"/>
-                  </span>
-                                    <span className={style.gt_entity}>&gt; &#63;</span>
+                                        {/* <img src={Images?.walletGlitch} alt="wallet-glitch"/> */}
+                                    </span>
+                                    <span className={style.gt_entity}>&gt; </span>
                                 </Box>
                             </>
                         ) :(
                             <CommonTitle MintDate={MintDate}/>
                         )}
                     </Box>
-                    <Box className={style.deezkits_content_logo}>
-                        <img src={Images?.logoTrasnsparent} alt="deezkits-mint-title"/>
+                    <Box className={style.deezkits_logo_content_wrapper}>
+                        <Box className={style.deezkits_content_logo}>
+                            <img src={Images?.logoTrasnsparent} alt="deezkits-mint-title" />
+                        </Box>
+                        {isMintState && <Box className={style.progress_wrapper}>
+                            <Box className={style.progress_bar}>
+                                <Box
+                                    className={style.progress_bar_inner}
+                                    sx={{
+                                        width: `${((100 * itemsRedeemed) / itemsAvailable)}%`,
+                                    }}
+                                ></Box>
+                            </Box>
+                        </Box>
+                        }
                     </Box>
                     {isMintState ? (
                         <>
-                            <Box className={style.progress_wrapper}>
-                                <Box className={style.progress_bar}>
-                                    <Box
-                                        className={style.progress_bar_inner}
-                                        sx={{
-                                            width: `${((100 * itemsRedeemed) / itemsAvailable)}%`,
-                                        }}
-                                    ></Box>
-                                </Box>
-                            </Box>
-
                             <Box className={style.sold_mint_wrapper}>
                                 <Typography className={style.sold_mint_text}>
                                     {itemsRedeemed} / {itemsAvailable} SOLD
                                 </Typography>
                                 <Typography className={style.mint_text}>
-                                    400 ALREADY AIRDROPPED TO KIT HOLDERS
+                                    MOUSE WL CAN MINT 10 MINUTES EARLIER
                                 </Typography>
                             </Box>
-                            <Box>
-                                
+                            <Box className={style.mint_button_wrapper}>
+                                    
                                     {wallet.connected ? (
                                         <button onClick={mintHandler} className={style.mint_button}>
                                           {/* <span className={`${style.curly_open} ${style.zoom_in_out}`}>
@@ -258,14 +309,14 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                                     
                             </Box>
 
-                            <Typography className={style.desc_text}>
+                            <Typography className={`${style.desc_text} ${style.mint_price_text}`}>
                                 <HighlightedText className="highlightedText">
                                     Price{" "}
                                 </HighlightedText>{" "}
                                 - {itemPrice} SOL
                             </Typography>
 
-                            <Typography className={style.desc_text}>
+                            <Typography  className={`${style.desc_text} ${style.amount_text}`}>
                                 <HighlightedText className="highlightedText">
                                     Amount{" "}
                                 </HighlightedText>{" "}
@@ -291,7 +342,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
                         <Box>
                             <Typography
                                 className={`${style.desc_text} ${style.mint_supply}`}
-                                sx={{marginBottom: "16px"}}
+                                sx={{marginBottom: "5px"}}
                             >
                                 <HighlightedText className="highlightedText">
                                     {" "}
