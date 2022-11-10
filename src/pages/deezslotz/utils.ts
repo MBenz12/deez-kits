@@ -1,9 +1,9 @@
 import * as anchor from "@project-serum/anchor";
 import { Program, Provider } from "@project-serum/anchor";
-import { ASSOCIATED_TOKEN_PROGRAM_ID, Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { createAssociatedTokenAccountInstruction, createCloseAccountInstruction, createSyncNativeInstruction, getAssociatedTokenAddress, NATIVE_MINT, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import { Connection, PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY, Transaction } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY, Transaction } from "@solana/web3.js";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { adminWallets, splTokenMint } from "./constants";
@@ -12,6 +12,8 @@ const idl_slots = require("./idl/slots.json");
 const programId = new PublicKey(idl_slots.metadata.address);
 const slots_pda_seed = "slots_game_pda";
 const player_pda_seed = "player_pda";
+
+export const prices = [0.05, 0.1, 0.25, 0.5, 1, 2];
 
 export const sleep = (ms: number): Promise<void> => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -179,9 +181,7 @@ export function getProviderAndProgram(connection: Connection, anchorWallet: anch
 }
 
 export async function getAta(mint: PublicKey, owner: PublicKey, allowOffCurve: boolean = false) {
-  return await Token.getAssociatedTokenAddress(
-      ASSOCIATED_TOKEN_PROGRAM_ID,
-    TOKEN_PROGRAM_ID,
+  return await getAssociatedTokenAddress(      
     mint,
     owner,
     allowOffCurve
@@ -191,13 +191,11 @@ export async function getAta(mint: PublicKey, owner: PublicKey, allowOffCurve: b
 export async function getCreateAtaInstruction(provider: Provider, ata: PublicKey, mint: PublicKey, owner: PublicKey) {
   let account = await provider.connection.getAccountInfo(ata);
   if (!account) {
-    return Token.createAssociatedTokenAccountInstruction(
-        ASSOCIATED_TOKEN_PROGRAM_ID,
-      TOKEN_PROGRAM_ID,
-      mint,
+    return createAssociatedTokenAccountInstruction(
+      provider.wallet.publicKey,
       ata,
       owner,
-      provider.wallet.publicKey
+      mint,
     );
   }
 }
@@ -252,6 +250,7 @@ export async function playTransaction(program: Program, provider: Provider, wall
         gameTreasuryAta,
         commissionTreasury,
         commissionTreasuryAta,
+        instructionSysvarAccount: SYSVAR_INSTRUCTIONS_PUBKEY,
         tokenProgram: TOKEN_PROGRAM_ID,
         systemProgram: SystemProgram.programId,
       },

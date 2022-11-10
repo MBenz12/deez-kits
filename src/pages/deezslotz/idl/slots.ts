@@ -215,6 +215,11 @@ export type Slots = {
           "isSigner": false
         },
         {
+          "name": "instructionSysvarAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
@@ -771,6 +776,11 @@ export const IDL: Slots = {
         {
           "name": "player",
           "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "instructionSysvarAccount",
+          "isMut": false,
           "isSigner": false
         },
         {
