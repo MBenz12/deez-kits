@@ -20,23 +20,24 @@ import audioUrl1 from "../../assets/audio/counting.mp3";
 import mintBtnaudio from "../../assets/audio/menu.mp3";
 // @ts-ignore
 import style from "./deezkits.module.scss";
+import moment from "moment";
 
 const wlList =
     [
         'Ur1CbWSGsXCdedknRbJsEk7urwAvu1uddmQv51nAnXB',
         'GjwcWFQYzemBtpUoN5fMAP2FZviTtMRWCmrppGuTthJS',
         'AT8nPwujHAD14cLojTcB1qdBzA1VXnT6LVGuUd6Y73Cy',
-        // 'FxZTMq2MtytsiQ7vswWkW54G5tYGmbrzdE5XUUuCd4Zi'
+        'B2j1yKcnFYPcTRypbrSxn3SEuWmpHYfPM3KJ8D1wi4rh'
     ];
 
-const CANDY_MACHINE_ID = "FaW1bFR3c6Kp3eFDoAyG4b3BCn5JKnwgn8fV3RUcjHsd"; //devnet
-// const CANDY_MACHINE_ID = "BcBNrnxCpQ15KJ1gDMhiPSgFXPnbccu1SpAJjGgzAuUE"; //mainnet
+// const CANDY_MACHINE_ID = "7PVFN7YbyZEaKcmysA6MNwt1GHJBUdXVvwAVLqX2UYuo"; //devnet
+const CANDY_MACHINE_ID = "DjiCMwCepLYHnEE1hAzgXjnUTDAJcsiBTMaQA1GyxM2K"; //mainnet
 const DEFAULT_TIMEOUT = 60000;
 
 const DeezKits = React.forwardRef((props:any, ref) =>
 {
-    // const { connection } = useConnection();
-    const connection = new Connection(clusterApiUrl("devnet"), "confirmed"); // devnet
+    const { connection } = useConnection();
+    // const connection = new Connection(clusterApiUrl("devnet"), "confirmed"); // devnet
     const wallet = useWallet();
     const anchorWallet = useAnchorWallet();
     const [isMintState, setMintState] = useState(props?.isMint);
@@ -75,7 +76,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
         {
             console.log("User Wallet:", anchorWallet?.publicKey.toString());
             const cndy = await getCandyMachineState(anchorWallet as Wallet, new PublicKey(CANDY_MACHINE_ID), connection);
-            let active = cndy?.state.goLiveDate ? cndy?.state.goLiveDate.toNumber() < new Date().getTime() / 1000 :false;
+            let active = cndy?.state.goLiveDate ? cndy?.state.goLiveDate.toNumber() < new Date().getTime() / 1000 : false;
             let presale = false;
             let isWLUser = wlList.includes(anchorWallet?.publicKey.toString()!);
             let userPrice = cndy.state.price;
@@ -111,10 +112,11 @@ const DeezKits = React.forwardRef((props:any, ref) =>
             setIsWLUser(isWLUser);
             setIsActive((cndy.state.isActive = active));
             setCandyMachine(cndy);
-            setItemsRedeemed(cndy.state.itemsRedeemed)
-            setItemsAvailable(cndy.state.itemsAvailable)
-            setItemPrice(cndy.state.price.toNumber()/LAMPORTS_PER_SOL)
-            console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut} isWL ${isWLUser}`);
+            setItemsRedeemed(cndy.state.itemsRedeemed);
+            setItemsAvailable(cndy.state.itemsAvailable);
+            setItemPrice(cndy.state.price.toNumber()/LAMPORTS_PER_SOL);
+
+            console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut} isWL ${isWLUser} isActive ${isActive}`);
         }
         catch (e)
         {
@@ -145,6 +147,7 @@ const DeezKits = React.forwardRef((props:any, ref) =>
         console.log("isSoldOut:", candyMachine?.state.isSoldOut);
         console.log("itemPrice:", itemPrice);
         console.log("isWLUser:", isWLUser);
+        console.log(`is CM Active? ${isActive}`, new Date(Number(candyMachine?.state!.goLiveDate!.toNumber()) * 1000).toISOString());
 
         const mintAmount : number = parseInt(mint);
         const totalCost : BN = new BN(mintAmount).mul(candyMachine?.state!.price!);
@@ -155,26 +158,27 @@ const DeezKits = React.forwardRef((props:any, ref) =>
 
         const isUserHasBalance = userBalance.gte(candyMachine?.state!.price!);
         console.log(`Trying to mint ${mintAmount} with cost ${totalCostSOL} SOL, userBalance: ${userBalanceSOL} SOL`);
-        console.log(isUserHasBalance);
+        console.log(`User has balance? ${isUserHasBalance}`);
 
         //const mint_date = new Date("Mon, 07 Nov 2022 19:57:00 UTC").getTime(); // debug
         //const now = new Date("Thu, 10 Nov 2022 17:11:59 UTC").getTime(); // debug
+
         const mint_date = MintDate.getTime();
         const now = new Date().getTime();
-        const delta = now - mint_date;
-        const days = Math.floor(delta / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((delta % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((delta % (1000 * 60)) / 1000) / 60;
+        const diff = moment.duration(moment(now).diff(moment(mint_date)));
+        const diffMS = diff.asMilliseconds();
+        const diffMins = diffMS / 1000 / 60;
 
-        const timePassedFromMint = days * 24 * 60 + hours * 60 + minutes + seconds;
+        //console.log(diff)
+        console.log("Minutes from mint:", diffMins)
+        const timePassedFromMint = diffMins;
 
-        // if (timePassedFromMint < 0)
-        // {
-        //     toast.dismiss();
-        //     toast.error(`Mint is not live yet.`, {theme: "dark"});
-        //     return;
-        // }
+        if (timePassedFromMint < 0)
+        {
+            toast.dismiss();
+            toast.error(`Mint is not live yet.`, {theme: "dark"});
+            return;
+        }
 
         const isWlStageActive = timePassedFromMint <= wlStageDuration;
         console.log("isWlStageActive" , isWlStageActive, "timePassedFromMint", timePassedFromMint, "wlDuration", wlStageDuration);
