@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+import Music from 'sharedComponent/musicPlayer';
 import Logo from 'assets/images/deezKits/deez_slotz_logo.png';
 import SmokeLeft from 'assets/images/deezKits/smoke_left.png';
 import SmokeRight from 'assets/images/deezKits/smoke_right.png';
@@ -17,6 +19,8 @@ import CoinFlipIcon from 'assets/images/coinflip.png';
 import HomeIcon from 'assets/images/home.png';
 
 const Mutation = () => {
+	const videoRef = useRef();
+
 	return (
 		<div className='relative overflow-x-hidden flex flex-col font-mutation'>
 			<img
@@ -38,10 +42,10 @@ const Mutation = () => {
 				src={MutationTitle}
 				alt='Title'
 				className='absolute -z-10 top-[100px] lg:top-[376px] left-[680px] xl:left-[576px] lg:left-1/2 lg:-translate-x-[225px] lg:w-[551px]'
-			/> 
+			/>
 			<div className='container relative flex flex-col mt-[200px] sm:mt-36'>
 				<p className='text-[44.69px] sm:text-[35.75px] text-[#FBFF49]'>
-					DINNER TIME!	
+					DINNER TIME!
 				</p>
 				<p className='mt-2.5 sm:mt-6 max-w-[690px] w-full text-[25.45px] sm:text-xl text-primary'>
 					Yummy sardines and yucky mice, or vice versa maybe muuahahha... they
@@ -56,7 +60,7 @@ const Mutation = () => {
 					<p className='sm:mx-auto text-[44.69px] sm:text-[35.75px] text-theme'>
 						MUTATION
 					</p>
-					<div className='flex sm:flex-col gap-4 mt-8 items-center'>
+					<div className='flex sm:flex-col gap-4 mt-8 items-center sm:px-12'>
 						<div className='w-full'>
 							<div className='overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-md aspect-square'>
 								<img
@@ -180,6 +184,7 @@ const Mutation = () => {
 					COIN FLIP
 				</a>
 			</footer>
+			<Music ref={videoRef} />
 		</div>
 	);
 };
