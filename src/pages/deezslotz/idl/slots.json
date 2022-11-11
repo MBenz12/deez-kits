@@ -476,10 +476,6 @@
             "type": "u32"
           },
           {
-            "name": "isWin",
-            "type": "bool"
-          },
-          {
             "name": "isJackpot",
             "type": "bool"
           },
