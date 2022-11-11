@@ -48,7 +48,7 @@ const Mutation = () => {
 					carry the DEEZ Virus... makes your kit go !$(*&#?@... or let's just
 					say...
 				</p>
-				<p className='sm:-rotate-12 mt-[89px] sm:mt-2 ml-auto sm:ml-0 text-[41.25px] sm:text-[27.41px] text-theme'>
+				<p className='sm:-rotate-12 mt-[89px] sm:mt-2 ml-auto sm:ml-0 xl:-mr-16 text-[41.25px] sm:text-[27.41px] text-theme'>
 					A BIT EXOTIC!
 				</p>
 
@@ -62,7 +62,7 @@ const Mutation = () => {
 								<img
 									src={Mutation1}
 									alt=''
-									className='w-full h-full object-contain'
+									className='scale-75 w-full h-full object-contain'
 								/>
 							</div>
 							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
@@ -88,7 +88,7 @@ const Mutation = () => {
 								<img
 									src={Mutation3}
 									alt=''
-									className='w-full h-full object-contain'
+									className='scale-75 w-full h-full object-contain'
 								/>
 							</div>
 							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
