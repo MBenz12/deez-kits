@@ -7,6 +7,7 @@ import Staking from "../pages/staking";
 import Audio from '../sharedComponent/Audio';
 import Error from "../sharedComponent/Error";
 import Loading from "../sharedComponent/Loading";
+import Mutation from 'pages/mutation';
 const Home = React.lazy(() => import("../pages/home/index"));
 const Deezkits = React.lazy(() => import("../pages/deezkits"));
 
@@ -45,6 +46,7 @@ const Router = () => {
       <Route path="/countdown" element={<Suspense fallback={<Loading />}><Deezkits isMint={false} ref={MusicRef} isMusicPlayer={true}/></Suspense>}>
       </Route>
       <Route path="/discord" element={<External link="https://discord.gg/deezkits" />}></Route>
+      <Route path="/mutation" element={<Mutation />} />
       <Route path="*" element={<Error />}></Route>
     </Routes>
     <Audio ref={MusicRef} />
