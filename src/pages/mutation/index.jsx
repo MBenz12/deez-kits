@@ -37,22 +37,22 @@ const Mutation = () => {
 			<img
 				src={MutationTitle}
 				alt='Title'
-				className='absolute -z-10 top-[100px] sm:top-[340px] left-1/2 sm:left-2/3 -translate-x-1/3 sm:-translate-x-1/2 w-[806px] sm:w-[551px]'
-			/>
+				className='absolute -z-10 top-[100px] lg:top-[376px] left-[680px] xl:left-[576px] lg:left-1/2 lg:-translate-x-[225px] lg:w-[551px]'
+			/> 
 			<div className='container relative flex flex-col mt-[200px] sm:mt-36'>
 				<p className='text-[44.69px] sm:text-[35.75px] text-[#FBFF49]'>
-					DINNER TIME!
+					DINNER TIME!	
 				</p>
 				<p className='mt-2.5 sm:mt-6 max-w-[690px] w-full text-[25.45px] sm:text-xl text-primary'>
 					Yummy sardines and yucky mice, or vice versa maybe muuahahha... they
 					carry the DEEZ Virus... makes your kit go !$(*&#?@... or let's just
 					say...
 				</p>
-				<p className='sm:-rotate-12 mt-[89px] sm:mt-2 ml-auto sm:ml-0 xl:-mr-16 text-[41.25px] sm:text-[27.41px] text-theme'>
+				<p className='xl:-rotate-12 mt-[89px] xl:mt-2 ml-auto xl:ml-0 2xl:-mr-12 text-[41.25px] sm:text-[27.41px] text-theme'>
 					A BIT EXOTIC!
 				</p>
 
-				<div className='flex flex-col mt-[270px] sm:mt-[460px]'>
+				<div className='flex flex-col mt-[400px] xl:mt-[420px] lg:mt-[500px]'>
 					<p className='sm:mx-auto text-[44.69px] sm:text-[35.75px] text-theme'>
 						MUTATION
 					</p>
