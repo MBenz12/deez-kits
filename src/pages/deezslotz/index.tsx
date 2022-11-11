@@ -18,15 +18,18 @@ import discordIcon from "../../assets/images/discord_icon.svg";
 import meIcon from "../../assets/images/me_icon.svg";
 // @ts-ignore
 import twitterIcon from "../../assets/images/twitter_icon.svg";
+
+import { mainnetRPC } from "../../constants";
 import { game_name, game_owner } from "./constants";
 import Header from "./Header";
 import { Information } from "./HeaderItems";
 import "./index.scss";
 import Slots, { random } from "./Slots";
 import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
-import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, useWindowDimensions, withdrawTransaction } from "./utils";
+import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, prices, useWindowDimensions, withdrawTransaction } from "./utils";
 
 const cluster = WalletAdapterNetwork.Mainnet;
+const rpc = mainnetRPC;
 const containerId = 114;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
@@ -38,7 +41,6 @@ const DeezSlotz = React.forwardRef((props, ref) =>
 
   const [targets, setTargets] = useState([-1, -1, -1, -1, -1]);
   const [roll, setRoll] = useState<any>({});
-  const prices = [0.05, 0.1, 0.25, 0.5, 1, 2];
   const [price, setPrice] = useState(0.05);
   const [betNo, setBetNo] = useState(0);
   const [jackpotAmount, setJackpotAmount] = useState(0);
@@ -55,12 +57,12 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   const [tokenType, setTokenType] = useState(false);
   const pageLoaded = useRef<boolean>(false);
 
-
   useEffect(() =>
   {
       if (!pageLoaded.current) {
           console.log(connection);
           console.log("Game Name:", game_name);
+          console.log("Game Owner:", game_owner.toString());
       }
       pageLoaded.current = true;
 
@@ -119,7 +121,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
           {
               console.log("Bank Address:", game.toString());
           }
-          
+
           console.log("Game Data:", convertLog(gameData, isAdmin(provider.wallet.publicKey)));
       }
 
@@ -152,6 +154,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   {
       if (!wallet.publicKey) return;
 
+      console.log(targets, multiplier);
       const counts = {};
       targets.forEach((target) =>
       {
@@ -276,7 +279,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
               }
               targets[rd] = equalNo;
           }
-
+          console.log(targets, playerData.multiplier);
           setTargets(targets);
           setRoll({});
       }

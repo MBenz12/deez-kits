@@ -6,7 +6,7 @@ import { WalletContextState } from "@solana/wallet-adapter-react";
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY, Transaction } from "@solana/web3.js";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { adminWallets, splTokenMint } from "./constants";
+import { adminWallets } from "./constants";
 
 const idl_slots = require("./idl/slots.json");
 const programId = new PublicKey(idl_slots.metadata.address);
@@ -302,7 +302,7 @@ export async function confirmTransactionSafe(provider: Provider, txSignature: st
             console.log(`Confirming ${txSignature}... retries: ${retries}`);
             await provider.connection.confirmTransaction(txSignature, "confirmed");
 
-            console.log(`Confirmed ${txSignature}`);
+            console.log(`Confirmed https://solscan.io/tx/${txSignature}`);
             isConfirmed = true;
         }
         catch (e)
@@ -320,19 +320,14 @@ export async function withdrawTransaction(program: Program, provider: Provider, 
     const [game] = await getGameAddress(game_name, game_owner);
     const [player] = await getPlayerAddress(provider.wallet.publicKey, game);
     const gameData = await program.account.game.fetchNullable(game);
-    const mint = gameData?.tokenType ? splTokenMint :SystemProgram.programId;
-
+    const mint = gameData?.tokenMint;
     const transaction = new Transaction();
 
     const claimerAta = await getAta(mint, provider.wallet.publicKey);
-    if (gameData?.tokenType)
-    {
-        const instruction = await getCreateAtaInstruction(provider, claimerAta, mint, provider.wallet.publicKey);
-        if (instruction)
-        {
-            transaction.add(instruction);
-        }
-    }
+    
+    const instruction = await getCreateAtaInstruction(provider, claimerAta, mint, provider.wallet.publicKey);
+    if (instruction) transaction.add(instruction);
+    
 
     const gameTreasuryAta = await getAta(mint, game, true);
 
@@ -346,10 +341,9 @@ export async function withdrawTransaction(program: Program, provider: Provider, 
                 player,
                 instructionSysvarAccount: SYSVAR_INSTRUCTIONS_PUBKEY,
                 tokenProgram: TOKEN_PROGRAM_ID,
-                systemProgram: SystemProgram.programId,
             },
-        })       
-    );    
+        })
+    );
     if (mint.toString() === NATIVE_MINT.toString()) {
       transaction.add(
         createCloseAccountInstruction(
@@ -361,7 +355,9 @@ export async function withdrawTransaction(program: Program, provider: Provider, 
     }
 
     const txSignature = await wallet.sendTransaction(transaction, provider.connection);
-    await confirmTransactionSafe(provider, txSignature);
+
+    await provider.connection.confirmTransaction(txSignature, "confirmed");
+    console.log(txSignature);
 
     return txSignature;
 }
