@@ -14,14 +14,16 @@
   }
   .navbar_main {
     position: fixed;
-    left: 50%;
+    // left: 50%;
     bottom: 3.4%;
-    transform: translateX(-50%);
+    // transform: translateX(-50%);
     display: flex;
     align-items: center;
     flex-direction: row;
     gap: 8px;
     max-width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
     a {
       color: #fff;
       text-decoration: none;

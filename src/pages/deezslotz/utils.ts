@@ -302,7 +302,7 @@ export async function confirmTransactionSafe(provider: Provider, txSignature: st
             console.log(`Confirming ${txSignature}... retries: ${retries}`);
             await provider.connection.confirmTransaction(txSignature, "confirmed");
 
-            console.log(`Confirmed ${txSignature}`);
+            console.log(`Confirmed https://solscan.io/tx/${txSignature}`);
             isConfirmed = true;
         }
         catch (e)
