@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import Music from 'sharedComponent/musicPlayer';
-import Logo from 'assets/images/deezKits/deez_slotz_logo.png';
+import Logo from 'assets/images/deezKits/Logo_transparent.png';
 import SmokeLeft from 'assets/images/deezKits/smoke_left.png';
 import SmokeRight from 'assets/images/deezKits/smoke_right.png';
 import MutationTitle from 'assets/images/deezKits/mutation_title.png';
@@ -23,11 +23,13 @@ const Mutation = () => {
 
 	return (
 		<div className='relative overflow-x-hidden flex flex-col font-mutation'>
-			<img
-				src={Logo}
-				alt='Logo'
-				className='absolute z-20 top-0 left-0 w-[213px] sm:left-1/2 sm:-translate-x-1/2'
-			/>
+			<a
+				href='/'
+				className='absolute z-20 top-0 left-0 flex items-center h-[104px] sm:left-1/2 sm:-translate-x-1/2'
+			>
+				<img src={Logo} alt='Logo' className='w-full h-full' />
+				<span className='-ml-5 text-[22.27px] text-theme'>{`{DEEZ}`}<span className='text-primary'>MUTATION</span></span>
+			</a>
 			<img
 				src={SmokeLeft}
 				alt='SmokeLeft'
