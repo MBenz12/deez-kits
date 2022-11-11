@@ -476,6 +476,10 @@ export type Slots = {
             "type": "u32"
           },
           {
+            "name": "isWin",
+            "type": "bool"
+          },
+          {
             "name": "isJackpot",
             "type": "bool"
           },
@@ -999,6 +1003,10 @@ export const IDL: Slots = {
           {
             "name": "status",
             "type": "u32"
+          },
+          {
+            "name": "isWin",
+            "type": "bool"
           },
           {
             "name": "isJackpot",

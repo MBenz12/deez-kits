@@ -7,10 +7,13 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './app.scss';
 import Router from "./router/routes";
+import {devnetRPC, mainnetRPC} from "./constants";
 
-function App() {
-  const network = WalletAdapterNetwork.Mainnet;
-  const endpoint = network === WalletAdapterNetwork.Devnet ? "https://api.devnet.solana.com" : "https://flashy-quaint-slug.solana-mainnet.quiknode.pro/3bf50fa9dcb8585bc7050818cab9095ba14ad141/";
+const network = WalletAdapterNetwork.Mainnet;
+
+function App()
+{
+  const endpoint = network === WalletAdapterNetwork.Devnet ? devnetRPC : mainnetRPC;
   const wallets = useMemo(() => [
     new PhantomWalletAdapter(), 
     new SolflareWalletAdapter({network}), 

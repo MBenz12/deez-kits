@@ -10,4 +10,3 @@ export const adminWallets =
   "SERVUJeqsyaJTuVuXAmmko6kTigJmxzTxUMSThpC2LZ",
   "EF5qxGB1AirUH4ENw1niV1ewiNHzH2fWs7naQQYF2dc"
 ];
-
