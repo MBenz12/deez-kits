@@ -132,7 +132,7 @@ const Mutation = () => {
 					HOME
 				</a>
 				<a
-					href='https://magiceden.io/marketplace/deez_kits'
+					href='https://magiceden.io/creators/deezkits'
 					target='_blank'
 					rel='noreferrer'
 					className='flex gap-2 items-center !text-[15px] cursor-pointer'

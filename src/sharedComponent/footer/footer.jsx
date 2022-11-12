@@ -19,7 +19,7 @@ const footer = () => {
           <span>Home</span>
         </a>
         <a
-          href="https://magiceden.io/marketplace/deez_kits"
+          href="https://magiceden.io/creators/deezkits"
           target="_blank"
           rel="noreferrer"
           className={style.me_link}

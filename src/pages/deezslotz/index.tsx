@@ -428,7 +428,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       </div>
       <div className="footer absolute bottom-5 flex items-center">
         <a
-          href="https://magiceden.io/marketplace/deez_kits"
+          href="https://magiceden.io/creators/deezkits"
           target="_blank"
           rel="noreferrer"
           className="me_link"
@@ -485,7 +485,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       {/* <div className="absolute bottom-5 flex items-center gap-5 text-[14px]">
         <a
           className="flex items-center gap-1 no-underline"
-          href="https://magiceden.io/marketplace/deez_kits"
+          href="https://magiceden.io/creators/deezkits"
           target={"_blank"}
           rel="noreferrer"
         >
