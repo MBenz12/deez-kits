@@ -26,7 +26,7 @@ import { Information } from "./HeaderItems";
 import "./index.scss";
 import Slots, { random } from "./Slots";
 import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
-import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, prices, useWindowDimensions, withdrawTransaction } from "./utils";
+import { convertLog, findLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, prices, useWindowDimensions, withdrawTransaction } from "./utils";
 
 const cluster = WalletAdapterNetwork.Mainnet;
 const rpc = mainnetRPC;
@@ -212,13 +212,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       }, 1000);
       fetchData();
   }
-
-  const findLog = (searchTerm: string, logs: string[]) => {
-    let instructionLog = logs.find(log => log.includes(searchTerm));
-    if (!instructionLog) return '';
-    return instructionLog.slice(instructionLog.lastIndexOf(" ") + 1);
-  }
-
+  
   const play = async () =>
   {
       // const toastClassName2 = "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px] xl:right-[-30px]"
@@ -251,9 +245,15 @@ const DeezSlotz = React.forwardRef((props, ref) =>
           
           // @ts-ignore
           const { txSignature } = await playTransaction(program, provider, wallet, game_name, game_owner, betNo, connection);
+          const txConfirmation: any = await connection.confirmTransaction(txSignature, "confirmed");
           const parsed = await connection.getParsedTransaction(txSignature, "confirmed");
           const logs = parsed?.meta?.logMessages;
-          if (!logs) return;
+          if (txConfirmation.value.err || !logs) {
+            const errorCode = txConfirmation.value.err.InstructionError[1].Custom;
+            console.error("Tx Error", errorCode);
+            setLoading(false);
+            return;
+          }
           
           const multipler = findLog("Multiplier:", logs);
 

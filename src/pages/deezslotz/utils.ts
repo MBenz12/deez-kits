@@ -82,6 +82,11 @@ export const convertLog = (data: any, isAdmin: boolean = true) =>
     return res;
 }
 
+export const findLog = (searchTerm: string, logs: string[]) => {
+  let instructionLog = logs.find(log => log.includes(searchTerm));
+  if (!instructionLog) return '';
+  return instructionLog.slice(instructionLog.lastIndexOf(" ") + 1);
+}
 
 export const postWinLoseToDiscordAPI = async (userWallet: PublicKey, balance: number, bet: number, connection: Connection) =>
 {
@@ -285,12 +290,12 @@ export async function playTransaction(program: Program, provider: Provider, wall
 
   const txSignature = await wallet.sendTransaction(transaction, provider.connection, { skipPreflight: false });
   await confirmTransactionSafe(provider, txSignature);
-
+  const txConfirmation: any = await connection.confirmTransaction(txSignature, "confirmed");
 
   gameData = await program.account.game.fetchNullable(game);
   const playerData = await program.account.player.fetchNullable(player);
 
-  return { gameData, playerData, txSignature };
+  return { gameData, playerData, txSignature, txConfirmation };
 }
 
 /* Will retry to confirm tx for 10 times, 1 sec sleep between retires */
