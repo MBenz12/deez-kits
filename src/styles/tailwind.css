@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-.container {
-	@apply mx-auto w-[1520px] xl:w-[1120px] lg:w-[880px] md:w-[720px] sm:w-[540px] xs:w-full xs:px-6;
-}
+/*.container {*/
+/*	@apply mx-auto w-[1520px] xl:w-[1120px] lg:w-[880px] md:w-[720px] sm:w-[540px] xs:w-full xs:px-6;*/
+/*}*/
 
-img {
-  @apply max-w-none;
-}
+/*img {*/
+/*  @apply max-w-none;*/
+/*}*/
