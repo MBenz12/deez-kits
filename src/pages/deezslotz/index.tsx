@@ -26,16 +26,15 @@ import { Information } from "./HeaderItems";
 import "./index.scss";
 import Slots, { random } from "./Slots";
 import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
-import { convertLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, prices, useWindowDimensions, withdrawTransaction } from "./utils";
+import { convertLog, findLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, prices, useWindowDimensions, withdrawTransaction, getTransactionLogsWithValidation } from "./utils";
 
-const cluster = WalletAdapterNetwork.Mainnet;
 const rpc = mainnetRPC;
+const confirmTransactionInitialTimeout = 30000;
 const containerId = 114;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
 {
-  // const { connection } = useConnection();
-  const connection = new Connection(clusterApiUrl(cluster), "confirmed");
+  const connection = new Connection(rpc, { commitment: "confirmed", confirmTransactionInitialTimeout: confirmTransactionInitialTimeout});
   const wallet = useWallet();
   const anchorWallet = useAnchorWallet() as anchor.Wallet;
 
@@ -212,7 +211,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       }, 1000);
       fetchData();
   }
-
+  
   const play = async () =>
   {
       // const toastClassName2 = "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px] xl:right-[-30px]"
@@ -242,20 +241,24 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       try
       {
           const {provider, program} = getProviderAndProgram(connection, anchorWallet);
+          
+          const { txSignature } : any = await playTransaction(program, provider, wallet, game_name, game_owner, betNo, connection);
+          const logs : any = await getTransactionLogsWithValidation(connection, txSignature);
 
-          // @ts-ignore
-          const { playerData } = await playTransaction(program, provider, wallet, game_name, game_owner, betNo, connection);
+          if (!logs)
+          {
+              setLoading(false);
+              return;
+          }
 
-          let status = playerData?.status;
-
-          // console.log(status);
-          if (!status) return;
+          const multiplier = findLog("Multiplier:", logs);
+          const equalCount = parseInt(findLog("Equal Count:", logs));
+          const equalNo = parseInt(findLog("Equal No:", logs));
+          const isJackpot = findLog("Is Jackpot:", logs);
 
           const targets = [];
-          let equalNo = playerData.equalNo;
-          let equalCount = playerData.equalCount;
-          setMultiplier(playerData.multipler);
-          setJackpot(playerData.isJackpot ? jackpotAmount : 0);
+          setMultiplier(parseInt(multiplier));
+          setJackpot(isJackpot === "true" ? jackpotAmount : 0);
           for (let i = 0; i < 5; i++)
           {
               let rd = random();
@@ -279,7 +282,6 @@ const DeezSlotz = React.forwardRef((props, ref) =>
               }
               targets[rd] = equalNo;
           }
-          console.log(targets, playerData.multiplier);
           setTargets(targets);
           setRoll({});
       }
@@ -426,7 +428,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       </div>
       <div className="footer absolute bottom-5 flex items-center">
         <a
-          href="https://magiceden.io/marketplace/deez_kits"
+          href="https://magiceden.io/creators/deezkits"
           target="_blank"
           rel="noreferrer"
           className="me_link"
@@ -483,7 +485,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       {/* <div className="absolute bottom-5 flex items-center gap-5 text-[14px]">
         <a
           className="flex items-center gap-1 no-underline"
-          href="https://magiceden.io/marketplace/deez_kits"
+          href="https://magiceden.io/creators/deezkits"
           target={"_blank"}
           rel="noreferrer"
         >

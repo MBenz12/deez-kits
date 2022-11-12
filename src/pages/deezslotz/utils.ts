@@ -3,7 +3,7 @@ import { Program, Provider } from "@project-serum/anchor";
 import { createAssociatedTokenAccountInstruction, createCloseAccountInstruction, createSyncNativeInstruction, getAssociatedTokenAddress, NATIVE_MINT, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY, Transaction } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL, PublicKey, RpcResponseAndContext, SignatureResult, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY, Transaction } from "@solana/web3.js";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { adminWallets } from "./constants";
@@ -82,6 +82,58 @@ export const convertLog = (data: any, isAdmin: boolean = true) =>
     return res;
 }
 
+export const findLog = (searchTerm: string, logs: string[]) =>
+{
+    let instructionLog = logs.find(log => log.includes(searchTerm));
+    if (!instructionLog) return '';
+    return instructionLog.slice(instructionLog.lastIndexOf(" ") + 1);
+}
+
+export const getTransactionLogsWithValidation = async (connection: Connection, txSignature: string) =>
+{
+    let logs: any = ""
+    let retries = 10;
+    let isValid = false;
+    while (!isValid && retries > 0)
+    {
+        try
+        {
+            const txConfirmation = await connection.confirmTransaction(txSignature);
+            const parsed = await connection.getParsedTransaction(txSignature, "confirmed");
+            logs = parsed?.meta?.logMessages;
+
+            isValid = !txConfirmation?.value?.err && logs; // valid = no error and logs exists
+
+            if (!isValid)
+            {
+                if (txConfirmation.value.err)
+                {
+                    // @ts-ignore
+                    const errorCode = txConfirmation.value.err.InstructionError[1].Custom;
+                    console.error("Tx Error", errorCode, "Retries:", retries);
+                }
+
+                if (!logs)
+                {
+                    console.error("Tx No logs", logs, "Retries:", retries);
+                    console.error(parsed?.meta);
+                }
+
+                retries--;
+                await sleep(1000);
+
+                logs = "";
+            }
+
+            console.log("TxValidated", txSignature, "Retries:", retries);
+        }
+        catch (e)
+        {
+        }
+    }
+
+    return logs;
+}
 
 export const postWinLoseToDiscordAPI = async (userWallet: PublicKey, balance: number, bet: number, connection: Connection) =>
 {
@@ -241,6 +293,8 @@ export async function playTransaction(program: Program, provider: Provider, wall
   const commissionTreasuryAta = await getAta(mint, commissionTreasury);
   let instruction = await getCreateAtaInstruction(provider, payerAta, mint, provider.wallet.publicKey);
   if (instruction) transaction.add(instruction);
+  instruction = await getCreateAtaInstruction(provider, commissionTreasuryAta, mint, commissionTreasury);
+  if (instruction) transaction.add(instruction);
   if (mint.toString() === NATIVE_MINT.toString()) {
     transaction.add(
       SystemProgram.transfer({
@@ -281,29 +335,28 @@ export async function playTransaction(program: Program, provider: Provider, wall
     );
   }
 
-  const txSignature = await wallet.sendTransaction(transaction, provider.connection);
-  await confirmTransactionSafe(provider, txSignature);
-
+  const txSignature = await wallet.sendTransaction(transaction, provider.connection, { skipPreflight: false });
+  const txConfirmation = await confirmTransactionSafe(connection, txSignature);
 
   gameData = await program.account.game.fetchNullable(game);
   const playerData = await program.account.player.fetchNullable(player);
 
-  return { gameData, playerData };
+  return { gameData, playerData, txSignature, txConfirmation };
 }
 
 /* Will retry to confirm tx for 10 times, 1 sec sleep between retires */
-export async function confirmTransactionSafe(provider: Provider, txSignature: string, retries: number = 10, sleepMS: number = 1000)
+export async function confirmTransactionSafe(connection: Connection, txSignature: string, retries: number = 10, sleepMS: number = 1000) : Promise<RpcResponseAndContext<SignatureResult>>
 {
-    let isConfirmed = false;
-    while (!isConfirmed && retries > 0)
+    const txConfirmation : any = null;
+    while (retries > 0)
     {
         try
         {
             console.log(`Confirming ${txSignature}... retries: ${retries}`);
-            await provider.connection.confirmTransaction(txSignature, "confirmed");
+            const txConfirmation = await connection.confirmTransaction(txSignature, "confirmed");
 
             console.log(`Confirmed https://solscan.io/tx/${txSignature}`);
-            isConfirmed = true;
+            return txConfirmation;
         }
         catch (e)
         {
@@ -313,6 +366,8 @@ export async function confirmTransactionSafe(provider: Provider, txSignature: st
             await sleep(sleepMS);
         }
     }
+
+    return txConfirmation;
 }
 
 export async function withdrawTransaction(program: Program, provider: Provider, wallet: WalletContextState, game_name: string, game_owner: PublicKey)

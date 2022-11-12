@@ -6,6 +6,6 @@
 	@apply mx-auto w-[1520px] _xl:w-[1120px] _lg:w-[880px] _md:w-[720px] _sm:w-[540px] _xs:w-full _xs:px-6;
 }
 
-img {
-  @apply max-w-none;
-}
+/*img {*/
+/*  @apply max-w-none;*/
+/*}*/
