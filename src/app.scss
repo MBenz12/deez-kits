@@ -1,8 +1,12 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
 html {
   scroll-behavior: smooth;
-  height: 100%;
+}
+
+.font-mutation {
+  font-family: 'Share Tech Mono', monospace;
 }
 
 body {
@@ -16,9 +20,11 @@ body {
   height: 100%;
   font-size: 60%;
 }
+
 #root {
-  height: 100%;
+  min-height: 100vh;
 }
+
 .loading,
 .error {
   display: flex;
@@ -29,23 +35,27 @@ body {
   height: 100vh;
   flex-direction: column;
   font-size: 25px;
+
   a {
     text-decoration: none;
   }
 }
+
 .highlightedText {
   color: #fbff49;
   text-shadow: 0px 0px 16.1649px rgba(255, 247, 44, 0.83);
 }
+
 .BrownText {
   color: #7a58ff;
   font-size: 25px;
+
   @media only screen and (max-width: 767px) {
     font-size: 19px;
   }
 }
 
-.Toastify{
+.Toastify {
   div {
     font-size: 15px;
     width: fit-content !important;
@@ -56,31 +66,32 @@ body {
     width: 32px;
   }
 
-  .Toastify__progress-bar{
+  .Toastify__progress-bar {
     width: 100% !important;
   }
 
-    .Toastify__progress-bar--success {
-      background-color: #07bc0c;
-    }
-  
-    .Toastify__progress-bar--error {
-      background-color: #e74c3c;
-    }
-  
-    .Toastify__progress-bar--warning {
-      background-color: #f1c40f;
-    }
-  
-    .Toastify__progress-bar--info {
-      background-color: #3498db;
-    }
+  .Toastify__progress-bar--success {
+    background-color: #07bc0c;
+  }
+
+  .Toastify__progress-bar--error {
+    background-color: #e74c3c;
+  }
+
+  .Toastify__progress-bar--warning {
+    background-color: #f1c40f;
+  }
+
+  .Toastify__progress-bar--info {
+    background-color: #3498db;
+  }
 }
 
 .desktop_view {
   @media only screen and (min-width: 768px) {
     display: block;
   }
+
   @media only screen and (max-width: 767px) {
     display: none;
   }
@@ -96,7 +107,7 @@ body {
   }
 }
 
-.d-none{
+.d-none {
   display: none;
 }
 
