@@ -213,6 +213,12 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       fetchData();
   }
 
+  const findLog = (searchTerm: string, logs: string[]) => {
+    let instructionLog = logs.find(log => log.includes(searchTerm));
+    if (!instructionLog) return '';
+    return instructionLog.slice(instructionLog.lastIndexOf(" ") + 1);
+  }
+
   const play = async () =>
   {
       // const toastClassName2 = "bg-black text-white relative flex p-1 min-h-[50px] text-[14px] rounded-md justify-between overflow-hidden cursor-pointer min-w-[400px] xl:top-[150px] xl:right-[-30px]"
@@ -242,20 +248,26 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       try
       {
           const {provider, program} = getProviderAndProgram(connection, anchorWallet);
-
+          
           // @ts-ignore
-          const { playerData } = await playTransaction(program, provider, wallet, game_name, game_owner, betNo, connection);
+          const { txSignature } = await playTransaction(program, provider, wallet, game_name, game_owner, betNo, connection);
+          const parsed = await connection.getParsedTransaction(txSignature, "confirmed");
+          const logs = parsed?.meta?.logMessages;
+          if (!logs) return;
+          
+          const multipler = findLog("Multiplier:", logs);
 
-          let status = playerData?.status;
+          const equalCount = parseInt(findLog("Equal Count:", logs));
 
-          // console.log(status);
-          if (!status) return;
+          const equalNo = parseInt(findLog("Equal No:", logs));
+
+          const isJackpot = findLog("Is Jackpot:", logs);
 
           const targets = [];
-          let equalNo = playerData.equalNo;
-          let equalCount = playerData.equalCount;
-          setMultiplier(playerData.multipler);
-          setJackpot(playerData.isJackpot ? jackpotAmount : 0);
+          // let equalNo = playerData.equalNo;
+          // let equalCount = playerData.equalCount;
+          setMultiplier(parseInt(multipler));
+          setJackpot(isJackpot === "true" ? jackpotAmount : 0);
           for (let i = 0; i < 5; i++)
           {
               let rd = random();
@@ -279,7 +291,6 @@ const DeezSlotz = React.forwardRef((props, ref) =>
               }
               targets[rd] = equalNo;
           }
-          console.log(targets, playerData.multiplier);
           setTargets(targets);
           setRoll({});
       }

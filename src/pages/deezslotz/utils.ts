@@ -241,6 +241,8 @@ export async function playTransaction(program: Program, provider: Provider, wall
   const commissionTreasuryAta = await getAta(mint, commissionTreasury);
   let instruction = await getCreateAtaInstruction(provider, payerAta, mint, provider.wallet.publicKey);
   if (instruction) transaction.add(instruction);
+  instruction = await getCreateAtaInstruction(provider, commissionTreasuryAta, mint, commissionTreasury);
+  if (instruction) transaction.add(instruction);
   if (mint.toString() === NATIVE_MINT.toString()) {
     transaction.add(
       SystemProgram.transfer({
@@ -281,14 +283,14 @@ export async function playTransaction(program: Program, provider: Provider, wall
     );
   }
 
-  const txSignature = await wallet.sendTransaction(transaction, provider.connection);
+  const txSignature = await wallet.sendTransaction(transaction, provider.connection, { skipPreflight: false });
   await confirmTransactionSafe(provider, txSignature);
 
 
   gameData = await program.account.game.fetchNullable(game);
   const playerData = await program.account.player.fetchNullable(player);
 
-  return { gameData, playerData };
+  return { gameData, playerData, txSignature };
 }
 
 /* Will retry to confirm tx for 10 times, 1 sec sleep between retires */
