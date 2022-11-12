@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.container {
-	@apply mx-auto w-[1520px] xl:w-[1120px] lg:w-[880px] md:w-[720px] sm:w-[540px] xs:w-full xs:px-6;
+._container {
+	@apply mx-auto w-[1520px] _xl:w-[1120px] _lg:w-[880px] _md:w-[720px] _sm:w-[540px] _xs:w-full _xs:px-6;
 }
 
 img {
