@@ -34,6 +34,7 @@ const containerId = 114;
 const DeezSlotz = React.forwardRef((props, ref) =>
 {
   const connection = new Connection(rpc, { commitment: "confirmed", confirmTransactionInitialTimeout: confirmTransactionInitialTimeout});
+
   const wallet = useWallet();
   const anchorWallet = useAnchorWallet() as anchor.Wallet;
 
@@ -72,6 +73,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
 
   const { width, height } = useWindowDimensions();
   const [cycle, setCycle] = useState(false);
+  const [run, setRun] = useState(false);
   const [betHoverd, setBetHovered] = useState(false)
 
   useEffect(() => {
@@ -185,6 +187,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
               {containerId}
           );
 
+          setRun(true);
           setCycle(true);
           setTimeout(() => setCycle(false), 4000);
 
@@ -323,7 +326,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
         width={width}
         height={height}
         recycle={cycle}
-        run={true}
+        run={run}
         numberOfPieces={1000}
         tweenDuration={6000}
       />
