@@ -10,3 +10,4 @@ export const adminWallets =
   "SERVUJeqsyaJTuVuXAmmko6kTigJmxzTxUMSThpC2LZ",
   "EF5qxGB1AirUH4ENw1niV1ewiNHzH2fWs7naQQYF2dc"
 ];
+export const communityWallet = new PublicKey("B2j1yKcnFYPcTRypbrSxn3SEuWmpHYfPM3KJ8D1wi4rh");
