@@ -10,6 +10,7 @@ import Mutation1 from 'assets/images/deezKits/mutation-1.png';
 import Mutation2 from 'assets/images/deezKits/mutation-2.png';
 import Mutation3 from 'assets/images/deezKits/mutation-3.png';
 import Mutation4 from 'assets/images/deezKits/mutation-4.png';
+import Mutation5 from 'assets/images/deezKits/mutation-5.png';
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg';
 import { ReactComponent as EqualsIcon } from 'assets/icons/equals.svg';
 import { ReactComponent as MEIcon } from 'assets/images/me_icon.svg';
@@ -109,12 +110,13 @@ const Mutation = () => {
 						</div>
 						<EqualsIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
 						<div className='w-full'>
-							<div className='overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-theme rounded-_md aspect-square'>
+							<div className='relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-theme rounded-_md aspect-square'>
 								<img
 									src={Mutation4}
 									alt=''
-									className='w-full h-full object-contain glitch-effect'
+									className='w-full h-full object-contain'
 								/>
+								<img src={Mutation5} alt="" className='absolute top-0 left-0'/>
 							</div>
 							<button className='relative mt-6 w-full h-12'>
 								<img
