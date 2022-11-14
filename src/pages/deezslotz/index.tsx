@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as anchor from "@project-serum/anchor";
 import { Wallet } from "@project-serum/anchor";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
-import { clusterApiUrl, Connection, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import React, { useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
@@ -26,7 +25,7 @@ import { Information } from "./HeaderItems";
 import "./index.scss";
 import Slots, { random } from "./Slots";
 import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
-import { convertLog, findLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, prices, useWindowDimensions, withdrawTransaction, getTransactionLogsWithValidation } from "./utils";
+import { convertLog, findLog, getGameAddress, getPlayerAddress, getProviderAndProgram, getTransactionLogsWithValidation, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, prices, useWindowDimensions, withdrawTransaction } from "./utils";
 
 const rpc = mainnetRPC;
 const confirmTransactionInitialTimeout = 30000;
@@ -75,7 +74,6 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   }, [wallet.connected]);
 
   const { width, height } = useWindowDimensions();
-  const [run, setRun] = useState(false);
   const [cycle, setCycle] = useState(false);
   const [betHoverd, setBetHovered] = useState(false)
 
@@ -190,7 +188,6 @@ const DeezSlotz = React.forwardRef((props, ref) =>
               {containerId}
           );
 
-          setRun(true);
           setCycle(true);
           setTimeout(() => setCycle(false), 4000);
 
@@ -253,8 +250,8 @@ const DeezSlotz = React.forwardRef((props, ref) =>
               setLoading(false);
               return;
           }
-
-          const multiplier = findLog("Multiplier:", logs);
+          
+          const multiplier = findLog("Multipler:", logs);
           const equalCount = parseInt(findLog("Equal Count:", logs));
           const equalNo = parseInt(findLog("Equal No:", logs));
           const isJackpot = findLog("Is Jackpot:", logs);
@@ -329,12 +326,9 @@ const DeezSlotz = React.forwardRef((props, ref) =>
         width={width}
         height={height}
         recycle={cycle}
-        run={run}
+        run={true}
         numberOfPieces={1000}
         tweenDuration={6000}
-        onConfettiComplete={() => {
-          setRun(false);
-        }}
       />
       <div className="z-[2]">
         <ToastContainer
