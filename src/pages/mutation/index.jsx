@@ -18,6 +18,7 @@ import { ReactComponent as DiscordIcon } from 'assets/images/discord_icon.svg';
 import KitIcon from 'assets/images/cat.gif';
 import CoinFlipIcon from 'assets/images/coinflip.png';
 import HomeIcon from 'assets/images/home.png';
+import './glitch.css'
 
 const Mutation = () => {
 	const videoRef = useRef();
@@ -112,7 +113,7 @@ const Mutation = () => {
 								<img
 									src={Mutation4}
 									alt=''
-									className='w-full h-full object-contain'
+									className='w-full h-full object-contain glitch-effect'
 								/>
 							</div>
 							<button className='relative mt-6 w-full h-12'>
