@@ -2,7 +2,7 @@
 import * as anchor from "@project-serum/anchor";
 import { Wallet } from "@project-serum/anchor";
 import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
-import { Connection, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import React, { useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
@@ -19,7 +19,7 @@ import meIcon from "../../assets/images/me_icon.svg";
 import twitterIcon from "../../assets/images/twitter_icon.svg";
 
 import { mainnetRPC } from "../../constants";
-import { game_name, game_owner } from "./constants";
+import { communityWallet, game_name, game_owner } from "./constants";
 import Header from "./Header";
 import { Information } from "./HeaderItems";
 import "./index.scss";
@@ -28,7 +28,7 @@ import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
 import { convertLog, findLog, getGameAddress, getPlayerAddress, getProviderAndProgram, getTransactionLogsWithValidation, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, prices, useWindowDimensions, withdrawTransaction } from "./utils";
 
 const rpc = mainnetRPC;
-const confirmTransactionInitialTimeout = 30000;
+const confirmTransactionInitialTimeout = 20000;
 const containerId = 114;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
@@ -67,8 +67,9 @@ const DeezSlotz = React.forwardRef((props, ref) =>
 
   }, []);
 
-  useEffect(() => {
-    fetchData();
+  useEffect(() =>
+  {
+      fetchData();
   }, [wallet.connected]);
 
   const { width, height } = useWindowDimensions();
@@ -77,21 +78,37 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   const [betHoverd, setBetHovered] = useState(false)
 
   useEffect(() => {
-    const fetchGame = async () => {
-      const wallet = new Wallet(anchor.web3.Keypair.generate());
-      const { program } = getProviderAndProgram(connection, wallet);
-      const [game] = await getGameAddress(game_name, game_owner);
-      const gameData = await program.account.game.fetchNullable(game);
+    const fetchGame = async () =>
+    {
+        console.log("#1");
+        const wallet = new Wallet(anchor.web3.Keypair.generate());
+        const { program } = getProviderAndProgram(connection, wallet);
+        const [game] = await getGameAddress(game_name, game_owner);
+        const gameData = await program.account.game.fetchNullable(game);
+        if (gameData)
+        {
+          setTokenType(gameData.tokenType);
+          //setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
+          setRoyalty(gameData.royalties[0] / 100);
 
-      if (gameData)
-      {
-        setTokenType(gameData.tokenType);
-        setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
-        setRoyalty(gameData.royalties[0] / 100);
-      }
+          await setCommunityBalanceAsync();
+        }
     };
     fetchGame();
   }, []);
+
+
+  async function setCommunityBalanceAsync()
+  {
+      const tokensBalance = await connection.getParsedTokenAccountsByOwner(communityWallet, {mint: new PublicKey("So11111111111111111111111111111111111111112"), programId: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")});
+      const solWrappedBalance = tokensBalance.value[0].account.lamports / LAMPORTS_PER_SOL;
+      const solBalance = (await connection.getBalance(communityWallet)) / LAMPORTS_PER_SOL;
+      const communityBalance = solWrappedBalance + solBalance;
+      // console.log(solWrappedBalance);
+      // console.log(solBalance);
+      //console.log(Number(communityBalance).toFixed(3));
+      setCommunityBalance(Number(communityBalance.toFixed(3)));
+  }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   async function fetchData()
@@ -140,7 +157,8 @@ const DeezSlotz = React.forwardRef((props, ref) =>
           console.log("Bank Balance:", gameData?.mainBalance.toNumber() / LAMPORTS_PER_SOL);
           setMainBalance(gameData.mainBalance.toNumber() / LAMPORTS_PER_SOL);
           setTokenType(gameData.tokenType);
-          setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
+          //setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
+          await setCommunityBalanceAsync();
           setRoyalty(gameData.royalties[0] / 100);
       }
 
@@ -251,10 +269,12 @@ const DeezSlotz = React.forwardRef((props, ref) =>
               return;
           }
           
-          const multiplier = findLog("Multipler:", logs);
+          const multiplier = findLog("Multiplier:", logs);
           const equalCount = parseInt(findLog("Equal Count:", logs));
           const equalNo = parseInt(findLog("Equal No:", logs));
           const isJackpot = findLog("Is Jackpot:", logs);
+
+          console.log(`result multiplier ${multiplier} equalCount ${equalCount} equalNo ${equalNo} isJackpot ${isJackpot}`);
 
           const targets = [];
           setMultiplier(parseInt(multiplier));

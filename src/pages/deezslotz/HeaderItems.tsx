@@ -8,14 +8,7 @@ import {
   WithdrawIcon
 } from "./Svgs";
 
-export const CommunityFunds = ({
-  balance,
-  royalty,
-}: {
-  balance: number;
-  id: number;
-  royalty: number;
-}) => {
+export const CommunityFunds = ({balance, royalty}: { balance: number; id: number; royalty: number; }) => {
   const [day, setDay] = useState(0);
   const [hour, setHour] = useState(0);
   const [mins, setMins] = useState(0);
