@@ -28,7 +28,7 @@ import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
 import { convertLog, findLog, getGameAddress, getPlayerAddress, getProviderAndProgram, getTransactionLogsWithValidation, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, prices, useWindowDimensions, withdrawTransaction } from "./utils";
 
 const rpc = mainnetRPC;
-const confirmTransactionInitialTimeout = 30000;
+const confirmTransactionInitialTimeout = 20000;
 const containerId = 114;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
@@ -67,8 +67,9 @@ const DeezSlotz = React.forwardRef((props, ref) =>
 
   }, []);
 
-  useEffect(() => {
-    fetchData();
+  useEffect(() =>
+  {
+      fetchData();
   }, [wallet.connected]);
 
   const { width, height } = useWindowDimensions();
@@ -77,19 +78,21 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   const [betHoverd, setBetHovered] = useState(false)
 
   useEffect(() => {
-    const fetchGame = async () => {
-      const wallet = new Wallet(anchor.web3.Keypair.generate());
-      const { program } = getProviderAndProgram(connection, wallet);
-      const [game] = await getGameAddress(game_name, game_owner);
-      const gameData = await program.account.game.fetchNullable(game);
-      if (gameData)
-      {
+    const fetchGame = async () =>
+    {
+        console.log("#1");
+        const wallet = new Wallet(anchor.web3.Keypair.generate());
+        const { program } = getProviderAndProgram(connection, wallet);
+        const [game] = await getGameAddress(game_name, game_owner);
+        const gameData = await program.account.game.fetchNullable(game);
+        if (gameData)
+        {
           setTokenType(gameData.tokenType);
           //setCommunityBalance(gameData.communityBalances[0].toNumber() / LAMPORTS_PER_SOL);
           setRoyalty(gameData.royalties[0] / 100);
 
           await setCommunityBalanceAsync();
-      }
+        }
     };
     fetchGame();
   }, []);
@@ -266,10 +269,12 @@ const DeezSlotz = React.forwardRef((props, ref) =>
               return;
           }
           
-          const multiplier = findLog("Multipler:", logs);
+          const multiplier = findLog("Multiplier:", logs);
           const equalCount = parseInt(findLog("Equal Count:", logs));
           const equalNo = parseInt(findLog("Equal No:", logs));
           const isJackpot = findLog("Is Jackpot:", logs);
+
+          console.log(`result multiplier ${multiplier} equalCount ${equalCount} equalNo ${equalNo} isJackpot ${isJackpot}`);
 
           const targets = [];
           setMultiplier(parseInt(multiplier));
