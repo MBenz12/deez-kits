@@ -255,8 +255,8 @@ export const PlayerFunds = ({
         <p className="relative z-30 sm:text-[22px] text-[14px] sm:leading-[25px] leading-[16px] text-[#952CFF] bg-black sm:w-[200px] w-[120px] text-center">player funds</p>
       </div>
       <div className="absolute w-full h-full top-0 left-0 flex justify-evenly items-center">
-        <div className="relative p-2 w-full">
-          <p className="text-[#83FF49] sm:text-[27px] text-[16px] sm:leading-[31px] leading-[18px] w-full text-center">
+        <div className="relative p-2 w-full flex items-center justify-center gap-3">
+          <p className="text-[#83FF49] sm:text-[27px] text-[16px] sm:leading-[31px] leading-[18px] text-center">
             {playerBalance.toLocaleString("en-us", {
               minimumFractionDigits: 0,
               maximumFractionDigits: 4,
@@ -264,7 +264,7 @@ export const PlayerFunds = ({
             {" "}
             <span className="text-[#FFC42C]">SOL</span>
           </p>
-          <div className="absolute right-[16px] top-[50%] translate-y-[-50%]">
+          <div className="">
             <WithdrawIcon />
           </div>
         </div>
