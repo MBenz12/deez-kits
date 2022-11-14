@@ -74,7 +74,7 @@ const Header = ({
             withdrawPlayerMoney={withdrawPlayerMoney}
           />
         </div>
-        <div className="flex justify-center my-7">
+        <div className="flex justify-center my-7 z-0">
           <CommunityFunds id={2} balance={communityBalance} royalty={royalty} />
         </div>
         {/* <div className="flex flex-col items-center justify-between relative">

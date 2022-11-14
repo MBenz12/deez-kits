@@ -34,6 +34,9 @@ const containerId = 114;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
 {
+  useEffect(() => {
+    toast.error('123123123');
+  })
   const connection = new Connection(rpc, { commitment: "confirmed", confirmTransactionInitialTimeout: confirmTransactionInitialTimeout});
   const wallet = useWallet();
   const anchorWallet = useAnchorWallet() as anchor.Wallet;

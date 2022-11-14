@@ -48,7 +48,7 @@ export const CommunityFunds = ({
     <div>
       <div className="relative cursor-context-menu rounded-md border-[#371761] border-2 min-w-[224px]">
         <div className="top-[-15px] w-full flex justify-center absolute">
-          <p className="bg-[#000] text-[22px] leading-[25px] text-[#FFC42C] bg-black w-[200px] text-center">community funds</p>
+          <p className="text-[22px] leading-[25px] text-[#FFC42C] bg-black w-[200px] text-center">community funds</p>
         </div>
         <div className="p-2 flex flex-col items-center">
           <div 
@@ -252,7 +252,7 @@ export const PlayerFunds = ({
       className="sm:h-[61px] h-[36px] relative cursor-pointer rounded-md border-[#952CFF] border-2 sm:w-[224px] w-[136px]"
     >
       <div className="top-[-15px] w-full flex justify-center absolute">
-        <p className="relative z-30 bg-[#000] sm:text-[22px] text-[14px] sm:leading-[25px] leading-[16px] text-[#952CFF] bg-black sm:w-[200px] w-[120px] text-center">player funds</p>
+        <p className="relative z-30 sm:text-[22px] text-[14px] sm:leading-[25px] leading-[16px] text-[#952CFF] bg-black sm:w-[200px] w-[120px] text-center">player funds</p>
       </div>
       <div className="absolute w-full h-full top-0 left-0 flex justify-evenly items-center">
         <div className="relative p-2 w-full">
