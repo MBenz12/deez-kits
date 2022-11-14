@@ -71,7 +71,6 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   }, [wallet.connected]);
 
   const { width, height } = useWindowDimensions();
-  const [run, setRun] = useState(false);
   const [cycle, setCycle] = useState(false);
   const [betHoverd, setBetHovered] = useState(false)
 
@@ -186,7 +185,6 @@ const DeezSlotz = React.forwardRef((props, ref) =>
               {containerId}
           );
 
-          setRun(true);
           setCycle(true);
           setTimeout(() => setCycle(false), 4000);
 
@@ -325,12 +323,9 @@ const DeezSlotz = React.forwardRef((props, ref) =>
         width={width}
         height={height}
         recycle={cycle}
-        run={run}
+        run={true}
         numberOfPieces={1000}
         tweenDuration={6000}
-        onConfettiComplete={() => {
-          setRun(false);
-        }}
       />
       <div className="z-[2]">
         <ToastContainer
