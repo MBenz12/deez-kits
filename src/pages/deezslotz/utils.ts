@@ -290,12 +290,11 @@ export async function playTransaction(program: Program, provider: Provider, wall
 
   const txSignature = await wallet.sendTransaction(transaction, provider.connection, { skipPreflight: false });
   await confirmTransactionSafe(provider, txSignature);
-  const txConfirmation: any = await connection.confirmTransaction(txSignature, "confirmed");
 
   gameData = await program.account.game.fetchNullable(game);
   const playerData = await program.account.player.fetchNullable(player);
 
-  return { gameData, playerData, txSignature, txConfirmation };
+  return { gameData, playerData, txSignature };
 }
 
 /* Will retry to confirm tx for 10 times, 1 sec sleep between retires */

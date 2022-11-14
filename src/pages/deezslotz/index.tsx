@@ -255,7 +255,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
             return;
           }
           
-          const multipler = findLog("Multiplier:", logs);
+          const multipler = findLog("Multipler:", logs);
 
           const equalCount = parseInt(findLog("Equal Count:", logs));
 
