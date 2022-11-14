@@ -1,8 +1,9 @@
 import { useRef } from 'react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import Music from 'sharedComponent/musicPlayer';
 import Logo from 'assets/images/deezKits/Logo_transparent.png';
-import SmokeLeft from 'assets/images/deezKits/smoke_left.png';
-import SmokeRight from 'assets/images/deezKits/smoke_right.png';
+import smokeLeft from 'assets/images/deezKits/smoke_left.png';
+import smokeRight from 'assets/images/deezKits/smoke_right.png';
 import MutationTitle from 'assets/images/deezKits/mutation_title.png';
 import Mutate from 'assets/images/deezKits/mutate.png';
 import Mutation1 from 'assets/images/deezKits/mutation-1.png';
@@ -23,87 +24,91 @@ const Mutation = () => {
 
 	return (
 		<div className='relative overflow-x-hidden flex flex-col font-mutation'>
+			<WalletMultiButton className='absolute top-2 _sm:top-16 right-2 bg-primary' />
 			<a
 				href='/'
-				className='absolute z-20 top-0 left-0 flex items-center h-[104px] sm:left-1/2 sm:-translate-x-1/2'
+				className='absolute z-20 top-0 left-0 flex items-center h-[104px] w-auto'
 			>
 				<img src={Logo} alt='Logo' className='w-full h-full' />
-				<span className='-ml-5 text-[22.27px] text-theme'>{`{DEEZ}`}<span className='text-primary'>MUTATION</span></span>
+				<span className='-ml-5 text-[22.27px] text-theme'>
+					{`{DEEZ}`}
+					<span className='text-primary'>MUTATION</span>
+				</span>
 			</a>
 			<img
-				src={SmokeLeft}
-				alt='SmokeLeft'
+				src={smokeLeft}
+				alt='smokeLeft'
 				className='absolute -z-10 -top-[142px] -left-[116px] w-[875px]'
 			/>
 			<img
-				src={SmokeRight}
-				alt='SmokeRight'
-				className='absolute -z-20 -top-[35px] -right-[285px] w-[875px] md:hidden'
+				src={smokeRight}
+				alt='_smokeRight'
+				className='absolute -z-20 -top-[35px] -right-[285px] w-[875px] _md:hidden'
 			/>
 			<img
 				src={MutationTitle}
 				alt='Title'
-				className='absolute -z-10 top-[100px] lg:top-[376px] left-[680px] xl:left-[576px] lg:left-1/2 lg:-translate-x-[225px] lg:w-[551px]'
+				className='absolute -z-10 top-[100px] _lg:top-[376px] left-[680px] _xl:left-[576px] _lg:left-1/2 _lg:-translate-x-[225px] _lg:w-[551px]'
 			/>
-			<div className='container relative flex flex-col mt-[200px] sm:mt-36'>
-				<p className='text-[44.69px] sm:text-[35.75px] text-[#FBFF49]'>
+			<div className='_container relative flex flex-col mt-[200px] _sm:mt-36'>
+				<p className='text-[44.69px] _sm:text-[35.75px] text-[#FBFF49]'>
 					DINNER TIME!
 				</p>
-				<p className='mt-2.5 sm:mt-6 max-w-[690px] w-full text-[25.45px] sm:text-xl text-primary'>
+				<p className='mt-2.5 _sm:mt-6 max-w-[690px] w-full text-[25.45px] _sm:text-_xl text-primary'>
 					Yummy sardines and yucky mice, or vice versa maybe muuahahha... they
 					carry the DEEZ Virus... makes your kit go !$(*&#?@... or let's just
 					say...
 				</p>
-				<p className='xl:-rotate-12 mt-[89px] xl:mt-2 ml-auto xl:ml-0 2xl:-mr-12 text-[41.25px] sm:text-[27.41px] text-theme'>
+				<p className='_xl:-rotate-12 mt-[89px] _xl:mt-2 ml-auto _xl:ml-0 2_xl:-mr-12 text-[41.25px] _sm:text-[27.41px] text-theme'>
 					A BIT EXOTIC!
 				</p>
 
-				<div className='flex flex-col mt-[400px] xl:mt-[420px] lg:mt-[500px]'>
-					<p className='sm:mx-auto text-[44.69px] sm:text-[35.75px] text-theme'>
+				<div className='flex flex-col mt-[400px] _xl:mt-[420px] _lg:mt-[500px]'>
+					<p className='_sm:mx-auto text-[44.69px] _sm:text-[35.75px] text-theme'>
 						MUTATION
 					</p>
-					<div className='flex sm:flex-col gap-4 mt-8 items-center sm:px-12'>
+					<div className='flex _sm:flex-col gap-4 mt-8 items-center _sm:px-12'>
 						<div className='w-full'>
-							<div className='overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-md aspect-square'>
+							<div className='overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-_md aspect-square'>
 								<img
 									src={Mutation1}
 									alt=''
 									className='scale-75 w-full h-full object-contain'
 								/>
 							</div>
-							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
+							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-_md w-full h-12 text-[25px] text-[#952CFF]'>
 								KIT
 							</button>
 						</div>
-						<PlusIcon className='-mt-[48px] sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
+						<PlusIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
 						<div className='w-full'>
-							<div className='overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-md aspect-square'>
+							<div className='overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-_md aspect-square'>
 								<img
 									src={Mutation2}
 									alt=''
 									className='w-full h-full object-contain'
 								/>
 							</div>
-							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
+							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-_md w-full h-12 text-[25px] text-[#952CFF]'>
 								SARDINE
 							</button>
 						</div>
-						<PlusIcon className='-mt-[48px] sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
+						<PlusIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
 						<div className='w-full'>
-							<div className='overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-md aspect-square'>
+							<div className='overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-_md aspect-square'>
 								<img
 									src={Mutation3}
 									alt=''
 									className='scale-75 w-full h-full object-contain'
 								/>
 							</div>
-							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
+							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-_md w-full h-12 text-[25px] text-[#952CFF]'>
 								MOUSE
 							</button>
 						</div>
-						<EqualsIcon className='-mt-[48px] sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
+						<EqualsIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
 						<div className='w-full'>
-							<div className='overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-theme rounded-md aspect-square'>
+							<div className='overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-theme rounded-_md aspect-square'>
 								<img
 									src={Mutation4}
 									alt=''
@@ -132,7 +137,7 @@ const Mutation = () => {
 					HOME
 				</a>
 				<a
-					href='https://magiceden.io/marketplace/deez_kits'
+					href='https://magiceden.io/creators/deezkits'
 					target='_blank'
 					rel='noreferrer'
 					className='flex gap-2 items-center !text-[15px] cursor-pointer'

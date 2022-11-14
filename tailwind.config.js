@@ -5,12 +5,17 @@ module.exports = {
   ],
   theme: {
     screens: {
-      'xl': { 'max': '1600px' },
-      'lg': { 'max': '1200px' },
-      'md': { 'max': '992px' },
-      'sm': { 'max': '768px' },
-      'xs': { 'max': '576px' },
-      '2xl': '1600px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+      '_xl': { 'max': '1600px' },
+      '_lg': { 'max': '1200px' },
+      '_md': { 'max': '992px' },
+      '_sm': { 'max': '768px' },
+      '_xs': { 'max': '576px' },
+      '_2xl': '1600px',
     },
     colors: {
       'primary': '#7A58FF',

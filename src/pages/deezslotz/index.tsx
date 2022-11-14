@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as anchor from "@project-serum/anchor";
 import { Wallet } from "@project-serum/anchor";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
-import { clusterApiUrl, Connection, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import React, { useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
 import { toast, ToastContainer } from "react-toastify";
@@ -26,16 +25,15 @@ import { Information } from "./HeaderItems";
 import "./index.scss";
 import Slots, { random } from "./Slots";
 import { BetButton, LoadingIcon, PlayIcon } from "./Svgs";
-import { convertLog, findLog, getGameAddress, getPlayerAddress, getProviderAndProgram, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, prices, useWindowDimensions, withdrawTransaction } from "./utils";
+import { convertLog, findLog, getGameAddress, getPlayerAddress, getProviderAndProgram, getTransactionLogsWithValidation, isAdmin, playTransaction, postWinLoseToDiscordAPI, postWithdrawToDiscordAPI, prices, useWindowDimensions, withdrawTransaction } from "./utils";
 
-const cluster = WalletAdapterNetwork.Mainnet;
 const rpc = mainnetRPC;
+const confirmTransactionInitialTimeout = 30000;
 const containerId = 114;
 
 const DeezSlotz = React.forwardRef((props, ref) =>
 {
-  // const { connection } = useConnection();
-  const connection = new Connection(clusterApiUrl(cluster), "confirmed");
+  const connection = new Connection(rpc, { commitment: "confirmed", confirmTransactionInitialTimeout: confirmTransactionInitialTimeout});
   const wallet = useWallet();
   const anchorWallet = useAnchorWallet() as anchor.Wallet;
 
@@ -243,30 +241,22 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       {
           const {provider, program} = getProviderAndProgram(connection, anchorWallet);
           
-          // @ts-ignore
-          const { txSignature } = await playTransaction(program, provider, wallet, game_name, game_owner, betNo, connection);
-          const txConfirmation: any = await connection.confirmTransaction(txSignature, "confirmed");
-          const parsed = await connection.getParsedTransaction(txSignature, "confirmed");
-          const logs = parsed?.meta?.logMessages;
-          if (txConfirmation.value.err || !logs) {
-            const errorCode = txConfirmation.value.err.InstructionError[1].Custom;
-            console.error("Tx Error", errorCode);
-            setLoading(false);
-            return;
+          const { txSignature } : any = await playTransaction(program, provider, wallet, game_name, game_owner, betNo, connection);
+          const logs : any = await getTransactionLogsWithValidation(connection, txSignature);
+
+          if (!logs)
+          {
+              setLoading(false);
+              return;
           }
           
-          const multipler = findLog("Multipler:", logs);
-
+          const multiplier = findLog("Multipler:", logs);
           const equalCount = parseInt(findLog("Equal Count:", logs));
-
           const equalNo = parseInt(findLog("Equal No:", logs));
-
           const isJackpot = findLog("Is Jackpot:", logs);
 
           const targets = [];
-          // let equalNo = playerData.equalNo;
-          // let equalCount = playerData.equalCount;
-          setMultiplier(parseInt(multipler));
+          setMultiplier(parseInt(multiplier));
           setJackpot(isJackpot === "true" ? jackpotAmount : 0);
           for (let i = 0; i < 5; i++)
           {
@@ -437,7 +427,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       </div>
       <div className="footer absolute bottom-5 flex items-center">
         <a
-          href="https://magiceden.io/marketplace/deez_kits"
+          href="https://magiceden.io/creators/deezkits"
           target="_blank"
           rel="noreferrer"
           className="me_link"
@@ -494,7 +484,7 @@ const DeezSlotz = React.forwardRef((props, ref) =>
       {/* <div className="absolute bottom-5 flex items-center gap-5 text-[14px]">
         <a
           className="flex items-center gap-1 no-underline"
-          href="https://magiceden.io/marketplace/deez_kits"
+          href="https://magiceden.io/creators/deezkits"
           target={"_blank"}
           rel="noreferrer"
         >
