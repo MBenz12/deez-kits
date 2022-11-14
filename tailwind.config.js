@@ -20,6 +20,8 @@ module.exports = {
     colors: {
       'primary': '#7A58FF',
       'theme': '#83FF49',
+      'black': '#000',
+      'white': '#FFF'
     },
     extend: {
     }
