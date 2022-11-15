@@ -20,7 +20,7 @@ h2:nth-child(3) {
 } */
 
 .glitch-effect {
-  animation: glitch1 .5s infinite;
+	animation: glitch1 0.5s infinite;
 }
 
 @keyframes glitch1 {
@@ -38,3 +38,6 @@ h2:nth-child(3) {
 	}
 }
 
+.fill-path path {
+	fill: #20194d;
+}
