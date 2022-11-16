@@ -21,87 +21,40 @@ import CoinFlipIcon from 'assets/images/coinflip.png';
 import HomeIcon from 'assets/images/home.png';
 import './glitch.css';
 import { clusterApiUrl, Connection, Keypair, PublicKey } from '@solana/web3.js';
-import {Metaplex, keypairIdentity, walletAdapterIdentity} from '@metaplex-foundation/js';
+import { Metaplex, keypairIdentity, walletAdapterIdentity } from '@metaplex-foundation/js';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Modal } from '@mui/material';
 import deezkits from 'assets/video/hathalo.mp4';
-import {mainnetRPC} from "../../constants";
-
-const items = [
-	{
-		tokenId: 1,
-		type: 'kit',
-		imgUrl: 'https://arweave.net/nLnbcCu3UleLFxDPnGfhH4GvM7nKoHHWodVMqrNlYqc?ext=png',
-	},
-	{
-		tokenId: 2,
-		type: 'sardine',
-		imgUrl: 'https://arweave.net/nLnbcCu3UleLFxDPnGfhH4GvM7nKoHHWodVMqrNlYqc?ext=png',
-	},
-	{
-		tokenId: 3,
-		type: 'sardine',
-		imgUrl: 'https://arweave.net/nLnbcCu3UleLFxDPnGfhH4GvM7nKoHHWodVMqrNlYqc?ext=png',
-	},
-	{
-		tokenId: 4,
-		type: 'sardine',
-		imgUrl: 'https://arweave.net/nLnbcCu3UleLFxDPnGfhH4GvM7nKoHHWodVMqrNlYqc?ext=png',
-	},
-	{
-		tokenId: 5,
-		type: 'sardine',
-		imgUrl: 'https://arweave.net/nLnbcCu3UleLFxDPnGfhH4GvM7nKoHHWodVMqrNlYqc?ext=png',
-	},
-	{
-		tokenId: 6,
-		type: 'sardine',
-		imgUrl: 'https://arweave.net/nLnbcCu3UleLFxDPnGfhH4GvM7nKoHHWodVMqrNlYqc?ext=png',
-	},
-	{
-		tokenId: 7,
-		type: 'sardine',
-		imgUrl: 'https://arweave.net/nLnbcCu3UleLFxDPnGfhH4GvM7nKoHHWodVMqrNlYqc?ext=png',
-	},
-	{
-		tokenId: 8,
-		type: 'mouse',
-		imgUrl: 'https://arweave.net/nLnbcCu3UleLFxDPnGfhH4GvM7nKoHHWodVMqrNlYqc?ext=png',
-	},
-	{
-		tokenId: 9,
-		type: 'mouse',
-		imgUrl: 'https://arweave.net/nLnbcCu3UleLFxDPnGfhH4GvM7nKoHHWodVMqrNlYqc?ext=png',
-	},
-];
+import { mainnetRPC, kit, sardine, mouse } from '../../constants';
 
 const Mutation = () => {
 	const [open, setOpen] = useState(false);
 	const [NFTdata, setNFTdata] = useState([]);
 	const [selectedType, setSelectedType] = useState('');
 	const [mutateNFTs, setMutateNFTs] = useState({});
-	const videoRef = useRef();
-	const [skipFlag, setSkipFlag] = useState(true);
+	// const videoRef = useRef();
 
-	const handleSkipToTimeStamp = () => {
-		if (skipFlag) {
-			//skip video 4 sec
-			document.getElementById('video').currentTime = 4;
-		}
-		setSkipFlag(false);
-		return true;
-	};
+	// const [skipFlag, setSkipFlag] = useState(true);
 
-	const handleEnded = () => {
-		// rest flag
-		setSkipFlag(true);
-		videoRef.current.play();
-	};
+	// const handleSkipToTimeStamp = () => {
+	//   if (skipFlag) {
+	//     //skip video 4 sec
+	//     document.getElementById("video").currentTime = 4;
+	//   }
+	//   setSkipFlag(false);
+	//   return true;
+	// };
 
-	const onLoad = (video) => {
-		video.target.volume = 0.25;
-		console.log('Volume', video.target.volume);
-	};
+	// const handleEnded = () => {
+	//   // rest flag
+	//   setSkipFlag(true);
+	//   videoRef.current.play();
+	// };
+
+	// const onLoad = (video) => {
+	//   video.target.volume = 0.25;
+	//   console.log("Volume", video.target.volume);
+	// };
 
 	const connection = new Connection(mainnetRPC, 'confirmed');
 	//const keypair = Keypair.generate();
@@ -110,45 +63,45 @@ const Mutation = () => {
 	const wallet = useWallet();
 
 	const [NFTs, setNFTs] = useState();
-	const getNFTs = async () =>
-	{
+	const getNFTs = async () => {
 		metaplex.use(walletAdapterIdentity(wallet));
 		const owner = wallet.publicKey;
-		console.log("User Wallet:", owner.toString());
-		const nfts = await metaplex.nfts().findAllByOwner({owner: metaplex.identity().publicKey});
-		setNFTs(nfts);
+		console.log('User Wallet:', owner.toString());
+		const nfts = await metaplex.nfts().findAllByOwner({ owner: metaplex.identity().publicKey });
+		// setNFTs(nfts);
 		//console.log("NFTs", nfts);
 
 		// Example for one nft:
-		const nftMetaData = nfts[0];
-		const nftURI = nftMetaData.uri;
-		const nft = await metaplex.nfts().load({metadata: nftMetaData});
-		const { name, symbol, description } = nft.json;
-		console.log(`nftName: ${name} symbol: ${symbol} desc: ${description} nftURI: ${nftURI}`);
+		let temp = [];
+		for (let item of nfts) {
+			const nftMetaData = item;
+			const nft = await metaplex.nfts().load({ metadata: nftMetaData });
+			temp.push(nft?.json);
+			console.log(nft?.json);
+		}
+		setNFTs(temp);
 	};
 
-	useEffect(() =>
-	{
-		if (!wallet.publicKey)
-			return;
+	useEffect(() => {
+		if (!wallet.publicKey) return;
 
 		getNFTs();
 	}, [wallet.publicKey]); //eslint-disable-line
 
 	const handleMutate = (index) => {
 		if (index === 0) {
-			setSelectedType('kit');
+			setSelectedType(kit);
 		} else if (index === 1) {
-			setSelectedType('sardine');
+			setSelectedType(sardine);
 		} else if (index === 2) {
-			setSelectedType('mouse');
+			setSelectedType(mouse);
 		}
 		setOpen(true);
 	};
 
 	useEffect(() => {
 		if (selectedType === '') return;
-		const temp = items.filter((item) => item.type === selectedType);
+		const temp = NFTs?.filter((item) => item?.symbol === selectedType);
 		setNFTdata(temp);
 	}, [selectedType]);
 
@@ -157,13 +110,14 @@ const Mutation = () => {
 	};
 
 	const handleSelect = (nft) => {
-		if (nft.type === 'sardine') setMutateNFTs((prev) => ({ ...prev, sardine: nft }));
-		if (nft.type === 'mouse') setMutateNFTs((prev) => ({ ...prev, mouse: nft }));
-		if (nft.type === 'kit') setMutateNFTs((prev) => ({ ...prev, kit: nft }));
+		if (nft.symbol === sardine) setMutateNFTs((prev) => ({ ...prev, sardine: nft }));
+		if (nft.symbol === mouse) setMutateNFTs((prev) => ({ ...prev, mouse: nft }));
+		if (nft.symbol === kit) setMutateNFTs((prev) => ({ ...prev, kit: nft }));
 
 		handleClose();
 	};
 
+	console.log(NFTs);
 	const handleMutateNFTs = () => {
 		console.log(mutateNFTs);
 	};
@@ -175,34 +129,29 @@ const Mutation = () => {
 					<h1 className='text-4xl text-white text-center mb-4'>Choose NFT to mutate</h1>
 					<div className='grid grid-cols-4 _md:grid-cols-3 _sm:grid-cols-2 gap-3'>
 						{NFTdata !== [] &&
-							NFTdata.map((nft, index) => (
+							NFTdata?.map((nft, index) => (
 								<div
-									className='flex flex-col justify-center overflow-hidden border-2 border-primary rounded-lg text-2xl text-white text-center'
+									className='flex flex-col justify-center overflow-hidden border-2 border-primary rounded-lg text-lg text-white text-center'
 									onClick={() => handleSelect(nft)}
 									key={index}
 								>
-									<img alt='nft-art' src={nft.imgUrl} key={index} className='w-full object-cover' />
-									{nft.type} - {nft.tokenId}
+									<img alt='nft-art' src={nft.image} key={index} className='w-full object-cover' />
+									{nft.name}
 								</div>
 							))}
 					</div>
 				</div>
 			</Modal>
-			{
-				!wallet.connected ?
-				(
-					<WalletMultiButton className='absolute top-2 _sm:top-16 right-2 bg-none text-[#4BFF2D]'>
-						<span>SELECT WALLET</span>
-					</WalletMultiButton>
-				)
-					:
-				(
-					<WalletMultiButton className='absolute top-2 _sm:top-16 right-2 bg-none text-[#4BFF2D]'>
-						{wallet?.publicKey?.toString().slice(0, 5)}...
-						{wallet?.publicKey?.toString().substr(-5)}
-					</WalletMultiButton>
-				)
-			}
+			{!wallet.connected ? (
+				<WalletMultiButton className='absolute top-2 _sm:top-16 right-2 bg-none text-[#4BFF2D]'>
+					<span>SELECT WALLET</span>
+				</WalletMultiButton>
+			) : (
+				<WalletMultiButton className='absolute top-2 _sm:top-16 right-2 bg-none text-[#4BFF2D]'>
+					{wallet?.publicKey?.toString().slice(0, 5)}...
+					{wallet?.publicKey?.toString().substr(-5)}
+				</WalletMultiButton>
+			)}
 			<a href='/' className='absolute z-20 top-0 left-0 flex items-center h-[104px] w-auto'>
 				<img src={Logo} alt='Logo' className='w-full h-full' />
 				<span className='-ml-5 text-[22.27px] text-theme'>
@@ -219,7 +168,7 @@ const Mutation = () => {
 			<img
 				src={MutationTitle}
 				alt='Title'
-					className='absolute -z-10 top-[100px] _lg:top-[376px] left-[680px] _xl:left-[576px] _lg:left-1/2 _lg:-translate-x-[225px] _lg:w-[551px] _xs:top-[500px] _xs:left-[320px]'
+				className='absolute -z-10 top-[100px] _lg:top-[376px] left-[680px] _xl:left-[576px] _lg:left-1/2 _lg:-translate-x-[225px] _lg:w-[551px] _xs:top-[500px] _xs:left-[320px]'
 			/>
 			<div className='_container flex flex-col mt-[200px] _sm:mt-36'>
 				<p className='text-[44.69px] _sm:text-[35.75px] text-[#FBFF49]'>DINNER TIME!</p>
@@ -231,11 +180,11 @@ const Mutation = () => {
 					A BIT EXOTIC!
 				</p>
 
-				<div className='flex flex-col mt-[400px] _xl:mt-[420px] _lg:mt-[500px]'>
-					<p className='_sm:mx-auto text-[44.69px] _sm:text-[35.75px] text-theme'>MUTATION</p>
+				<div className='flex flex-col mt-[500px] _xl:mt-[480px] _lg:mt-[450px] _xs:mt-[calc(100vw)]'>
+					<p className='mx-auto text-[44.69px] _sm:text-[35.75px] text-theme'>MUTATION</p>
 					<div className='flex _sm:flex-col gap-4 mt-8 items-center _sm:px-12'>
 						<div className='w-full'>
-							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-md p-2 aspect-square'>
+							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
 								<img
 									src={mutateNFTs?.kit?.imgUrl || Mutation1}
 									alt=''
@@ -261,7 +210,7 @@ const Mutation = () => {
 						</div>
 						<PlusIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
 						<div className='w-full'>
-							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-md p-2 aspect-square'>
+							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
 								<img
 									src={mutateNFTs?.sardine?.imgUrl || Mutation2}
 									alt=''
@@ -285,7 +234,7 @@ const Mutation = () => {
 						</div>
 						<PlusIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
 						<div className='w-full'>
-							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-md p-2 aspect-square'>
+							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
 								<img
 									src={mutateNFTs?.mouse?.imgUrl || Mutation3}
 									alt=''
@@ -387,11 +336,11 @@ const Mutation = () => {
 					COIN FLIP
 				</a>
 			</footer>
-			<Music ref={videoRef} />
-			<video
+			{/* <Music ref={videoRef} /> */}
+			{/* <video
 				id='video'
 				// loop
-				ref={videoRef}
+				// ref={videoRef}
 				autoPlay
 				allow='autoplay'
 				// controls
@@ -402,7 +351,7 @@ const Mutation = () => {
 			>
 				<source src={deezkits}></source>
 				Your browser does not support video!
-			</video>
+			</video> */}
 		</div>
 	);
 };
