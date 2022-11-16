@@ -6,6 +6,7 @@ import smokeLeft from 'assets/images/deezKits/smoke_left.png';
 import smokeRight from 'assets/images/deezKits/smoke_right.png';
 import MutationTitle from 'assets/images/deezKits/mutation_title.png';
 import Mutate from 'assets/images/deezKits/mutate.png';
+import MutateAnimation from 'assets/images/deezKits/mutate.gif';
 import Mutation1 from 'assets/images/deezKits/mutation-1.png';
 import Mutation2 from 'assets/images/deezKits/mutation-2.png';
 import Mutation3 from 'assets/images/deezKits/mutation-3.png';
@@ -32,6 +33,7 @@ const Mutation = () => {
 	const [NFTdata, setNFTdata] = useState([]);
 	const [selectedType, setSelectedType] = useState('');
 	const [mutateNFTs, setMutateNFTs] = useState({});
+	const [mutateItem, setMutateItem] = useState(Mutate);
 	// const videoRef = useRef();
 
 	// const [skipFlag, setSkipFlag] = useState(true);
@@ -264,8 +266,13 @@ const Mutation = () => {
 								<img src={Mutation4} alt='' className='w-full h-full object-contain' />
 								<img src={Mutation5} alt='' className='absolute top-0 left-0' />
 							</div>
-							<button className='relative mt-6 w-full h-12' onClick={handleMutateNFTs}>
-								<img src={Mutate} alt='' className='absolute -top-1/3 left-0	w-full' />
+							<button
+								className='relative mt-6 w-full h-12'
+								onClick={handleMutateNFTs}
+								onMouseOver={() => setMutateItem(MutateAnimation)}
+								onMouseLeave={() => setMutateItem(Mutate)}
+							>
+								<img src={mutateItem} alt='' className='absolute -top-1/3 left-0	w-full' />
 							</button>
 						</div>
 					</div>
