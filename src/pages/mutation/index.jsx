@@ -79,12 +79,33 @@ const Mutation = () => {
 	const [selectedType, setSelectedType] = useState('');
 	const [mutateNFTs, setMutateNFTs] = useState({});
 	const videoRef = useRef();
+	const [skipFlag, setSkipFlag] = useState(true);
+  
+	const handleSkipToTimeStamp = () => {
+	  if (skipFlag) {
+		//skip video 4 sec
+		document.getElementById("video").currentTime = 4;
+	  }
+	  setSkipFlag(false);
+	  return true;
+	};
+  
+	const handleEnded = () => {
+	  // rest flag
+	  setSkipFlag(true);
+	  videoRef.current.play();
+	};
+  
+	const onLoad = (video) => {
+	  video.target.volume = 0.25;
+	  console.log("Volume", video.target.volume);
+	};
 
-	const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
-	const keypair = Keypair.generate();
-	const metaplex = new Metaplex(connection);
-	metaplex.use(keypairIdentity(keypair));
-	const wallet = useWallet();
+  const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
+  const keypair = Keypair.generate();
+  const metaplex = new Metaplex(connection);
+  metaplex.use(keypairIdentity(keypair));
+  const wallet = useWallet();
 
 	const [NFTs, setNFTs] = useState();
 	useEffect(() => {

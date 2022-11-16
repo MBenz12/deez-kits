@@ -80,7 +80,6 @@ const DeezSlotz = React.forwardRef((props, ref) =>
   useEffect(() => {
     const fetchGame = async () =>
     {
-        console.log("#1");
         const wallet = new Wallet(anchor.web3.Keypair.generate());
         const { program } = getProviderAndProgram(connection, wallet);
         const [game] = await getGameAddress(game_name, game_owner);
