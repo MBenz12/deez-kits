@@ -18,7 +18,6 @@ import { ReactComponent as TwitterIcon } from "assets/images/twitter_icon.svg";
 import { ReactComponent as DiscordIcon } from "assets/images/discord_icon.svg";
 import KitIcon from "assets/images/cat.gif";
 import deezkits from "assets/video/hathalo.mp4";
-
 import CoinFlipIcon from "assets/images/coinflip.png";
 import HomeIcon from "assets/images/home.png";
 import "./glitch.css";

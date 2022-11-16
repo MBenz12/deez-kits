@@ -42,7 +42,6 @@ const Maintenance = () => {
           ref={videoRef}
           autoPlay
           allow="autoplay"
-          muted
           // controls
           onMouseOver={handleSkipToTimeStamp}
           onEnded={handleEnded}
