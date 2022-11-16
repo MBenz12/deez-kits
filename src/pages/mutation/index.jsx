@@ -59,14 +59,13 @@ const Mutation = () => {
 	// };
 
 	const connection = new Connection(mainnetRPC, 'confirmed');
-	//const keypair = Keypair.generate();
 	const metaplex = new Metaplex(connection);
-	//metaplex.use(keypairIdentity(keypair));
 	const wallet = useWallet();
 	const walletModal = useWalletModal();
 	const [NFTs, setNFTs] = useState();
 
-	const isWalletConnected = () => {
+	const isWalletConnected = () =>
+	{
 		return !!wallet.publicKey;
 	}
 
@@ -136,7 +135,6 @@ const Mutation = () => {
 
 	const handleSelect = (nft) =>
 	{
-
 		if (isWalletConnected())
 		{
 			if (nft.symbol === sardine) setMutateNFTs((prev) => ({ ...prev, sardine: nft }));
