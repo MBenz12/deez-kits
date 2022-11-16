@@ -21,10 +21,11 @@ import CoinFlipIcon from 'assets/images/coinflip.png';
 import HomeIcon from 'assets/images/home.png';
 import './glitch.css';
 import { clusterApiUrl, Connection, Keypair, PublicKey } from '@solana/web3.js';
-import { Metaplex, keypairIdentity } from '@metaplex-foundation/js';
+import {Metaplex, keypairIdentity, walletAdapterIdentity} from '@metaplex-foundation/js';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Modal } from '@mui/material';
 import deezkits from 'assets/video/hathalo.mp4';
+import {mainnetRPC} from "../../constants";
 
 const items = [
 	{
@@ -102,23 +103,35 @@ const Mutation = () => {
 		console.log('Volume', video.target.volume);
 	};
 
-	const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
-	const keypair = Keypair.generate();
+	const connection = new Connection(mainnetRPC, 'confirmed');
+	//const keypair = Keypair.generate();
 	const metaplex = new Metaplex(connection);
-	metaplex.use(keypairIdentity(keypair));
+	//metaplex.use(keypairIdentity(keypair));
 	const wallet = useWallet();
 
 	const [NFTs, setNFTs] = useState();
-	useEffect(() => {
-		if (!wallet.publicKey) return;
-		const getNFTs = async () => {
-			const owner = wallet.publicKey;
-			console.log(owner.toString());
-			const data = await metaplex
-				.nfts()
-				.findByMint({ mintAddress: new PublicKey('9LcAHBasMj9TavyuN1JnbDWXkmofnkom3J4T4sL6xjiN') });
-			setNFTs(data);
-		};
+	const getNFTs = async () =>
+	{
+		metaplex.use(walletAdapterIdentity(wallet));
+		const owner = wallet.publicKey;
+		console.log("User Wallet:", owner.toString());
+		const nfts = await metaplex.nfts().findAllByOwner({owner: metaplex.identity().publicKey});
+		setNFTs(nfts);
+		//console.log("NFTs", nfts);
+
+		// Example for one nft:
+		const nftMetaData = nfts[0];
+		const nftURI = nftMetaData.uri;
+		const nft = await metaplex.nfts().load({metadata: nftMetaData});
+		const { name, symbol, description } = nft.json;
+		console.log(`nftName: ${name} symbol: ${symbol} desc: ${description} nftURI: ${nftURI}`);
+	};
+
+	useEffect(() =>
+	{
+		if (!wallet.publicKey)
+			return;
+
 		getNFTs();
 	}, [wallet.publicKey]); //eslint-disable-line
 
