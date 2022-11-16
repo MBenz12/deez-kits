@@ -82,7 +82,7 @@ const Mutation = () => {
 		let temp = [];
 		for (let item of nfts) {
 			const nftMetaData = item;
-			const nft = metaplex
+			metaplex
 				.nfts()
 				.load({ metadata: nftMetaData })
 				.then((nft) => {
