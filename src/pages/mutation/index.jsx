@@ -82,9 +82,13 @@ const Mutation = () => {
 		let temp = [];
 		for (let item of nfts) {
 			const nftMetaData = item;
-			const nft = await metaplex.nfts().load({ metadata: nftMetaData });
-			temp.push(nft?.json);
-			setNFTs(temp);
+			const nft = metaplex
+				.nfts()
+				.load({ metadata: nftMetaData })
+				.then((nft) => {
+					temp.push(nft?.json);
+					setNFTs(temp);
+				});
 		}
 		setNFTs(temp);
 	};
@@ -204,10 +208,10 @@ const Mutation = () => {
 						<div className='w-full'>
 							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
 								<img
-									src={mutateNFTs?.kit?.imgUrl || Mutation1}
+									src={mutateNFTs?.kit?.image || Mutation1}
 									alt=''
 									className={`w-full h-full object-contain rounded-md group-hover:hidden ${
-										!mutateNFTs?.kit?.imgUrl && 'scale-75'
+										!mutateNFTs?.kit?.image && 'scale-75'
 									}`}
 								/>
 								<div
@@ -230,7 +234,7 @@ const Mutation = () => {
 						<div className='w-full'>
 							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
 								<img
-									src={mutateNFTs?.sardine?.imgUrl || Mutation2}
+									src={mutateNFTs?.sardine?.image || Mutation2}
 									alt=''
 									className='w-full h-full object-contain rounded-md group-hover:hidden'
 								/>
@@ -254,10 +258,10 @@ const Mutation = () => {
 						<div className='w-full'>
 							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
 								<img
-									src={mutateNFTs?.mouse?.imgUrl || Mutation3}
+									src={mutateNFTs?.mouse?.image || Mutation3}
 									alt=''
 									className={`w-full h-full object-contain rounded-md group-hover:hidden ${
-										!mutateNFTs?.mouse?.imgUrl && 'scale-75'
+										!mutateNFTs?.mouse?.image && 'scale-75'
 									}`}
 								/>
 								<div
@@ -272,8 +276,8 @@ const Mutation = () => {
 									Choose your Mouse
 								</div>
 							</div>
-							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
-								{mutateNFTs?.sardine?.mouse || 'MOUSE'}
+							<button className='overflow-hidden mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
+								{mutateNFTs?.mouse?.name || 'MOUSE'}
 							</button>
 						</div>
 						<EqualsIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
