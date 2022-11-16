@@ -219,15 +219,15 @@ const Mutation = () => {
 			<img
 				src={MutationTitle}
 				alt='Title'
-				className='absolute -z-10 top-[100px] _lg:top-[376px] left-[680px] _xl:left-[576px] _lg:left-1/2 _lg:-translate-x-[225px] _lg:w-[551px]'
+					className='absolute -z-10 top-[100px] _lg:top-[376px] left-[680px] _xl:left-[576px] _lg:left-1/2 _lg:-translate-x-[225px] _lg:w-[551px] _xs:top-[500px] _xs:left-[320px]'
 			/>
-			<div className='_container relative flex flex-col mt-[200px] _sm:mt-36'>
+			<div className='_container flex flex-col mt-[200px] _sm:mt-36'>
 				<p className='text-[44.69px] _sm:text-[35.75px] text-[#FBFF49]'>DINNER TIME!</p>
 				<p className='mt-2.5 _sm:mt-6 max-w-[690px] w-full text-[25.45px] _sm:text-_xl text-primary'>
 					Yummy sardines and yucky mice, or vice versa maybe muuahahha... they carry the DEEZ Virus... makes
 					your kit go !$(*&#?@... or let's just say...
 				</p>
-				<p className='_xl:-rotate-12 mt-[89px] _xl:mt-2 ml-auto _xl:ml-0 2_xl:-mr-12 text-[41.25px] _sm:text-[27.41px] text-theme'>
+				<p className='absolute top-[500px] left-[1400px] _xl:left-[450px] _xl:top-[450px] _lg:left-[200px] _md:left-[150px] _xs:top-[550px] _sm:left-[50px] _xs:left-6 _lg:-rotate-12 text-[41.25px] _sm:text-[27.41px] text-theme'>
 					A BIT EXOTIC!
 				</p>
 
