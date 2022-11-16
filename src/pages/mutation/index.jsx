@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import {useWalletModal, WalletMultiButton} from '@solana/wallet-adapter-react-ui';
 import Music from 'sharedComponent/musicPlayer';
 import Logo from 'assets/images/deezKits/Logo_transparent.png';
 import smokeLeft from 'assets/images/deezKits/smoke_left.png';
@@ -63,9 +63,15 @@ const Mutation = () => {
 	const metaplex = new Metaplex(connection);
 	//metaplex.use(keypairIdentity(keypair));
 	const wallet = useWallet();
-
+	const walletModal = useWalletModal();
 	const [NFTs, setNFTs] = useState();
-	const getNFTs = async () => {
+
+	const isWalletConnected = () => {
+		return !!wallet.publicKey;
+	}
+
+	const getNFTs = async () =>
+	{
 		metaplex.use(walletAdapterIdentity(wallet));
 		const owner = wallet.publicKey;
 		console.log('User Wallet:', owner.toString());
@@ -85,41 +91,62 @@ const Mutation = () => {
 	};
 
 	useEffect(() => {
-		if (!wallet.publicKey) return;
+		if (!isWalletConnected()) return;
 
 		getNFTs();
 	}, [wallet.publicKey]); //eslint-disable-line
 
-	const handleMutate = (index) => {
-		if (index === 0) {
-			setSelectedType(kit);
-		} else if (index === 1) {
-			setSelectedType(sardine);
-		} else if (index === 2) {
-			setSelectedType(mouse);
+	const handleMutate = (index) =>
+	{
+		if (isWalletConnected())
+		{
+			if (index === 0)
+			{
+				setSelectedType(kit);
+			}
+			else if (index === 1)
+			{
+				setSelectedType(sardine);
+			}
+			else if (index === 2)
+			{
+				setSelectedType(mouse);
+			}
+			setOpen(true);
 		}
-		setOpen(true);
+		else
+		{
+			walletModal.setVisible(true);
+		}
 	};
 
-	useEffect(() => {
-		if (selectedType === '') return;
-		const temp = NFTs?.filter((item) => item?.symbol === selectedType);
-		setNFTdata(temp);
+	useEffect(() =>
+	{
+		if (isWalletConnected())
+		{
+			if (selectedType === '') return;
+			const temp = NFTs?.filter((item) => item?.symbol === selectedType);
+			setNFTdata(temp);
+		}
 	}, [selectedType]);
 
 	const handleClose = () => {
 		setOpen(false);
 	};
 
-	const handleSelect = (nft) => {
-		if (nft.symbol === sardine) setMutateNFTs((prev) => ({ ...prev, sardine: nft }));
-		if (nft.symbol === mouse) setMutateNFTs((prev) => ({ ...prev, mouse: nft }));
-		if (nft.symbol === kit) setMutateNFTs((prev) => ({ ...prev, kit: nft }));
+	const handleSelect = (nft) =>
+	{
 
-		handleClose();
+		if (isWalletConnected())
+		{
+			if (nft.symbol === sardine) setMutateNFTs((prev) => ({ ...prev, sardine: nft }));
+			if (nft.symbol === mouse) setMutateNFTs((prev) => ({ ...prev, mouse: nft }));
+			if (nft.symbol === kit) setMutateNFTs((prev) => ({ ...prev, kit: nft }));
+
+			handleClose();
+		}
 	};
 
-	console.log(NFTs);
 	const handleMutateNFTs = () => {
 		console.log(mutateNFTs);
 	};
@@ -142,7 +169,7 @@ const Mutation = () => {
 									{nft.name}
 								</div>
 							))}
-					</div> : <h1 className='text-3xl text-[#f00] text-center'>No NFTs found in the wallet</h1>}
+					</div> : <h1 className='text-2xl text-[#f00] text-center'>No NFTs found in the wallet</h1>}
 				</div>
 			</Modal>
 			{!wallet.connected ? (
