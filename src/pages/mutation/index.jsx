@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import {useWalletModal, WalletMultiButton} from '@solana/wallet-adapter-react-ui';
+import { useWalletModal, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import Music from 'sharedComponent/musicPlayer';
 import Logo from 'assets/images/deezKits/Logo_transparent.png';
 import smokeLeft from 'assets/images/deezKits/smoke_left.png';
@@ -68,10 +68,9 @@ const Mutation = () => {
 
 	const isWalletConnected = () => {
 		return !!wallet.publicKey;
-	}
+	};
 
-	const getNFTs = async () =>
-	{
+	const getNFTs = async () => {
 		metaplex.use(walletAdapterIdentity(wallet));
 		const owner = wallet.publicKey;
 		console.log('User Wallet:', owner.toString());
@@ -85,7 +84,7 @@ const Mutation = () => {
 			const nftMetaData = item;
 			const nft = await metaplex.nfts().load({ metadata: nftMetaData });
 			temp.push(nft?.json);
-			console.log(nft?.json);
+			setNFTs(temp);
 		}
 		setNFTs(temp);
 	};
@@ -96,34 +95,23 @@ const Mutation = () => {
 		getNFTs();
 	}, [wallet.publicKey]); //eslint-disable-line
 
-	const handleMutate = (index) =>
-	{
-		if (isWalletConnected())
-		{
-			if (index === 0)
-			{
+	const handleMutate = (index) => {
+		if (isWalletConnected()) {
+			if (index === 0) {
 				setSelectedType(kit);
-			}
-			else if (index === 1)
-			{
+			} else if (index === 1) {
 				setSelectedType(sardine);
-			}
-			else if (index === 2)
-			{
+			} else if (index === 2) {
 				setSelectedType(mouse);
 			}
 			setOpen(true);
-		}
-		else
-		{
+		} else {
 			walletModal.setVisible(true);
 		}
 	};
 
-	useEffect(() =>
-	{
-		if (isWalletConnected())
-		{
+	useEffect(() => {
+		if (isWalletConnected()) {
 			if (selectedType === '') return;
 			const temp = NFTs?.filter((item) => item?.symbol === selectedType);
 			setNFTdata(temp);
@@ -134,11 +122,8 @@ const Mutation = () => {
 		setOpen(false);
 	};
 
-	const handleSelect = (nft) =>
-	{
-
-		if (isWalletConnected())
-		{
+	const handleSelect = (nft) => {
+		if (isWalletConnected()) {
 			if (nft.symbol === sardine) setMutateNFTs((prev) => ({ ...prev, sardine: nft }));
 			if (nft.symbol === mouse) setMutateNFTs((prev) => ({ ...prev, mouse: nft }));
 			if (nft.symbol === kit) setMutateNFTs((prev) => ({ ...prev, kit: nft }));
@@ -156,20 +141,23 @@ const Mutation = () => {
 			<Modal open={open} onClose={handleClose}>
 				<div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-auto border-2 border-primary rounded-lg outline-none max-w-[800px] max-h-[80vh] w-full p-4 bg-[#1B1248]'>
 					<h1 className='text-4xl text-white text-center mb-4'>Choose NFT to mutate</h1>
-					{NFTdata.length !== 0 ?
-					<div className='grid grid-cols-4 _md:grid-cols-3 _sm:grid-cols-2 gap-3'>
-						{NFTdata !== [] &&
-							NFTdata?.map((nft, index) => (
-								<div
-									className='flex flex-col justify-center overflow-hidden border-2 border-primary rounded-lg text-lg text-white text-center'
-									onClick={() => handleSelect(nft)}
-									key={index}
-								>
-									<img alt='nft-art' src={nft.image} key={index} className='w-full object-cover' />
-									{nft.name}
-								</div>
-							))}
-					</div> : <h1 className='text-2xl text-[#f00] text-center'>No NFTs found in the wallet</h1>}
+					{NFTdata?.length !== 0 ? (
+						<div className='grid grid-cols-4 _md:grid-cols-3 _sm:grid-cols-2 gap-3'>
+							{NFTdata !== [] &&
+								NFTdata?.map((nft, index) => (
+									<div
+										className='flex flex-col justify-start items-center overflow-hidden border-2 border-primary rounded-lg text-lg text-white text-center'
+										onClick={() => handleSelect(nft)}
+										key={index}
+									>
+										<img alt='nft-art' src={nft.image} key={index} className='w-full object-cover' />
+										{nft.name}
+									</div>
+								))}
+						</div>
+					) : (
+						<h1 className='text-2xl text-[#f00] text-center'>No NFTs found in the wallet</h1>
+					)}
 				</div>
 			</Modal>
 			{!wallet.connected ? (
@@ -235,7 +223,7 @@ const Mutation = () => {
 								</div>
 							</div>
 							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
-								KIT
+								{mutateNFTs?.kit?.name || 'KIT'}
 							</button>
 						</div>
 						<PlusIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
@@ -259,7 +247,7 @@ const Mutation = () => {
 								</div>
 							</div>
 							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
-								SARDINE
+								{mutateNFTs?.sardine?.name || 'SARDINE'}
 							</button>
 						</div>
 						<PlusIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
@@ -285,18 +273,17 @@ const Mutation = () => {
 								</div>
 							</div>
 							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
-								MOUSE
+								{mutateNFTs?.sardine?.mouse || 'MOUSE'}
 							</button>
 						</div>
 						<EqualsIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
-						<div className='w-full'>
+						<div className='w-full' onClick={handleMutateNFTs}>
 							<div className='relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-theme rounded-md aspect-square'>
 								<img src={Mutation4} alt='' className='w-full h-full object-contain' />
 								<img src={Mutation5} alt='' className='absolute top-0 left-0' />
 							</div>
 							<button
 								className='relative mt-6 w-full h-12'
-								onClick={handleMutateNFTs}
 								onMouseOver={() => setMutateItem(MutateAnimation)}
 								onMouseLeave={() => setMutateItem(Mutate)}
 							>
