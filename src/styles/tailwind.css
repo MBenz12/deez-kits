@@ -9,3 +9,7 @@
 /*img {*/
 /*  @apply max-w-none;*/
 /*}*/
+
+.MuiModal-root {
+	margin: 12px;
+}
