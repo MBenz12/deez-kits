@@ -175,9 +175,21 @@ const Mutation = () => {
 					</div>
 				</div>
 			</Modal>
-			<WalletMultiButton className='absolute top-2 _sm:top-16 right-2 bg-primary text-[#4BFF2D]'>
-				CONNECT WALLET
-			</WalletMultiButton>
+			{
+				!wallet.connected ?
+				(
+					<WalletMultiButton className='absolute top-2 _sm:top-16 right-2 bg-none text-[#4BFF2D]'>
+						<span>SELECT WALLET</span>
+					</WalletMultiButton>
+				)
+					:
+				(
+					<WalletMultiButton className='absolute top-2 _sm:top-16 right-2 bg-none text-[#4BFF2D]'>
+						{wallet?.publicKey?.toString().slice(0, 5)}...
+						{wallet?.publicKey?.toString().substr(-5)}
+					</WalletMultiButton>
+				)
+			}
 			<a href='/' className='absolute z-20 top-0 left-0 flex items-center h-[104px] w-auto'>
 				<img src={Logo} alt='Logo' className='w-full h-full' />
 				<span className='-ml-5 text-[22.27px] text-theme'>
