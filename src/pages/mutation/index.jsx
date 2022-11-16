@@ -24,6 +24,7 @@ import { clusterApiUrl, Connection, Keypair, PublicKey } from '@solana/web3.js';
 import { Metaplex, keypairIdentity } from '@metaplex-foundation/js';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Modal } from '@mui/material';
+import deezkits from 'assets/video/hathalo.mp4';
 
 const items = [
 	{
@@ -80,32 +81,32 @@ const Mutation = () => {
 	const [mutateNFTs, setMutateNFTs] = useState({});
 	const videoRef = useRef();
 	const [skipFlag, setSkipFlag] = useState(true);
-  
+
 	const handleSkipToTimeStamp = () => {
-	  if (skipFlag) {
-		//skip video 4 sec
-		document.getElementById("video").currentTime = 4;
-	  }
-	  setSkipFlag(false);
-	  return true;
-	};
-  
-	const handleEnded = () => {
-	  // rest flag
-	  setSkipFlag(true);
-	  videoRef.current.play();
-	};
-  
-	const onLoad = (video) => {
-	  video.target.volume = 0.25;
-	  console.log("Volume", video.target.volume);
+		if (skipFlag) {
+			//skip video 4 sec
+			document.getElementById('video').currentTime = 4;
+		}
+		setSkipFlag(false);
+		return true;
 	};
 
-  const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
-  const keypair = Keypair.generate();
-  const metaplex = new Metaplex(connection);
-  metaplex.use(keypairIdentity(keypair));
-  const wallet = useWallet();
+	const handleEnded = () => {
+		// rest flag
+		setSkipFlag(true);
+		videoRef.current.play();
+	};
+
+	const onLoad = (video) => {
+		video.target.volume = 0.25;
+		console.log('Volume', video.target.volume);
+	};
+
+	const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+	const keypair = Keypair.generate();
+	const metaplex = new Metaplex(connection);
+	metaplex.use(keypairIdentity(keypair));
+	const wallet = useWallet();
 
 	const [NFTs, setNFTs] = useState();
 	useEffect(() => {
@@ -360,6 +361,21 @@ const Mutation = () => {
 				</a>
 			</footer>
 			<Music ref={videoRef} />
+			<video
+				id='video'
+				// loop
+				ref={videoRef}
+				autoPlay
+				allow='autoplay'
+				// controls
+				onMouseOver={handleSkipToTimeStamp}
+				onEnded={handleEnded}
+				onLoadStart={onLoad}
+				className='hidden'
+			>
+				<source src={deezkits}></source>
+				Your browser does not support video!
+			</video>
 		</div>
 	);
 };
