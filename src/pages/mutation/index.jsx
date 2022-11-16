@@ -129,6 +129,7 @@ const Mutation = () => {
 			<Modal open={open} onClose={handleClose}>
 				<div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-auto border-2 border-primary rounded-lg outline-none max-w-[800px] max-h-[80vh] w-full p-4 bg-[#1B1248]'>
 					<h1 className='text-4xl text-white text-center mb-4'>Choose NFT to mutate</h1>
+					{NFTdata.length !== 0 ?
 					<div className='grid grid-cols-4 _md:grid-cols-3 _sm:grid-cols-2 gap-3'>
 						{NFTdata !== [] &&
 							NFTdata?.map((nft, index) => (
@@ -141,7 +142,7 @@ const Mutation = () => {
 									{nft.name}
 								</div>
 							))}
-					</div>
+					</div> : <h1 className='text-3xl text-[#f00] text-center'>No NFTs found in the wallet</h1>}
 				</div>
 			</Modal>
 			{!wallet.connected ? (
