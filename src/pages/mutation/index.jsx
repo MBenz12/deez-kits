@@ -315,12 +315,14 @@ const Mutation = () => {
 									25 <span className='text-primary'>$DEEZ</span>
 								</button>
 							</div>
-							<button
-								className='relative mt-6 w-full h-12'
-								onMouseOver={() => setMutateItem(MutateAnimation)}
-								onMouseLeave={() => setMutateItem(Mutate)}
-							>
-								<img src={mutateItem} alt='' className='absolute -top-1/3 left-0	w-full' />
+							<button className='relative mt-6 w-full h-12'>
+								<img
+									src={mutateItem}
+									alt=''
+									className='absolute -top-1/3 left-0	w-full'
+									onMouseLeave={() => setMutateItem(Mutate)}
+									onMouseOver={() => setMutateItem(MutateAnimation)}
+								/>
 							</button>
 						</div>
 					</div>
