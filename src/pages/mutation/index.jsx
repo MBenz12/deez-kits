@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useWalletModal, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import Music from 'sharedComponent/musicPlayer';
+// import Music from 'sharedComponent/musicPlayer';
 import Logo from 'assets/images/deezKits/Logo_transparent.png';
 import smokeLeft from 'assets/images/deezKits/smoke_left.png';
 import smokeRight from 'assets/images/deezKits/smoke_right.png';
-import MutationTitle from 'assets/images/deezKits/mutation_title.png';
 import Mutate from 'assets/images/deezKits/mutate.png';
 import MutateAnimation from 'assets/images/deezKits/mutate-animation.png';
 import Mutation1 from 'assets/images/deezKits/mutation-1.png';
@@ -21,20 +20,21 @@ import KitIcon from 'assets/images/cat.gif';
 import CoinFlipIcon from 'assets/images/coinflip.png';
 import HomeIcon from 'assets/images/home.png';
 import './glitch.css';
-import { clusterApiUrl, Connection, Keypair, PublicKey } from '@solana/web3.js';
-import { Metaplex, keypairIdentity, walletAdapterIdentity } from '@metaplex-foundation/js';
+import { Connection } from '@solana/web3.js';
+import { Metaplex, walletAdapterIdentity } from '@metaplex-foundation/js';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Modal } from '@mui/material';
-import deezkits from 'assets/video/hathalo.mp4';
+// import deezkits from 'assets/video/hathalo.mp4';
+import ToxicShower from 'assets/video/toxic_shower.mp4';
 import { mainnetRPC, kit, sardine, mouse } from '../../constants';
 
 const Mutation = () => {
 	const [open, setOpen] = useState(false);
 	const [NFTdata, setNFTdata] = useState([]);
-	const [selectedType, setSelectedType] = useState('');
-	const [mutateNFTs, setMutateNFTs] = useState({});
+	const [mutateNFTs, setMutateNFTs] = useState([{}, {}, {}]);
 	const [mutateItem, setMutateItem] = useState(Mutate);
-	// const videoRef = useRef();
+	const [type, setType] = useState(0);
+	const videoRef = useRef();
 
 	// const [skipFlag, setSkipFlag] = useState(true);
 
@@ -78,20 +78,30 @@ const Mutation = () => {
 		// setNFTs(nfts);
 		//console.log("NFTs", nfts);
 
-		// Example for one nft:
-		let temp = [];
-		for (let item of nfts) {
-			const nftMetaData = item;
-			metaplex
-				.nfts()
-				.load({ metadata: nftMetaData })
-				.then((nft) => {
-					temp.push(nft?.json);
-					setNFTs(temp);
-				});
-		}
-		setNFTs(temp);
+		const promises = nfts.map(async (item) => {
+			const temp = await metaplex.nfts().load({ metadata: item });
+			console.log(temp.json);
+			if (temp.json !== null) return temp.json;
+		});
+
+		setNFTs(await Promise.all(promises));
+
+		// // Example for one nft:
+		// let temp = [];
+		// for (let item of nfts) {
+		// 	const nftMetaData = item;
+		// 	metaplex
+		// 		.nfts()
+		// 		.load({ metadata: nftMetaData })
+		// 		.then((nft) => {
+		// 			temp.push(nft?.json);
+		// 			setNFTs((prev) => (prev.push(nft?.json));
+		// 		});
+		// }
+		// setNFTs(temp);
 	};
+
+	console.log(NFTs);
 
 	useEffect(() => {
 		if (!isWalletConnected()) return;
@@ -99,28 +109,28 @@ const Mutation = () => {
 		getNFTs();
 	}, [wallet.publicKey]); //eslint-disable-line
 
-	const handleMutate = (index) => {
+	const handleMutate = async (index) => {
 		if (isWalletConnected()) {
+			let temp = [];
 			if (index === 0) {
-				setSelectedType(kit);
+				temp = await NFTs?.filter((item) => item?.symbol === kit);
+				setType(0);
 			} else if (index === 1) {
-				setSelectedType(sardine);
+				temp = await NFTs?.filter((item) => item?.symbol === sardine);
+				setType(1);
 			} else if (index === 2) {
-				setSelectedType(mouse);
+				temp = await NFTs?.filter((item) => item?.symbol === mouse);
+				setType(2);
 			}
+			await temp?.sort((a, b) => {
+				return a?.collection?.name ?? '' - b?.collection?.name ?? '';
+			});
+			setNFTdata(temp);
 			setOpen(true);
 		} else {
 			walletModal.setVisible(true);
 		}
 	};
-
-	useEffect(() => {
-		if (isWalletConnected()) {
-			if (selectedType === '') return;
-			const temp = NFTs?.filter((item) => item?.symbol === selectedType);
-			setNFTdata(temp);
-		}
-	}, [selectedType]);
 
 	const handleClose = () => {
 		setOpen(false);
@@ -128,9 +138,12 @@ const Mutation = () => {
 
 	const handleSelect = (nft) => {
 		if (isWalletConnected()) {
-			if (nft.symbol === sardine) setMutateNFTs((prev) => ({ ...prev, sardine: nft }));
-			if (nft.symbol === mouse) setMutateNFTs((prev) => ({ ...prev, mouse: nft }));
-			if (nft.symbol === kit) setMutateNFTs((prev) => ({ ...prev, kit: nft }));
+			// if (nft.symbol === sardine) setMutateNFTs((prev) => [prev[0], nft, prev[2]]);
+			// if (nft.symbol === mouse) setMutateNFTs((prev) => [prev[0], prev[1], nft]);
+			// if (nft.symbol === kit) setMutateNFTs((prev) => [nft, prev[1], prev[2]]);
+			if (type === 1) setMutateNFTs((prev) => [prev[0], nft, prev[2]]);
+			if (type === 2) setMutateNFTs((prev) => [prev[0], prev[1], nft]);
+			if (type === 0) setMutateNFTs((prev) => [nft, prev[1], prev[2]]);
 
 			handleClose();
 		}
@@ -139,6 +152,10 @@ const Mutation = () => {
 	const handleMutateNFTs = () => {
 		console.log(mutateNFTs);
 	};
+
+	useEffect(() => {
+		videoRef?.current?.play();
+	}, [videoRef]);
 
 	return (
 		<div className='relative overflow-x-hidden flex flex-col font-mutation'>
@@ -187,11 +204,15 @@ const Mutation = () => {
 				alt='_smokeRight'
 				className='absolute -z-20 -top-[35px] -right-[285px] w-[875px] _md:hidden'
 			/>
-			<img
-				src={MutationTitle}
-				alt='Title'
-				className='absolute -z-10 top-[100px] _lg:top-[376px] left-[680px] _xl:left-[576px] _lg:left-1/2 _lg:-translate-x-[225px] _lg:w-[551px] _xs:top-[500px] _xs:left-[320px]'
-			/>
+			<video
+				ref={videoRef}
+				allow='autoplay'
+				muted
+				loop
+				className='absolute -z-10 top-[140px] _lg:top-[376px] left-[680px] _xl:left-[576px] _lg:left-1/2 _lg:-translate-x-[225px] w-[828px] h-[694px] _lg:w-[551px] _xs:top-[350px] _xs:left-[280px]'
+			>
+				<source src={ToxicShower} type='video/mp4' />
+			</video>
 			<div className='_container flex flex-col mt-[200px] _sm:mt-36'>
 				<p className='text-[44.69px] _sm:text-[35.75px] text-[#FBFF49]'>DINNER TIME!</p>
 				<p className='mt-2.5 _sm:mt-6 max-w-[690px] w-full text-[25.45px] _sm:text-_xl text-primary'>
@@ -202,16 +223,16 @@ const Mutation = () => {
 					A BIT EXOTIC!
 				</p>
 
-				<div className='flex flex-col mt-[500px] _xl:mt-[480px] _lg:mt-[450px] _xs:mt-[calc(100vw)]'>
+				<div className='flex flex-col mt-[500px] _xl:mt-[480px] _lg:mt-[600px] _md:mt-[650px] _sm:mt-[700px] _xs:mt-[calc(100vw)]'>
 					<p className='mx-auto text-[44.69px] _sm:text-[35.75px] text-theme'>MUTATION</p>
-					<div className='flex _sm:flex-col gap-4 mt-8 items-center _sm:px-12'>
+					<div className='flex _sm:flex-col gap-4 mt-8 items-start _sm:items-center _sm:px-12'>
 						<div className='w-full'>
 							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
 								<img
-									src={mutateNFTs?.kit?.image || Mutation1}
+									src={mutateNFTs[0]?.image || Mutation1}
 									alt=''
 									className={`w-full h-full object-contain rounded-md group-hover:hidden ${
-										!mutateNFTs?.kit?.image && 'scale-75'
+										!mutateNFTs[0]?.image && 'scale-75'
 									}`}
 								/>
 								<div
@@ -226,15 +247,15 @@ const Mutation = () => {
 									Choose your Kit
 								</div>
 							</div>
-							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
-								{mutateNFTs?.kit?.name || 'KIT'}
+							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full min-h-12 text-[25px] text-[#952CFF]'>
+								{mutateNFTs[0]?.name || 'KIT'}
 							</button>
 						</div>
-						<PlusIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
+						<PlusIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
 						<div className='w-full'>
 							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
 								<img
-									src={mutateNFTs?.sardine?.image || Mutation2}
+									src={mutateNFTs[1]?.image || Mutation2}
 									alt=''
 									className='w-full h-full object-contain rounded-md group-hover:hidden'
 								/>
@@ -250,18 +271,18 @@ const Mutation = () => {
 									Choose your Sardine
 								</div>
 							</div>
-							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
-								{mutateNFTs?.sardine?.name || 'SARDINE'}
+							<button className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full min-h-12 text-[25px] text-[#952CFF]'>
+								{mutateNFTs[1]?.name || 'SARDINE'}
 							</button>
 						</div>
-						<PlusIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
+						<PlusIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
 						<div className='w-full'>
 							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
 								<img
-									src={mutateNFTs?.mouse?.image || Mutation3}
+									src={mutateNFTs[2]?.image || Mutation3}
 									alt=''
 									className={`w-full h-full object-contain rounded-md group-hover:hidden ${
-										!mutateNFTs?.mouse?.image && 'scale-75'
+										!mutateNFTs[2]?.image && 'scale-75'
 									}`}
 								/>
 								<div
@@ -276,15 +297,23 @@ const Mutation = () => {
 									Choose your Mouse
 								</div>
 							</div>
-							<button className='overflow-hidden mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full h-12 text-[25px] text-[#952CFF]'>
-								{mutateNFTs?.mouse?.name || 'MOUSE'}
+							<button className='overflow-hidden mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full min-h-12 text-[25px] text-[#952CFF]'>
+								{mutateNFTs[2]?.name || 'MOUSE'}
 							</button>
 						</div>
-						<EqualsIcon className='-mt-[48px] _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
+						<EqualsIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
 						<div className='w-full' onClick={handleMutateNFTs}>
 							<div className='relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-theme rounded-md aspect-square'>
 								<img src={Mutation4} alt='' className='w-full h-full object-contain' />
 								<img src={Mutation5} alt='' className='absolute top-0 left-0' />
+							</div>
+							<div className='flex gap-2.5 mt-6'>
+								<button className='border border-primary rounded-md w-full h-12 text-[22.15px] _lg:text-base text-theme'>
+									1 <span className='text-[#FBFF49]'>$SOL</span>
+								</button>
+								<button className='border border-primary rounded-md w-full h-12 text-[22.15px] _lg:text-base text-theme'>
+									25 <span className='text-primary'>$DEEZ</span>
+								</button>
 							</div>
 							<button
 								className='relative mt-6 w-full h-12'
