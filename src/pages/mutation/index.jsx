@@ -5,7 +5,7 @@ import Logo from 'assets/images/deezKits/Logo_transparent.png';
 import smokeLeft from 'assets/images/deezKits/smoke_left.png';
 import smokeRight from 'assets/images/deezKits/smoke_right.png';
 import Mutate from 'assets/images/deezKits/mutate.png';
-import MutateAnimation from 'assets/images/deezKits/mutate-animation.png';
+import MutateAnimation from 'assets/images/deezKits/mutate-animation.gif';
 import Mutation1 from 'assets/images/deezKits/mutation-1.png';
 import Mutation2 from 'assets/images/deezKits/mutation-2.png';
 import Mutation3 from 'assets/images/deezKits/mutation-3.png';
@@ -75,37 +75,17 @@ const Mutation = () => {
 		const owner = wallet.publicKey;
 		console.log('User Wallet:', owner.toString());
 		const nfts = await metaplex.nfts().findAllByOwner({ owner: metaplex.identity().publicKey });
-		// setNFTs(nfts);
-		//console.log("NFTs", nfts);
 
 		const promises = nfts.map(async (item) => {
 			const temp = await metaplex.nfts().load({ metadata: item });
-			console.log(temp.json);
 			if (temp.json !== null) return temp.json;
 		});
 
 		setNFTs(await Promise.all(promises));
-
-		// // Example for one nft:
-		// let temp = [];
-		// for (let item of nfts) {
-		// 	const nftMetaData = item;
-		// 	metaplex
-		// 		.nfts()
-		// 		.load({ metadata: nftMetaData })
-		// 		.then((nft) => {
-		// 			temp.push(nft?.json);
-		// 			setNFTs((prev) => (prev.push(nft?.json));
-		// 		});
-		// }
-		// setNFTs(temp);
 	};
-
-	console.log(NFTs);
 
 	useEffect(() => {
 		if (!isWalletConnected()) return;
-
 		getNFTs();
 	}, [wallet.publicKey]); //eslint-disable-line
 
@@ -138,13 +118,9 @@ const Mutation = () => {
 
 	const handleSelect = (nft) => {
 		if (isWalletConnected()) {
-			// if (nft.symbol === sardine) setMutateNFTs((prev) => [prev[0], nft, prev[2]]);
-			// if (nft.symbol === mouse) setMutateNFTs((prev) => [prev[0], prev[1], nft]);
-			// if (nft.symbol === kit) setMutateNFTs((prev) => [nft, prev[1], prev[2]]);
 			if (type === 1) setMutateNFTs((prev) => [prev[0], nft, prev[2]]);
 			if (type === 2) setMutateNFTs((prev) => [prev[0], prev[1], nft]);
 			if (type === 0) setMutateNFTs((prev) => [nft, prev[1], prev[2]]);
-
 			handleClose();
 		}
 	};
