@@ -20,13 +20,14 @@ import KitIcon from 'assets/images/cat.gif';
 import CoinFlipIcon from 'assets/images/coinflip.png';
 import HomeIcon from 'assets/images/home.png';
 import './glitch.css';
-import { Connection } from '@solana/web3.js';
+import {Connection, PublicKey} from '@solana/web3.js';
 import { Metaplex, walletAdapterIdentity } from '@metaplex-foundation/js';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Modal } from '@mui/material';
 // import deezkits from 'assets/video/hathalo.mp4';
 import ToxicShower from 'assets/video/toxic_shower.mp4';
-import { mainnetRPC, kit, sardine, mouse } from '../../constants';
+import {mainnetRPC, kit, sardine, mouse, deezSPLToken} from '../../constants';
+import {getAta, getSPLTokensBalance, getTokenAccount, getTokenAccountAndOwner} from "../deezslotz/utils";
 
 const Mutation = () => {
 	const [open, setOpen] = useState(false);
@@ -121,7 +122,8 @@ const Mutation = () => {
 	};
 
 	const handleSelect = (nft) => {
-		if (isWalletConnected()) {
+		if (isWalletConnected())
+		{
 			if (type === 1) setMutateNFTs((prev) => [prev[0], nft, prev[2]]);
 			if (type === 2) setMutateNFTs((prev) => [prev[0], prev[1], nft]);
 			if (type === 0) setMutateNFTs((prev) => [nft, prev[1], prev[2]]);
@@ -129,8 +131,39 @@ const Mutation = () => {
 		}
 	};
 
-	const handleMutateNFTs = () => {
-		console.log(mutateNFTs);
+	const handleMutateNFTs = async () => {
+		const kit = {nft: mutateNFTs[0], name: mutateNFTs[0]?.json?.name, mint: mutateNFTs[0]?.mint?.address };
+		const sardine = {nft: mutateNFTs[1], name: mutateNFTs[1]?.json?.name, mint: mutateNFTs[1]?.mint?.address };
+		const mouse = {nft: mutateNFTs[2], name: mutateNFTs[2]?.json?.name, mint: mutateNFTs[2]?.mint?.address };
+
+		console.log(` Kit: {name: ${kit.name} mint: ${kit.mint?.toString()}} \n Sardine: {name: ${sardine.name} mint: ${sardine.mint?.toString()}} \n Mouse: {name: ${mouse.name} mint: ${mouse.mint?.toString()}}`);
+
+		if (kit.mint)
+		{
+			const { tokenAccount: kitTokenAccount, owner } = await getTokenAccountAndOwner(connection, kit.mint);
+			console.log("-> Kit Token Account:", kitTokenAccount.toString(), "Owner:", owner.toString());
+		}
+
+		if (sardine.mint)
+		{
+			const { tokenAccount: sardineTokenAccount, owner } = await getTokenAccountAndOwner(connection, sardine.mint);
+			console.log("-> Sardine Token Account:", sardineTokenAccount.toString(), "Owner:", owner.toString());
+		}
+
+		if (mouse.mint)
+		{
+			const { tokenAccount: mouseTokenAccount, owner } = await getTokenAccountAndOwner(connection, mouse.mint);
+			console.log("-> Mouse Token Account:", mouseTokenAccount.toString(), "Owner:", owner.toString());
+		}
+
+		const { solBalance, splBalance } = await getSPLTokensBalance(connection, wallet.publicKey, new PublicKey(deezSPLToken));
+		console.log(`--> $SOL: ${solBalance} $DEEZ: ${splBalance}`);
+
+
+		// 1# - validate amounts exists otherwise toast an error
+		// 2# - Create TX: with instructions to send above to mutationWallet
+		// 3# - Create another TX: to mint 1 mutant
+		// 4# - Sign all, send TXs
 	};
 
 	useEffect(() => {

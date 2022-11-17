@@ -3,7 +3,7 @@ import { Program, Provider } from "@project-serum/anchor";
 import { createAssociatedTokenAccountInstruction, createCloseAccountInstruction, createSyncNativeInstruction, getAssociatedTokenAddress, NATIVE_MINT, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import { Connection, LAMPORTS_PER_SOL, PublicKey, RpcResponseAndContext, SignatureResult, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY, Transaction } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL, PublicKey, RpcResponseAndContext, SignatureResult, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY, Transaction, ParsedAccountData } from "@solana/web3.js";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { adminWallets } from "./constants";
@@ -232,6 +232,32 @@ export function getProviderAndProgram(connection: Connection, anchorWallet: anch
   return { provider, program };
 }
 
+export async function getTokenAccountAndOwner(connection: Connection, mint: PublicKey)
+{
+    let tokenAccount: any = "";
+    const tokenAccounts = await connection.getTokenLargestAccounts(mint);
+    for (let _tokenAccount of tokenAccounts.value)
+    {
+        if (_tokenAccount?.uiAmount! > 0)
+        {
+            tokenAccount = _tokenAccount.address;
+            break;
+        }
+    }
+
+    let owner: any = "";
+    if (tokenAccount)
+    {
+        const tokenAccountInfo = await connection.getParsedAccountInfo(tokenAccount);
+        const ownerAddressString = (tokenAccountInfo?.value?.data as unknown as ParsedAccountData).parsed?.info?.owner;
+        if (ownerAddressString) {
+            owner = new PublicKey(ownerAddressString);
+        }
+    }
+
+    return { tokenAccount, owner };
+}
+
 export async function getAta(mint: PublicKey, owner: PublicKey, allowOffCurve: boolean = false) {
   return await getAssociatedTokenAddress(      
     mint,
@@ -415,4 +441,21 @@ export async function withdrawTransaction(program: Program, provider: Provider, 
     console.log(txSignature);
 
     return txSignature;
+}
+
+export async function getSPLTokensBalance(connection: Connection, account: PublicKey, filterMint: PublicKey)
+{
+    let solBalance = 0;
+    let splBalance = null;
+
+    if (account)
+    {
+        solBalance = (await connection.getBalance(account)) / LAMPORTS_PER_SOL;
+
+        const tokenAccountsByOwner = await connection.getParsedTokenAccountsByOwner(account, {mint: filterMint, programId: TOKEN_PROGRAM_ID});
+        const amount = tokenAccountsByOwner?.value[0]?.account?.data["parsed"]["info"]["tokenAmount"]["amount"];
+        splBalance = Math.ceil(amount / LAMPORTS_PER_SOL);
+    }
+
+    return { solBalance, splBalance };
 }
