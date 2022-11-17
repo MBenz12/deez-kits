@@ -180,30 +180,30 @@ const Mutation = () => {
 				alt='_smokeRight'
 				className='absolute -z-20 -top-[35px] -right-[285px] w-[875px] _md:hidden'
 			/>
-			<video
-				ref={videoRef}
-				allow='autoplay'
-				muted
-				loop
-				className='absolute -z-10 top-[140px] _lg:top-[376px] left-[680px] _xl:left-[576px] _lg:left-1/2 _lg:-translate-x-[225px] w-[828px] h-[694px] _lg:w-[551px] _xs:top-[350px] _xs:left-[280px]'
-			>
-				<source src={ToxicShower} type='video/mp4' />
-			</video>
-			<div className='_container flex flex-col mt-[200px] _sm:mt-36'>
+			<div className='_container relative flex flex-col mt-[200px] _sm:mt-36'>
 				<p className='text-[44.69px] _sm:text-[35.75px] text-[#FBFF49]'>DINNER TIME!</p>
-				<p className='mt-2.5 _sm:mt-6 max-w-[690px] w-full text-[25.45px] _sm:text-_xl text-primary'>
+				<p className='relative z-10 mt-2.5 _sm:mt-6 max-w-[690px] w-full text-[25.45px] _sm:text-_xl text-primary'>
 					Yummy sardines and yucky mice, or vice versa maybe muuahahha... they carry the DEEZ Virus... makes
 					your kit go !$(*&#?@... or let's just say...
 				</p>
-				<p className='absolute top-[500px] left-[1400px] _xl:left-[450px] _xl:top-[450px] _lg:left-[200px] _md:left-[150px] _xs:top-[550px] _sm:left-[50px] _xs:left-6 _lg:-rotate-12 text-[41.25px] _sm:text-[27.41px] text-theme'>
+				<video
+					ref={videoRef}
+					allow='autoplay'
+					muted
+					loop
+					className='relative -z-10 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _sm:-mt-12 _xs:-ml-12'
+				>
+					<source src={ToxicShower} type='video/mp4' />
+				</video>
+				<p className='whitespace-nowrap absolute top-64 left-[1080px] _xl:left-[880px] _xl:top-96 _lg:left-8 _lg:-rotate-12 text-[41.25px] _sm:top-80 _sm:text-[27.41px] text-theme'>
 					A BIT EXOTIC!
 				</p>
 
-				<div className='flex flex-col mt-[500px] _xl:mt-[480px] _lg:mt-[600px] _md:mt-[650px] _sm:mt-[700px] _xs:mt-[calc(100vw)]'>
+				<div className='flex flex-col mt-2'>
 					<p className='mx-auto text-[44.69px] _sm:text-[35.75px] text-theme'>MUTATION</p>
 					<div className='flex _sm:flex-col gap-4 mt-8 items-start _sm:items-center _sm:px-12'>
 						<div className='w-full'>
-							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
+							<div className='cursor-pointer group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
 								<img
 									src={mutateNFTs[0]?.image || Mutation1}
 									alt=''
@@ -229,7 +229,7 @@ const Mutation = () => {
 						</div>
 						<PlusIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
 						<div className='w-full'>
-							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
+							<div className='cursor-pointer group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
 								<img
 									src={mutateNFTs[1]?.image || Mutation2}
 									alt=''
@@ -253,7 +253,7 @@ const Mutation = () => {
 						</div>
 						<PlusIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
 						<div className='w-full'>
-							<div className='group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
+							<div className='cursor-pointer group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
 								<img
 									src={mutateNFTs[2]?.image || Mutation3}
 									alt=''
