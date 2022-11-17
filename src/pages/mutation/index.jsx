@@ -6,7 +6,7 @@ import smokeLeft from 'assets/images/deezKits/smoke_left.png';
 import smokeRight from 'assets/images/deezKits/smoke_right.png';
 import MutationTitle from 'assets/images/deezKits/mutation_title.png';
 import Mutate from 'assets/images/deezKits/mutate.png';
-import MutateAnimation from 'assets/images/deezKits/mutate.gif';
+import MutateAnimation from 'assets/images/deezKits/mutate-animation.png';
 import Mutation1 from 'assets/images/deezKits/mutation-1.png';
 import Mutation2 from 'assets/images/deezKits/mutation-2.png';
 import Mutation3 from 'assets/images/deezKits/mutation-3.png';
