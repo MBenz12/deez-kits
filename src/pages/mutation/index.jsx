@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useWalletModal, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 // import Music from 'sharedComponent/musicPlayer';
 import Logo from 'assets/images/deezKits/Logo_transparent.png';
@@ -28,6 +28,7 @@ import { Modal } from '@mui/material';
 import ToxicShower from 'assets/video/toxic_shower.mp4';
 import {mainnetRPC, kit, sardine, mouse, deezSPLToken} from '../../constants';
 import {getAta, getSPLTokensBalance, getTokenAccount, getTokenAccountAndOwner} from "../deezslotz/utils";
+import {toast, ToastContainer} from "react-toastify";
 
 const Mutation = () => {
 	const [open, setOpen] = useState(false);
@@ -131,7 +132,14 @@ const Mutation = () => {
 		}
 	};
 
-	const handleMutateNFTs = async () => {
+	const handleMutateNFTs = async () =>
+	{
+		if (!isWalletConnected())
+		{
+			toast.warn("Please connect your wallet.", {containerId: 114});
+			walletModal.setVisible(true);
+		}
+
 		const kit = {nft: mutateNFTs[0], name: mutateNFTs[0]?.json?.name, mint: mutateNFTs[0]?.mint?.address };
 		const sardine = {nft: mutateNFTs[1], name: mutateNFTs[1]?.json?.name, mint: mutateNFTs[1]?.mint?.address };
 		const mouse = {nft: mutateNFTs[2], name: mutateNFTs[2]?.json?.name, mint: mutateNFTs[2]?.mint?.address };
@@ -172,6 +180,7 @@ const Mutation = () => {
 
 	return (
 		<div className='relative overflow-x-hidden flex flex-col font-mutation'>
+			<ToastContainer theme={"dark"}/>
 			<Modal open={open} onClose={handleClose}>
 				<div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-auto border-2 border-primary rounded-lg outline-none max-w-[800px] max-h-[80vh] w-full p-4 bg-[#1B1248]'>
 					<h1 className='text-4xl text-white text-center mb-4'>Choose NFT to mutate</h1>
