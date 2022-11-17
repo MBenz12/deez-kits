@@ -4,6 +4,8 @@ export const mainnetRPC =
 export const mainnetRPC2 =
 	'https://flashy-quaint-slug.solana-mainnet.quiknode.pro/3bf50fa9dcb8585bc7050818cab9095ba14ad141/';
 
-export const kit = 'FLKA';
-export const sardine = 'CC';
-export const mouse = 'MB';
+export const kit = { symbol: 'D33Z', creator: '67N65g6TdnPCqzEXVso8uWtqsUNWD2GKaT46J57C6iRX'};
+export const sardine = { symbol: 'D33Z', creator: 'hEasytvPJ3zhPC99NsSDR7WWoGtgyEvLTeEhNb8m33B'};
+export const mouse = { symbol: 'D33Z', creator: 'FWbUjkbQTZUhoFZeAHputQZ5TYoDYVKCS83WVdkcEJJp'};
+
+
