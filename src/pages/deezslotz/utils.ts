@@ -232,8 +232,7 @@ export function getProviderAndProgram(connection: Connection, anchorWallet: anch
   return { provider, program };
 }
 
-export async function getTokenAccountAndOwner(connection: Connection, mint: PublicKey)
-{
+export async function getTokenAccountAndOwner(connection: Connection, mint: PublicKey): Promise<{ tokenAccount: PublicKey; tokenAccountOwner: PublicKey }> {
     let tokenAccount: any = "";
     const tokenAccounts = await connection.getTokenLargestAccounts(mint);
     for (let _tokenAccount of tokenAccounts.value)
@@ -245,17 +244,22 @@ export async function getTokenAccountAndOwner(connection: Connection, mint: Publ
         }
     }
 
-    let owner: any = "";
+    let tokenAccountOwner: PublicKey | undefined = undefined;
     if (tokenAccount)
     {
         const tokenAccountInfo = await connection.getParsedAccountInfo(tokenAccount);
         const ownerAddressString = (tokenAccountInfo?.value?.data as unknown as ParsedAccountData).parsed?.info?.owner;
         if (ownerAddressString) {
-            owner = new PublicKey(ownerAddressString);
+            tokenAccountOwner = new PublicKey(ownerAddressString);
         }
     }
 
-    return { tokenAccount, owner };
+    if (!tokenAccountOwner)
+    {
+        throw new Error("Couldn't find owner of Token Account");
+    }
+
+    return { tokenAccount, tokenAccountOwner };
 }
 
 export async function getAta(mint: PublicKey, owner: PublicKey, allowOffCurve: boolean = false) {
@@ -264,6 +268,18 @@ export async function getAta(mint: PublicKey, owner: PublicKey, allowOffCurve: b
     owner,
     allowOffCurve
   );
+}
+
+export async function getCreateAtaInstructionV2(connection: Connection, payer: PublicKey, ata: PublicKey, mint: PublicKey, owner: PublicKey) {
+    let account = await connection.getAccountInfo(ata);
+    if (!account) {
+        return createAssociatedTokenAccountInstruction(
+            payer,
+            ata,
+            owner,
+            mint,
+        );
+    }
 }
 
 export async function getCreateAtaInstruction(provider: Provider, ata: PublicKey, mint: PublicKey, owner: PublicKey) {
@@ -446,16 +462,19 @@ export async function withdrawTransaction(program: Program, provider: Provider, 
 export async function getSPLTokensBalance(connection: Connection, account: PublicKey, filterMint: PublicKey)
 {
     let solBalance = 0;
-    let splBalance = null;
+    let splBalance = 0;
 
-    if (account)
+    try
     {
-        solBalance = (await connection.getBalance(account)) / LAMPORTS_PER_SOL;
-
-        const tokenAccountsByOwner = await connection.getParsedTokenAccountsByOwner(account, {mint: filterMint, programId: TOKEN_PROGRAM_ID});
-        const amount = tokenAccountsByOwner?.value[0]?.account?.data["parsed"]["info"]["tokenAmount"]["amount"];
-        splBalance = Math.ceil(amount / LAMPORTS_PER_SOL);
+        if (account && filterMint)
+        {
+            solBalance = (await connection.getBalance(account)) / LAMPORTS_PER_SOL;
+            const tokenAccountsByOwner = await connection.getParsedTokenAccountsByOwner(account, {mint: filterMint, programId: TOKEN_PROGRAM_ID});
+            const amount = tokenAccountsByOwner?.value[0]?.account?.data["parsed"]["info"]["tokenAmount"]["amount"];
+            splBalance = Math.ceil(amount / LAMPORTS_PER_SOL);
+        }
     }
+    catch (e) { }
 
     return { solBalance, splBalance };
 }

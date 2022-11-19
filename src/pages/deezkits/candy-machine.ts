@@ -14,6 +14,7 @@ import {
   getNetworkToken,
   SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID
 } from "./utils";
+import { confirmTransactionSafe } from "../deezslotz/utils";
 
 export const CANDY_MACHINE_PROGRAM = new anchor.web3.PublicKey(
   "cndy3Z4yapfJBmL3ShUp5exZKqR3z33thTzeNMm2gRZ"
@@ -380,9 +381,12 @@ export const createAccountsForMint = async (
   };
 };
 
-export const mintTokens = async (candyMachine: CandyMachineAccount, payer: anchor.web3.PublicKey, multipleMints: number, setupState?: SetupState): Promise<boolean> => {
+export const mintTokens = async (candyMachine: CandyMachineAccount, payer: anchor.web3.PublicKey, multipleMints: number, setupState?: SetupState, transaction?: Transaction): Promise<boolean> => {
   try {
     const txs = [];
+    if (transaction) {
+      txs.push(transaction);
+    }
     const metadataAddresses = [];
     for (let i = 1; i <= multipleMints; i++) {
       const instructions = [];
@@ -616,8 +620,11 @@ export const mintTokens = async (candyMachine: CandyMachineAccount, payer: ancho
     }
 
     for (const txSignature of txSignatures) {
-      await candyMachine.program.provider.connection.confirmTransaction(txSignature, "confirmed");
+      await confirmTransactionSafe(candyMachine.program.provider.connection, txSignature);
       console.log(txSignature, "confirmed");
+
+      await sleep(2000);
+
       let metadataStatus = null;
       metadataStatus = await candyMachine!.program.provider.connection.getAccountInfo(metadataAddresses[i], "processed");
       console.log("Metadata status: ", !!metadataStatus);

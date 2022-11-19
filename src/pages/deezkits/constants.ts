@@ -1,3 +1,8 @@
+export const wlList2 =
+    [
+
+    ]
+
 export const wlList =
     [
       "7D7DmXQPn9EixdGoaq71KHg4TGBVPuf6EbT3kv9yMq32",
