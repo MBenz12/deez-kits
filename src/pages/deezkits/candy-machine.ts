@@ -3,7 +3,8 @@ import * as anchor from "@project-serum/anchor";
 
 import { createInitializeMintInstruction, createMintToInstruction, MintLayout, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import {
-  SystemProgram, SYSVAR_SLOT_HASHES_PUBKEY, Transaction
+  PublicKey,
+  SystemProgram, SYSVAR_SLOT_HASHES_PUBKEY, Transaction, TransactionInstruction
 } from "@solana/web3.js";
 import { sendTransactions, SequenceType } from "./connection";
 
@@ -381,7 +382,7 @@ export const createAccountsForMint = async (
   };
 };
 
-export const mintTokens = async (candyMachine: CandyMachineAccount, payer: anchor.web3.PublicKey, multipleMints: number, setupState?: SetupState, transaction?: Transaction): Promise<boolean> => {
+export const mintTokens = async (candyMachine: CandyMachineAccount, payer: anchor.web3.PublicKey, multipleMints: number, setupState?: SetupState, transaction?: Transaction, memoData?: string): Promise<boolean> => {
   try {
     const txs = [];
     if (transaction) {
@@ -607,6 +608,24 @@ export const mintTokens = async (candyMachine: CandyMachineAccount, payer: ancho
       tx.sign(...signers);
       txs.push(tx);
       metadataAddresses.push(metadataAddress);
+
+      if (memoData)
+      {
+          const tx = transaction || new Transaction();
+          const memoDataNew = {data: memoData, mintToken: mint.publicKey.toString()};
+
+          await tx.add(
+              new TransactionInstruction({
+                keys: [{pubkey: payer, isSigner: true, isWritable: true}],
+                data: Buffer.from(JSON.stringify(memoDataNew), 'utf-8'),
+                programId: new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
+              })
+          );
+
+          tx.feePayer = candyMachine.program.provider.wallet.publicKey;
+          tx.recentBlockhash = latestBlockHash.blockhash;
+          txs.push(tx);
+      }
     }
 
     const signedTxs = await candyMachine.program.provider.wallet.signAllTransactions(txs);

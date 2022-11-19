@@ -309,8 +309,10 @@ const Mutation = () => {
 		transaction.recentBlockhash = (await connection.getLatestBlockhash("confirmed")).blockhash;
 		console.log(transaction);
 
+
+		const memoData = { kit: { name: kit.name, mint: kit.mint.toString() }, sardine: { name: sardine.name, mint: sardine.mint.toString() }, mouse: { name: mouse.name, mint: mouse.mint.toString() }};
 		const mintAmount = 1;
-		const res = await mintTokens(candyMachine, wallet.publicKey, mintAmount,null, transaction);
+		const res = await mintTokens(candyMachine, wallet.publicKey, mintAmount,null, transaction, memoData);
 		// const res = await mintTokens(candyMachine, wallet.publicKey, mintAmount,null, null);
 		console.log(res);
 
