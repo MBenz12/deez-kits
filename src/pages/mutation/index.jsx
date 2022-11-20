@@ -5,6 +5,7 @@ import smokeLeft from 'assets/images/deezKits/smoke_left.png';
 import smokeRight from 'assets/images/deezKits/smoke_right.png';
 import Mutate from 'assets/images/deezKits/mutate.png';
 import MutateAnimation from 'assets/images/deezKits/mutate-animation.png';
+import MutationPng from 'assets/images/deezKits/mutation_title.png';
 import Mutation1 from 'assets/images/deezKits/mutation-1.png';
 import Mutation2 from 'assets/images/deezKits/mutation-2.png';
 import Mutation3 from 'assets/images/deezKits/mutation-3.png';
@@ -20,17 +21,31 @@ import CoinFlipIcon from 'assets/images/coinflip.png';
 import HomeIcon from 'assets/images/home.png';
 import './glitch.css';
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
-import {Metaplex, walletAdapterIdentity} from '@metaplex-foundation/js';
-import {useConnection, useWallet} from '@solana/wallet-adapter-react';
+import { Metaplex, walletAdapterIdentity } from '@metaplex-foundation/js';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { Modal } from '@mui/material';
 import ToxicShower from 'assets/video/toxic_shower.mp4';
-import {mainnetRPC, kit, sardine, mouse, deezSPLToken, mutationWallet, mutationCM, devnetRPC} from '../../constants';
-import { getAta, getCreateAtaInstructionV2, getSPLTokensBalance, getTokenAccountAndOwner } from "../deezslotz/utils";
-import {toast, ToastContainer} from "react-toastify";
-import {createTransferCheckedInstruction, getMint} from "@solana/spl-token";
-import {getCandyMachineState, getCollectionPDA, mintTokens} from "../deezkits/candy-machine";
-import {wlList, wlList2} from "../deezkits/constants";
-const CandyMachineAccount = require("../deezkits/candy-machine");
+import {
+	mainnetRPC,
+	kit,
+	sardine,
+	mouse,
+	deezSPLToken,
+	mutationWallet,
+	mutationCM,
+	devnetRPC,
+} from '../../constants';
+import {
+	getAta,
+	getCreateAtaInstructionV2,
+	getSPLTokensBalance,
+	getTokenAccountAndOwner,
+} from '../deezslotz/utils';
+import { toast, ToastContainer } from 'react-toastify';
+import { createTransferCheckedInstruction, getMint } from '@solana/spl-token';
+import { getCandyMachineState, getCollectionPDA, mintTokens } from '../deezkits/candy-machine';
+import { wlList, wlList2 } from '../deezkits/constants';
+const CandyMachineAccount = require('../deezkits/candy-machine');
 
 const Mutation = () => {
 	//const connection = new Connection(devnetRPC, 'confirmed');
@@ -75,40 +90,33 @@ const Mutation = () => {
 		setNFTs(await Promise.all(promises));
 	};
 
-	const refreshCandyMachineState = async () =>
-	{
+	const refreshCandyMachineState = async () => {
 		if (!isWalletConnected()) return;
 
-		try
-		{
+		try {
 			const cndy = await getCandyMachineState(wallet, new PublicKey(CANDY_MACHINE_ID), connection);
-			let active = cndy?.state.goLiveDate ? cndy?.state.goLiveDate.toNumber() < new Date().getTime() / 1000 : false;
+			let active = cndy?.state.goLiveDate
+				? cndy?.state.goLiveDate.toNumber() < new Date().getTime() / 1000
+				: false;
 			let presale = false;
 			let isWLUser = wlList.includes(wallet.publicKey.toString());
 			let userPrice = cndy.state.price.toNumber() / LAMPORTS_PER_SOL;
 			//userPrice = isWLUser ? userPrice : cndy.state.price;
 
 			// amount to stop the mint?
-			if (cndy?.state.endSettings?.endSettingType.amount)
-			{
+			if (cndy?.state.endSettings?.endSettingType.amount) {
 				const limit = Math.min(cndy.state.endSettings.number.toNumber(), cndy.state.itemsAvailable);
-				if (cndy.state.itemsRedeemed < limit)
-				{
+				if (cndy.state.itemsRedeemed < limit) {
 					setItemsRemaining(limit - cndy.state.itemsRedeemed);
-				}
-				else
-				{
+				} else {
 					setItemsRemaining(0);
 					cndy.state.isSoldOut = true;
 				}
-			}
-			else
-			{
+			} else {
 				setItemsRemaining(cndy.state.itemsRemaining);
 			}
 
-			if (cndy.state.isSoldOut)
-			{
+			if (cndy.state.isSoldOut) {
 				active = false;
 			}
 
@@ -122,17 +130,20 @@ const Mutation = () => {
 			setItemsAvailable(cndy.state.itemsAvailable);
 			setItemPrice(cndy.state.price.toNumber() / LAMPORTS_PER_SOL);
 
-			console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut} price ${userPrice} isWL ${isWLUser} (${wlList2.length}) isActive ${isActive}`);
+			console.log(
+				`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut} price ${userPrice} isWL ${isWLUser} (${wlList2.length}) isActive ${isActive}`
+			);
+		} catch (e) {
+			toast.error('CandyMachine Error ' + e, {
+				theme: 'dark',
+				style: { blockSize: 'max-content', backgroundSize: '300px', maxWidth: 'max-content' },
+				bodyStyle: { blockSize: 'max-content', backgroundSize: '300px', maxWidth: 'max-content' },
+			});
+			console.error('CandyMachine Error:', e);
 		}
-		catch (e)
-		{
-			toast.error("CandyMachine Error " + e, {theme: "dark", style: {blockSize: "max-content", backgroundSize: "300px", maxWidth: "max-content" }, bodyStyle: {blockSize: "max-content", backgroundSize: "300px", maxWidth: "max-content"}});
-			console.error("CandyMachine Error:", e);
-		}
-	}
+	};
 
-	useEffect(() =>
-	{
+	useEffect(() => {
 		if (!isWalletConnected()) return;
 		getNFTs();
 		refreshCandyMachineState();
@@ -140,21 +151,15 @@ const Mutation = () => {
 
 	const handleMutate = async (index) => {
 		//console.log(NFTs);
-		if (isWalletConnected())
-		{
+		if (isWalletConnected()) {
 			let temp = [];
-			if (index === 0)
-			{
+			if (index === 0) {
 				temp = await NFTs?.filter((item) => item?.creators[0]?.address.toString() === kit.creator);
 				setType(0);
-			}
-			else if (index === 1)
-			{
+			} else if (index === 1) {
 				temp = await NFTs?.filter((item) => item?.creators[0]?.address.toString() === sardine.creator);
 				setType(1);
-			}
-			else if (index === 2)
-			{
+			} else if (index === 2) {
 				temp = await NFTs?.filter((item) => item?.creators[0]?.address.toString() === mouse.creator);
 				setType(2);
 			}
@@ -165,9 +170,7 @@ const Mutation = () => {
 
 			setNFTdata(temp);
 			setOpen(true);
-		}
-		else
-		{
+		} else {
 			walletModal.setVisible(true);
 		}
 	};
@@ -177,8 +180,7 @@ const Mutation = () => {
 	};
 
 	const handleSelect = (nft) => {
-		if (isWalletConnected())
-		{
+		if (isWalletConnected()) {
 			if (type === 1) setMutateNFTs((prev) => [prev[0], nft, prev[2]]);
 			if (type === 2) setMutateNFTs((prev) => [prev[0], prev[1], nft]);
 			if (type === 0) setMutateNFTs((prev) => [nft, prev[1], prev[2]]);
@@ -188,26 +190,48 @@ const Mutation = () => {
 
 	const mutationSOLCost = 1;
 	const mutationDEEZCost = 100;
-	const handleMutateNFTs = async () =>
-	{
-		if (!isWalletConnected())
-		{
-			toast.warn("Please connect your wallet.", {containerId: 114});
+	const handleMutateNFTs = async () => {
+		if (!isWalletConnected()) {
+			toast.warn('Please connect your wallet.', { containerId: 114 });
 			walletModal.setVisible(true);
 		}
 
 		const destWallet = new PublicKey(mutationWallet);
 
-		const kit = {nft: mutateNFTs[0], name: mutateNFTs[0]?.json?.name, mint: mutateNFTs[0]?.mint?.address };
-		const sardine = {nft: mutateNFTs[1], name: mutateNFTs[1]?.json?.name, mint: mutateNFTs[1]?.mint?.address };
-		const mouse = {nft: mutateNFTs[2], name: mutateNFTs[2]?.json?.name, mint: mutateNFTs[2]?.mint?.address };
+		const kit = { nft: mutateNFTs[0], name: mutateNFTs[0]?.json?.name, mint: mutateNFTs[0]?.mint?.address };
+		const sardine = {
+			nft: mutateNFTs[1],
+			name: mutateNFTs[1]?.json?.name,
+			mint: mutateNFTs[1]?.mint?.address,
+		};
+		const mouse = { nft: mutateNFTs[2], name: mutateNFTs[2]?.json?.name, mint: mutateNFTs[2]?.mint?.address };
 
-		console.log(` Kit: {name: ${kit.name} mint: ${kit.mint?.toString()}} \n Sardine: {name: ${sardine.name} mint: ${sardine.mint?.toString()}} \n Mouse: {name: ${mouse.name} mint: ${mouse.mint?.toString()}}`);
+		console.log(
+			` Kit: {name: ${kit.name} mint: ${kit.mint?.toString()}} \n Sardine: {name: ${
+				sardine.name
+			} mint: ${sardine.mint?.toString()}} \n Mouse: {name: ${mouse.name} mint: ${mouse.mint?.toString()}}`
+		);
 
-		const { solBalance: solBalance, splBalance: deezSplBalance } = await getSPLTokensBalance(connection, wallet.publicKey, new PublicKey(deezSPLToken));
-		const { solBalance: solBalance1, splBalance: kitSplBalance } = await getSPLTokensBalance(connection, wallet.publicKey, kit.mint);
-		const { solBalance: solBalance2, splBalance: sardineSplBalance } = await getSPLTokensBalance(connection, wallet.publicKey, sardine.mint);
-		const { solBalance: solBalance3, splBalance: mouseSplBalance } = await getSPLTokensBalance(connection, wallet.publicKey, mouse.mint);
+		const { solBalance: solBalance, splBalance: deezSplBalance } = await getSPLTokensBalance(
+			connection,
+			wallet.publicKey,
+			new PublicKey(deezSPLToken)
+		);
+		const { solBalance: solBalance1, splBalance: kitSplBalance } = await getSPLTokensBalance(
+			connection,
+			wallet.publicKey,
+			kit.mint
+		);
+		const { solBalance: solBalance2, splBalance: sardineSplBalance } = await getSPLTokensBalance(
+			connection,
+			wallet.publicKey,
+			sardine.mint
+		);
+		const { solBalance: solBalance3, splBalance: mouseSplBalance } = await getSPLTokensBalance(
+			connection,
+			wallet.publicKey,
+			mouse.mint
+		);
 		console.log(`--> $SOL: ${solBalance} $DEEZ: ${deezSplBalance}`);
 		console.log(`---> KIT: ${kitSplBalance}`);
 		console.log(`---> Sardine: ${sardineSplBalance}`);
@@ -218,81 +242,134 @@ const Mutation = () => {
 			// 1.1# - Validations of balance (sol and deez)
 			const isEnoughBalance = solBalance >= mutationSOLCost && deezSplBalance >= mutationDEEZCost;
 			if (!isEnoughBalance) {
-				toast.error("Not enough balance for mutation.");
-				console.error("Not enough balance for mutation.");
+				toast.error('Not enough balance for mutation.');
+				console.error('Not enough balance for mutation.');
 				return;
 			}
 
 			// 1.2# - Validations of balance (kit, sardine, mice)
 			const isEnoughNFTsBalance = kitSplBalance >= 1 && sardineSplBalance >= 1 && mouseSplBalance >= 1;
 			if (!isEnoughNFTsBalance) {
-				toast.error(`Not enough balance for mutation, Kit: ${kitSplBalance} Sardine: ${sardineSplBalance} Mice: ${mouseSplBalance}.`);
-				console.error(`Not enough balance for mutation, Kit: ${kitSplBalance} Sardine: ${sardineSplBalance} Mice: ${mouseSplBalance}.`);
+				toast.error(
+					`Not enough balance for mutation, Kit: ${kitSplBalance} Sardine: ${sardineSplBalance} Mice: ${mouseSplBalance}.`
+				);
+				console.error(
+					`Not enough balance for mutation, Kit: ${kitSplBalance} Sardine: ${sardineSplBalance} Mice: ${mouseSplBalance}.`
+				);
 				return;
 			}
 		}
 
 		// Validation passed, show toast
-		toast.success(`Mutation in progress...`, {theme: "dark", autoClose: 20000, bodyStyle: { width: "500px"}});
+		toast.success(`Mutation in progress...`, {
+			theme: 'dark',
+			autoClose: 20000,
+			bodyStyle: { width: '500px' },
+		});
 
 		// 2# - Create TX: with instructions to send above to mutationWallet
 		const transaction = new Transaction();
-		if (kit?.mint)
-		{
-			const { tokenAccount: kitTokenAccount, tokenAccountOwner } = await getTokenAccountAndOwner(connection, kit.mint);
-			console.log("-> Kit Token Account:", kitTokenAccount.toString(), "Owner:", tokenAccountOwner.toString());
+		if (kit?.mint) {
+			const { tokenAccount: kitTokenAccount, tokenAccountOwner } = await getTokenAccountAndOwner(
+				connection,
+				kit.mint
+			);
+			console.log(
+				'-> Kit Token Account:',
+				kitTokenAccount.toString(),
+				'Owner:',
+				tokenAccountOwner.toString()
+			);
 
 			const destKitATA = await getAta(kit.mint, destWallet);
-			const instruction = await getCreateAtaInstructionV2(connection, wallet.publicKey, destKitATA, kit.mint, destWallet);
+			const instruction = await getCreateAtaInstructionV2(
+				connection,
+				wallet.publicKey,
+				destKitATA,
+				kit.mint,
+				destWallet
+			);
 
 			if (instruction) transaction.add(instruction);
 
-			transaction.add(createTransferCheckedInstruction(
-				kitTokenAccount, // from (should be a token account)
-				kit.mint, // mint
-				destKitATA, // to (should be a token account)
-				tokenAccountOwner, // owner of source ata
-				1, // amount
-				0 // decimals (0 - nft, 9 - token)
-			));
+			transaction.add(
+				createTransferCheckedInstruction(
+					kitTokenAccount, // from (should be a token account)
+					kit.mint, // mint
+					destKitATA, // to (should be a token account)
+					tokenAccountOwner, // owner of source ata
+					1, // amount
+					0 // decimals (0 - nft, 9 - token)
+				)
+			);
 		}
 
-		if (sardine?.mint)
-		{
-			const { tokenAccount: sardineTokenAccount, tokenAccountOwner } = await getTokenAccountAndOwner(connection, sardine.mint);
-			console.log("-> Sardine Token Account:", sardineTokenAccount.toString(), "Owner:", tokenAccountOwner.toString());
+		if (sardine?.mint) {
+			const { tokenAccount: sardineTokenAccount, tokenAccountOwner } = await getTokenAccountAndOwner(
+				connection,
+				sardine.mint
+			);
+			console.log(
+				'-> Sardine Token Account:',
+				sardineTokenAccount.toString(),
+				'Owner:',
+				tokenAccountOwner.toString()
+			);
 
 			const destKitATA = await getAta(sardine.mint, destWallet);
-			const instruction = await getCreateAtaInstructionV2(connection, wallet.publicKey, destKitATA, sardine.mint, destWallet);
+			const instruction = await getCreateAtaInstructionV2(
+				connection,
+				wallet.publicKey,
+				destKitATA,
+				sardine.mint,
+				destWallet
+			);
 			if (instruction) transaction.add(instruction);
 
-			transaction.add(createTransferCheckedInstruction(
-				sardineTokenAccount, // from (should be a token account)
-				sardine.mint, // mint
-				destKitATA, // to (should be a token account)
-				tokenAccountOwner, // owner of source ata
-				1, // amount
-				0 // decimals (0 - nft, 9 - token)
-			));
+			transaction.add(
+				createTransferCheckedInstruction(
+					sardineTokenAccount, // from (should be a token account)
+					sardine.mint, // mint
+					destKitATA, // to (should be a token account)
+					tokenAccountOwner, // owner of source ata
+					1, // amount
+					0 // decimals (0 - nft, 9 - token)
+				)
+			);
 		}
 
-		if (mouse?.mint)
-		{
-			const { tokenAccount: mouseTokenAccount, tokenAccountOwner } = await getTokenAccountAndOwner(connection, mouse.mint);
-			console.log("-> Mouse Token Account:", mouseTokenAccount.toString(), "Owner:", tokenAccountOwner.toString());
+		if (mouse?.mint) {
+			const { tokenAccount: mouseTokenAccount, tokenAccountOwner } = await getTokenAccountAndOwner(
+				connection,
+				mouse.mint
+			);
+			console.log(
+				'-> Mouse Token Account:',
+				mouseTokenAccount.toString(),
+				'Owner:',
+				tokenAccountOwner.toString()
+			);
 
 			const destKitATA = await getAta(mouse.mint, destWallet);
-			const instruction = await getCreateAtaInstructionV2(connection, wallet.publicKey, destKitATA, mouse.mint, destWallet);
+			const instruction = await getCreateAtaInstructionV2(
+				connection,
+				wallet.publicKey,
+				destKitATA,
+				mouse.mint,
+				destWallet
+			);
 			if (instruction) transaction.add(instruction);
 
-			transaction.add(createTransferCheckedInstruction(
-				mouseTokenAccount, // from (should be a token account)
-				mouse.mint, // mint
-				destKitATA, // to (should be a token account)
-				tokenAccountOwner, // owner of source ata
-				1, // amount
-				0 // decimals (0 - nft, 9 - token)
-			));
+			transaction.add(
+				createTransferCheckedInstruction(
+					mouseTokenAccount, // from (should be a token account)
+					mouse.mint, // mint
+					destKitATA, // to (should be a token account)
+					tokenAccountOwner, // owner of source ata
+					1, // amount
+					0 // decimals (0 - nft, 9 - token)
+				)
+			);
 		}
 
 		// 100 $DEEZ SPL Token ix
@@ -300,17 +377,25 @@ const Mutation = () => {
 			const deezSPLTokenPubKey = new PublicKey(deezSPLToken);
 			const deezSPLTokenATASource = await getAta(deezSPLTokenPubKey, wallet.publicKey);
 			const deezSPLTokenATADest = await getAta(deezSPLTokenPubKey, destWallet);
-			const instruction = await getCreateAtaInstructionV2(connection, wallet.publicKey, deezSPLTokenATADest, deezSPLTokenPubKey, destWallet);
+			const instruction = await getCreateAtaInstructionV2(
+				connection,
+				wallet.publicKey,
+				deezSPLTokenATADest,
+				deezSPLTokenPubKey,
+				destWallet
+			);
 			if (instruction) transaction.add(instruction);
 
-			transaction.add(createTransferCheckedInstruction(
-				deezSPLTokenATASource, // from (should be a token account)
-				deezSPLTokenPubKey, // mint
-				deezSPLTokenATADest, // to (should be a token account)
-				wallet.publicKey, // owner of source ata
-				mutationDEEZCost * LAMPORTS_PER_SOL, // amount
-				9 // decimals (0 - nft, 9 - token)
-			));
+			transaction.add(
+				createTransferCheckedInstruction(
+					deezSPLTokenATASource, // from (should be a token account)
+					deezSPLTokenPubKey, // mint
+					deezSPLTokenATADest, // to (should be a token account)
+					wallet.publicKey, // owner of source ata
+					mutationDEEZCost * LAMPORTS_PER_SOL, // amount
+					9 // decimals (0 - nft, 9 - token)
+				)
+			);
 		}
 
 		// Normal SOL transfer to group all instructions together
@@ -325,27 +410,28 @@ const Mutation = () => {
 		}
 
 		transaction.feePayer = wallet.publicKey;
-		transaction.recentBlockhash = (await connection.getLatestBlockhash("confirmed")).blockhash;
+		transaction.recentBlockhash = (await connection.getLatestBlockhash('confirmed')).blockhash;
 
-		const memoData = { kit: { name: kit.name, mint: kit.mint.toString() }, sardine: { name: sardine.name, mint: sardine.mint.toString() }, mouse: { name: mouse.name, mint: mouse.mint.toString() }};
+		const memoData = {
+			kit: { name: kit.name, mint: kit.mint.toString() },
+			sardine: { name: sardine.name, mint: sardine.mint.toString() },
+			mouse: { name: mouse.name, mint: mouse.mint.toString() },
+		};
 		const mintAmount = 1;
-		const res = await mintTokens(candyMachine, wallet.publicKey, mintAmount,null, transaction, memoData);
+		const res = await mintTokens(candyMachine, wallet.publicKey, mintAmount, null, transaction, memoData);
 
 		console.log(res);
 
-		if (res)
-		{
+		if (res) {
 			// manual update since the refresh might not detect the change immediately
 			toast.dismiss();
-			toast.success(`Congratulations! Mutation was done successfully.`, {theme: "dark"});
+			toast.success(`Congratulations! Mutation was done successfully.`, { theme: 'dark' });
 
 			// reset selection
 			setMutateNFTs([{}, {}, {}]);
-		}
-		else
-		{
+		} else {
 			toast.dismiss();
-			toast.error("Mutation failed! Please try again!", {theme: "dark"});
+			toast.error('Mutation failed! Please try again!', { theme: 'dark' });
 		}
 
 		await refreshCandyMachineState();
@@ -360,12 +446,13 @@ const Mutation = () => {
 
 	return (
 		<div className='relative overflow-x-hidden flex flex-col font-mutation'>
-			<ToastContainer theme={"dark"}/>
+			<ToastContainer theme={'dark'} />
 			<Modal open={open} onClose={handleClose}>
 				<div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-auto border-2 border-primary rounded-lg outline-none max-w-[800px] max-h-[80vh] w-full p-4 bg-[#1B1248]'>
-					<h1 className='text-4xl text-white text-center mb-4'>Choose {type === 0 ? "Kit" : type === 1 ? "Sardine" : "Mouse"} to mutate</h1>
-					{NFTdata?.length !== 0 ?
-					(
+					<h1 className='text-4xl text-white text-center mb-4'>
+						Choose {type === 0 ? 'Kit' : type === 1 ? 'Sardine' : 'Mouse'} to mutate
+					</h1>
+					{NFTdata?.length !== 0 ? (
 						<div className='grid grid-cols-4 _md:grid-cols-3 _sm:grid-cols-2 gap-3'>
 							{NFTdata !== [] &&
 								NFTdata?.map((nft, index) => (
@@ -379,39 +466,41 @@ const Mutation = () => {
 									</div>
 								))}
 						</div>
-					)
-						:
-					(
-						<h1 className='text-2xl text-[#f00] text-center'>No {type === 0 ? "Kits" : type === 1 ? "Sardines" : "Mouses"} found in the wallet</h1>
+					) : (
+						<h1 className='text-2xl text-[#f00] text-center'>
+							No {type === 0 ? 'Kits' : type === 1 ? 'Sardines' : 'Mouses'} found in the wallet
+						</h1>
 					)}
 				</div>
 			</Modal>
-			{!wallet.connected ? (
-				<WalletMultiButton className='absolute top-2 _sm:top-16 right-2 bg-none text-[#4BFF2D]'>
-					<span>SELECT WALLET</span>
-				</WalletMultiButton>
-			) : (
-				<WalletMultiButton className='absolute top-2 _sm:top-16 right-2 bg-none text-[#4BFF2D]'>
-					{wallet?.publicKey?.toString().slice(0, 5)}...
-					{wallet?.publicKey?.toString().substr(-5)}
-				</WalletMultiButton>
-			)}
-			<a href='/' className='absolute z-20 top-0 left-0 flex items-center h-[104px] w-auto'>
-				<img src={Logo} alt='Logo' className='w-full h-full' />
-				<span className='-ml-5 text-[22.27px] text-theme'>
-					{`{DEEZ}`}
-					<span className='text-primary'>MUTATION</span>
-				</span>
-			</a>
+			<div className='flex _xs:flex-col justify-between items-center'>
+				<a href='/' className='flex items-center h-[104px] w-fit'>
+					<img src={Logo} alt='Logo' className='h-full' />
+					<span className='-ml-5 text-[22.27px] text-theme'>
+						{`{DEEZ}`}
+						<span className='text-primary'>MUTATION</span>
+					</span>
+				</a>
+				{!wallet.connected ? (
+					<WalletMultiButton className='mr-2 bg-none text-[#4BFF2D]'>
+						<span>SELECT WALLET</span>
+					</WalletMultiButton>
+				) : (
+					<WalletMultiButton className='mr-2 bg-none text-[#4BFF2D]'>
+						{wallet?.publicKey?.toString().slice(0, 5)}...
+						{wallet?.publicKey?.toString().substr(-5)}
+					</WalletMultiButton>
+				)}
+			</div>
 			<img src={smokeLeft} alt='smokeLeft' className='absolute -z-10 -top-[142px] -left-[116px] w-[875px]' />
 			<img
 				src={smokeRight}
 				alt='_smokeRight'
 				className='absolute -z-20 -top-[35px] -right-[285px] w-[875px] _md:hidden'
 			/>
-			<div className='_container relative flex flex-col mt-[200px] _sm:mt-36'>
-				<p className='text-[44.69px] _sm:text-[35.75px] text-[#FBFF49]'>DINNER TIME!</p>
-				<p className='relative z-10 mt-2.5 _sm:mt-6 max-w-[690px] w-full text-[25.45px] _sm:text-_xl text-primary'>
+			<div className='_container relative flex flex-col mt-[100px] _xs:mt-3'>
+				<p className='text-[44.69px] _sm:text-[35.75px] text-[#FBFF49] _xs:text-center'>DINNER TIME!</p>
+				<p className='relative z-10 mt-2.5 _sm:mt-6 max-w-[690px] w-full text-[25.45px] _sm:text-xl text-primary'>
 					Yummy sardines and yucky mice, or vice versa maybe muuahahha... they carry the DEEZ Virus... makes
 					your kit go !$(*&#?@... or let's just say...
 				</p>
@@ -420,11 +509,16 @@ const Mutation = () => {
 					allow='autoplay'
 					muted
 					loop
-					className='relative -z-10 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _sm:-mt-12 _xs:-ml-12'
+					className='relative -z-10 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _sm:-mt-4 _xs:-ml-12 _xs:hidden'
 				>
 					<source src={ToxicShower} type='video/mp4' />
 				</video>
-				<p className='whitespace-nowrap absolute top-64 left-[1080px] _xl:left-[880px] _xl:top-96 _lg:left-8 _lg:-rotate-12 text-[41.25px] _sm:top-80 _sm:text-[27.41px] text-theme'>
+				<img
+					src={MutationPng}
+					alt=''
+					className='relative hidden -z-10 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _sm:-mt-16 _xs:-ml-4 _xs:-mt-8 _xs:block'
+				/>
+				<p className='whitespace-nowrap absolute top-64 left-[1080px] _xl:left-[880px] _xl:top-96 _lg:left-8 _lg:-rotate-12 text-[41.25px] _sm:top-64 _xs:top-[290px] _sm:text-[27.41px] text-theme'>
 					A BIT EXOTIC!
 				</p>
 
@@ -613,22 +707,6 @@ const Mutation = () => {
 					COIN FLIP
 				</a>
 			</footer>
-			{/* <Music ref={videoRef} /> */}
-			{/* <video
-				id='video'
-				// loop
-				// ref={videoRef}
-				autoPlay
-				allow='autoplay'
-				// controls
-				onMouseOver={handleSkipToTimeStamp}
-				onEnded={handleEnded}
-				onLoadStart={onLoad}
-				className='hidden'
-			>
-				<source src={deezkits}></source>
-				Your browser does not support video!
-			</video> */}
 		</div>
 	);
 };
