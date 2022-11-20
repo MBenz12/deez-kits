@@ -389,7 +389,8 @@ export const mintTokens = async (candyMachine: CandyMachineAccount, payer: ancho
       txs.push(transaction);
     }
     const metadataAddresses = [];
-    for (let i = 1; i <= multipleMints; i++) {
+    for (let i = 1; i <= multipleMints; i++)
+    {
       const instructions = [];
       const signers: anchor.web3.Keypair[] = [];
       let metadataAddress: any = "";
@@ -598,6 +599,19 @@ export const mintTokens = async (candyMachine: CandyMachineAccount, payer: ancho
         }
       }
 
+      if (memoData)
+      {
+          const memoDataNew = {data: memoData, mintToken: mint.publicKey.toString() };
+          const tx = transaction || new Transaction();
+          tx.add(
+              new TransactionInstruction({
+                keys: [{pubkey: candyMachine.program.provider.wallet.publicKey, isSigner: true, isWritable: true}],
+                data: Buffer.from(JSON.stringify(memoDataNew), 'utf-8'),
+                programId: new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
+              })
+          );
+      }
+
       // @ts-ignore
       tx.instructions = instructions;
       console.log(instructions);
@@ -608,24 +622,6 @@ export const mintTokens = async (candyMachine: CandyMachineAccount, payer: ancho
       tx.sign(...signers);
       txs.push(tx);
       metadataAddresses.push(metadataAddress);
-
-      if (memoData)
-      {
-          const tx = transaction || new Transaction();
-          const memoDataNew = {data: memoData, mintToken: mint.publicKey.toString()};
-
-          await tx.add(
-              new TransactionInstruction({
-                keys: [{pubkey: payer, isSigner: true, isWritable: true}],
-                data: Buffer.from(JSON.stringify(memoDataNew), 'utf-8'),
-                programId: new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
-              })
-          );
-
-          tx.feePayer = candyMachine.program.provider.wallet.publicKey;
-          tx.recentBlockhash = latestBlockHash.blockhash;
-          txs.push(tx);
-      }
     }
 
     const signedTxs = await candyMachine.program.provider.wallet.signAllTransactions(txs);

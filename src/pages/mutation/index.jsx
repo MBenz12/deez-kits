@@ -19,7 +19,7 @@ import KitIcon from 'assets/images/cat.gif';
 import CoinFlipIcon from 'assets/images/coinflip.png';
 import HomeIcon from 'assets/images/home.png';
 import './glitch.css';
-import {Connection, LAMPORTS_PER_SOL, PublicKey, Transaction} from '@solana/web3.js';
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import {Metaplex, walletAdapterIdentity} from '@metaplex-foundation/js';
 import {useConnection, useWallet} from '@solana/wallet-adapter-react';
 import { Modal } from '@mui/material';
@@ -27,14 +27,14 @@ import ToxicShower from 'assets/video/toxic_shower.mp4';
 import {mainnetRPC, kit, sardine, mouse, deezSPLToken, mutationWallet, mutationCM, devnetRPC} from '../../constants';
 import { getAta, getCreateAtaInstructionV2, getSPLTokensBalance, getTokenAccountAndOwner } from "../deezslotz/utils";
 import {toast, ToastContainer} from "react-toastify";
-import {createTransferCheckedInstruction} from "@solana/spl-token";
+import {createTransferCheckedInstruction, getMint} from "@solana/spl-token";
 import {getCandyMachineState, getCollectionPDA, mintTokens} from "../deezkits/candy-machine";
 import {wlList, wlList2} from "../deezkits/constants";
 const CandyMachineAccount = require("../deezkits/candy-machine");
 
 const Mutation = () => {
-	const connection = new Connection(devnetRPC, 'confirmed');
-	// const { connection } = useConnection();
+	//const connection = new Connection(devnetRPC, 'confirmed');
+	const { connection } = useConnection();
 	const wallet = useWallet();
 	const walletModal = useWalletModal();
 
@@ -85,7 +85,7 @@ const Mutation = () => {
 			let active = cndy?.state.goLiveDate ? cndy?.state.goLiveDate.toNumber() < new Date().getTime() / 1000 : false;
 			let presale = false;
 			let isWLUser = wlList.includes(wallet.publicKey.toString());
-			let userPrice = cndy.state.price;
+			let userPrice = cndy.state.price.toNumber() / LAMPORTS_PER_SOL;
 			//userPrice = isWLUser ? userPrice : cndy.state.price;
 
 			// amount to stop the mint?
@@ -122,7 +122,7 @@ const Mutation = () => {
 			setItemsAvailable(cndy.state.itemsAvailable);
 			setItemPrice(cndy.state.price.toNumber() / LAMPORTS_PER_SOL);
 
-			console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut} isWL ${isWLUser} (${wlList2.length}) isActive ${isActive}`);
+			console.log(`${CANDY_MACHINE_ID} Candy State: itemsAvailable ${cndy.state.itemsAvailable} itemsRemaining ${cndy.state.itemsRemaining} itemsRedeemed ${cndy.state.itemsRedeemed} isSoldOut ${cndy.state.isSoldOut} price ${userPrice} isWL ${isWLUser} (${wlList2.length}) isActive ${isActive}`);
 		}
 		catch (e)
 		{
@@ -140,16 +140,22 @@ const Mutation = () => {
 
 	const handleMutate = async (index) => {
 		//console.log(NFTs);
-		if (isWalletConnected()) {
+		if (isWalletConnected())
+		{
 			let temp = [];
-			if (index === 0) {
-				temp = await NFTs?.filter((item) => item?.creators[0].address.toString() === kit.creator);
+			if (index === 0)
+			{
+				temp = await NFTs?.filter((item) => item?.creators[0]?.address.toString() === kit.creator);
 				setType(0);
-			} else if (index === 1) {
-				temp = await NFTs?.filter((item) => item?.creators[0].address.toString() === sardine.creator);
+			}
+			else if (index === 1)
+			{
+				temp = await NFTs?.filter((item) => item?.creators[0]?.address.toString() === sardine.creator);
 				setType(1);
-			} else if (index === 2) {
-				temp = await NFTs?.filter((item) => item?.creators[0].address.toString() === mouse.creator);
+			}
+			else if (index === 2)
+			{
+				temp = await NFTs?.filter((item) => item?.creators[0]?.address.toString() === mouse.creator);
 				setType(2);
 			}
 
@@ -159,7 +165,9 @@ const Mutation = () => {
 
 			setNFTdata(temp);
 			setOpen(true);
-		} else {
+		}
+		else
+		{
 			walletModal.setVisible(true);
 		}
 	};
@@ -229,7 +237,6 @@ const Mutation = () => {
 
 		// 2# - Create TX: with instructions to send above to mutationWallet
 		const transaction = new Transaction();
-
 		if (kit?.mint)
 		{
 			const { tokenAccount: kitTokenAccount, tokenAccountOwner } = await getTokenAccountAndOwner(connection, kit.mint);
@@ -237,6 +244,7 @@ const Mutation = () => {
 
 			const destKitATA = await getAta(kit.mint, destWallet);
 			const instruction = await getCreateAtaInstructionV2(connection, wallet.publicKey, destKitATA, kit.mint, destWallet);
+
 			if (instruction) transaction.add(instruction);
 
 			transaction.add(createTransferCheckedInstruction(
@@ -300,27 +308,36 @@ const Mutation = () => {
 				deezSPLTokenPubKey, // mint
 				deezSPLTokenATADest, // to (should be a token account)
 				wallet.publicKey, // owner of source ata
-				100 * LAMPORTS_PER_SOL, // amount
+				mutationDEEZCost * LAMPORTS_PER_SOL, // amount
 				9 // decimals (0 - nft, 9 - token)
 			));
 		}
 
+		// Normal SOL transfer to group all instructions together
+		{
+			transaction.add(
+				SystemProgram.transfer({
+					fromPubkey: wallet.publicKey,
+					toPubkey: destWallet,
+					lamports: 0.005 * LAMPORTS_PER_SOL,
+				})
+			);
+		}
+
 		transaction.feePayer = wallet.publicKey;
 		transaction.recentBlockhash = (await connection.getLatestBlockhash("confirmed")).blockhash;
-		console.log(transaction);
-
 
 		const memoData = { kit: { name: kit.name, mint: kit.mint.toString() }, sardine: { name: sardine.name, mint: sardine.mint.toString() }, mouse: { name: mouse.name, mint: mouse.mint.toString() }};
 		const mintAmount = 1;
 		const res = await mintTokens(candyMachine, wallet.publicKey, mintAmount,null, transaction, memoData);
-		// const res = await mintTokens(candyMachine, wallet.publicKey, mintAmount,null, null);
+
 		console.log(res);
 
 		if (res)
 		{
 			// manual update since the refresh might not detect the change immediately
 			toast.dismiss();
-			toast.success(`Congratulations! ${mintAmount} mutation done successfully.`, {theme: "dark"});
+			toast.success(`Congratulations! Mutation was done successfully.`, {theme: "dark"});
 
 			// reset selection
 			setMutateNFTs([{}, {}, {}]);
@@ -346,8 +363,9 @@ const Mutation = () => {
 			<ToastContainer theme={"dark"}/>
 			<Modal open={open} onClose={handleClose}>
 				<div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-auto border-2 border-primary rounded-lg outline-none max-w-[800px] max-h-[80vh] w-full p-4 bg-[#1B1248]'>
-					<h1 className='text-4xl text-white text-center mb-4'>Choose NFT to mutate</h1>
-					{NFTdata?.length !== 0 ? (
+					<h1 className='text-4xl text-white text-center mb-4'>Choose {type === 0 ? "Kit" : type === 1 ? "Sardine" : "Mouse"} to mutate</h1>
+					{NFTdata?.length !== 0 ?
+					(
 						<div className='grid grid-cols-4 _md:grid-cols-3 _sm:grid-cols-2 gap-3'>
 							{NFTdata !== [] &&
 								NFTdata?.map((nft, index) => (
@@ -361,8 +379,10 @@ const Mutation = () => {
 									</div>
 								))}
 						</div>
-					) : (
-						<h1 className='text-2xl text-[#f00] text-center'>No NFTs found in the wallet</h1>
+					)
+						:
+					(
+						<h1 className='text-2xl text-[#f00] text-center'>No {type === 0 ? "Kits" : type === 1 ? "Sardines" : "Mouses"} found in the wallet</h1>
 					)}
 				</div>
 			</Modal>
