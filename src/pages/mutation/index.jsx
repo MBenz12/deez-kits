@@ -509,7 +509,7 @@ const Mutation = () => {
 					allow='autoplay'
 					muted
 					loop
-					className='relative -z-10 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _md:hidden _sm:-mt-4 _xs:-ml-12'
+					className='relative -z-20 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _md:hidden _sm:-mt-4 _xs:-ml-12 pointer-events-none'
 				>
 					<source src={ToxicShower} type='video/mp4' />
 				</video>
