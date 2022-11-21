@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { BrowserView, MobileView } from 'react-device-detect';
 import { useWalletModal, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import Logo from 'assets/images/deezKits/Logo_transparent.png';
 import smokeLeft from 'assets/images/deezKits/smoke_left.png';
@@ -504,20 +505,24 @@ const Mutation = () => {
 					Yummy sardines and yucky mice, or vice versa maybe muuahahha... they carry the DEEZ Virus... makes
 					your kit go !$(*&#?@... or let's just say...
 				</p>
-				<video
-					ref={videoRef}
-					allow='autoplay'
-					muted
-					loop
-					className='relative -z-20 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _md:hidden _sm:-mt-4 _xs:-ml-12 pointer-events-none'
-				>
-					<source src={ToxicShower} type='video/mp4' />
-				</video>
-				<img
-					src={MutationPng}
-					alt=''
-					className='relative hidden -z-10 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _md:ml-16 _sm:-mt-4 _xs:-ml-4 _xs:-mt-8 _md:block'
-				/>
+				<BrowserView>
+					<video
+						ref={videoRef}
+						allow='autoplay'
+						muted
+						loop
+						className='relative -z-20 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _md:hidden _sm:-mt-4 _xs:-ml-12 pointer-events-none'
+					>
+						<source src={ToxicShower} type='video/mp4' />
+					</video>
+				</BrowserView>
+				<MobileView>
+					<img
+						src={MutationPng}
+						alt=''
+						className='relative hidden -z-10 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _md:ml-16 _sm:-mt-4 _xs:-ml-4 _xs:-mt-8 _md:block'
+					/>
+				</MobileView>
 				<p className='whitespace-nowrap absolute top-64 left-[1080px] _xl:left-[880px] _xl:top-96 _lg:left-8 _lg:-rotate-12 text-[41.25px] _sm:top-64 _xs:top-[270px] _sm:text-[27.41px] text-theme'>
 					A BIT EXOTIC!
 				</p>
