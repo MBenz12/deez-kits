@@ -493,11 +493,11 @@ const Mutation = () => {
 					</WalletMultiButton>
 				)}
 			</div>
-			<img src={smokeLeft} alt='smokeLeft' className='absolute -z-10 -top-[142px] -left-[116px] w-[875px]' />
+			<img src={smokeLeft} alt='smokeLeft' className='absolute -z-40 -top-[142px] -left-[116px] w-[875px]' />
 			<img
 				src={smokeRight}
 				alt='_smokeRight'
-				className='absolute -z-20 -top-[35px] -right-[285px] w-[875px] _md:hidden'
+				className='absolute -z-50 -top-[35px] -right-[285px] w-[875px] _md:hidden'
 			/>
 			<div className='_container relative flex flex-col mt-[100px] _xs:mt-3'>
 				<p className='text-[44.69px] _sm:text-[35.75px] text-[#FBFF49] _xs:text-center'>DINNER TIME!</p>
@@ -511,7 +511,7 @@ const Mutation = () => {
 						allow='autoplay'
 						muted
 						loop
-						className='relative -z-20 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _md:hidden _sm:-mt-4 _xs:-ml-12 pointer-events-none'
+						className='relative -z-20 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _sm:-mt-4 _xs:-ml-12'
 					>
 						<source src={ToxicShower} type='video/mp4' />
 					</video>
@@ -520,7 +520,7 @@ const Mutation = () => {
 					<img
 						src={MutationPng}
 						alt=''
-						className='relative hidden -z-10 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _md:ml-16 _sm:-mt-4 _xs:-ml-4 _xs:-mt-8 _md:block'
+						className='relative -z-20 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _md:ml-16 _sm:-mt-4 _xs:-ml-4 _xs:-mt-8'
 					/>
 				</MobileView>
 				<p className='whitespace-nowrap absolute top-64 left-[1080px] _xl:left-[880px] _xl:top-96 _lg:left-8 _lg:-rotate-12 text-[41.25px] _sm:top-64 _xs:top-[270px] _sm:text-[27.41px] text-theme'>
@@ -529,141 +529,267 @@ const Mutation = () => {
 
 				<div className='flex flex-col mt-2'>
 					<p className='mx-auto text-[44.69px] _sm:text-[35.75px] text-theme'>MUTATION</p>
-					<div className='flex _sm:flex-col gap-4 mt-8 items-start _sm:items-center _sm:px-12'>
-						<div className='w-full'>
-							<div className='cursor-pointer group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
-								<img
-									src={mutateNFTs[0]?.json?.image || Mutation1}
-									alt=''
-									className={`w-full h-full object-contain rounded-md group-hover:hidden ${
-										!mutateNFTs[0]?.json?.image && 'scale-75'
-									} _md:hidden ${
-										mutateNFTs[0]?.json?.image && 'block'
-									}`}
+					<BrowserView>
+						<div className='flex _sm:flex-col gap-4 mt-8 items-start _sm:items-center _sm:px-12'>
+							<div className='w-full'>
+								<div className='cursor-pointer group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
+									<img
+										src={mutateNFTs[0]?.json?.image || Mutation1}
+										alt=''
+										className={`w-full h-full object-contain rounded-md group-hover:hidden ${
+											!mutateNFTs[0]?.json?.image && 'scale-75'
+										}`}
+										onClick={() => {
+											handleMutate(0);
+										}}
+									/>
+									<div
+										className='hidden absolute z-10 top-0 left-0 group-hover:flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center'
+										onClick={() => {
+											handleMutate(0);
+										}}
+									>
+										<div className='flex items-center justify-center rounded-md w-20 h-20 _md:w-12 _md:h-12 bg-[#683CB6]'>
+											<PlusIcon className='w-8 h-8 _md:w-4 _md:h-4 fill-path' />
+										</div>
+										Choose your Kit
+									</div>
+								</div>
+								<button
+									className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full min-h-12 text-[25px] text-[#952CFF]'
 									onClick={() => {
 										handleMutate(0);
 									}}
-								/>
-								<div
-									className={`hidden absolute z-10 top-0 left-0 group-hover:flex _md:flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center ${
-										mutateNFTs[0]?.json?.image && 'hidden'
-									}`}
+								>
+									{mutateNFTs[0]?.json?.name || 'KIT'}
+								</button>
+							</div>
+							<PlusIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
+							<div className='w-full'>
+								<div className='cursor-pointer group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
+									<img
+										src={mutateNFTs[1]?.json?.image || Mutation2}
+										alt=''
+										className='w-full h-full object-contain rounded-md group-hover:hidden'
+										onClick={() => {
+											handleMutate(1);
+										}}
+									/>
+									<div
+										className='hidden absolute z-10 top-0 left-0 group-hover:flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center'
+										onClick={() => {
+											handleMutate(1);
+										}}
+									>
+										<div className='flex items-center justify-center rounded-md w-20 h-20 _md:w-12 _md:h-12 bg-[#683CB6]'>
+											<PlusIcon className='w-8 h-8 _md:w-4 _md:h-4 fill-path' />
+										</div>
+										Choose your Sardine
+									</div>
+								</div>
+								<button
+									className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full min-h-12 text-[25px] text-[#952CFF]'
+									onClick={() => {
+										handleMutate(1);
+									}}
+								>
+									{mutateNFTs[1]?.json?.name || 'SARDINE'}
+								</button>
+							</div>
+							<PlusIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
+							<div className='w-full'>
+								<div className='cursor-pointer group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
+									<img
+										src={mutateNFTs[2]?.json?.image || Mutation3}
+										alt=''
+										className={`w-full h-full object-contain rounded-md group-hover:hidden ${
+											!mutateNFTs[2]?.json?.image && 'scale-75'
+										}`}
+										onClick={() => {
+											handleMutate(2);
+										}}
+									/>
+									<div
+										className={`hidden absolute z-10 top-0 left-0 group-hover:flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center  ${
+											mutateNFTs[2]?.json?.image && 'hidden'
+										}`}
+										onClick={() => {
+											handleMutate(2);
+										}}
+									>
+										<div className='flex items-center justify-center rounded-md w-20 h-20 _md:w-12 _md:h-12 bg-[#683CB6]'>
+											<PlusIcon className='w-8 h-8 _md:w-4 _md:h-4 fill-path' />
+										</div>
+										Choose your Mouse
+									</div>
+								</div>
+								<button
+									className='overflow-hidden mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full min-h-12 text-[25px] text-[#952CFF]'
+									onClick={() => {
+										handleMutate(2);
+									}}
+								>
+									{mutateNFTs[2]?.json?.name || 'MOUSE'}
+								</button>
+							</div>
+							<EqualsIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
+							<div className='w-full' onClick={handleMutateNFTs}>
+								<div className='cursor-pointer relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-theme rounded-md aspect-square'>
+									<img src={Mutation4} alt='' className='w-full h-full object-contain' />
+									<img src={Mutation5} alt='' className='absolute top-0 left-0' />
+								</div>
+								<div className='flex gap-2.5 mt-6'>
+									<button className='border border-primary rounded-md w-full h-12 text-[22.15px] _lg:text-base text-theme'>
+										1 <span className='text-[#FBFF49]'>$SOL</span>
+									</button>
+									<button className='border border-primary rounded-md w-full h-12 text-[22.15px] _lg:text-base text-theme'>
+										25 <span className='text-primary'>$DEEZ</span>
+									</button>
+								</div>
+								<button className='relative mt-6 w-full h-12'>
+									<img
+										src={mutateItem}
+										alt=''
+										className='absolute -top-1/3 left-0	w-full'
+										onMouseLeave={() => setMutateItem(Mutate)}
+										onMouseOver={() => setMutateItem(MutateAnimation)}
+									/>
+								</button>
+							</div>
+						</div>
+					</BrowserView>
+					<MobileView>
+						<div className='flex _sm:flex-col gap-4 mt-8 items-start _sm:items-center _sm:px-12'>
+							<div className='w-full'>
+								<div className='cursor-pointer group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
+									{mutateNFTs[0]?.json?.image ? (
+										<img
+											src={mutateNFTs[0]?.json?.image}
+											alt=''
+											className='w-full h-full object-contain rounded-md'
+											onClick={() => {
+												handleMutate(0);
+											}}
+										/>
+									) : (
+										<div
+											className='absolute z-10 top-0 left-0 flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center'
+											onClick={() => {
+												handleMutate(0);
+											}}
+										>
+											<div className='flex items-center justify-center rounded-md w-20 h-20 _md:w-12 _md:h-12 bg-[#683CB6]'>
+												<PlusIcon className='w-8 h-8 _md:w-4 _md:h-4 fill-path' />
+											</div>
+											Choose your Kit
+										</div>
+									)}
+								</div>
+								<button
+									className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full min-h-12 text-[25px] text-[#952CFF]'
 									onClick={() => {
 										handleMutate(0);
 									}}
 								>
-									<div className='flex items-center justify-center rounded-md w-20 h-20 _md:w-12 _md:h-12 bg-[#683CB6]'>
-										<PlusIcon className='w-8 h-8 _md:w-4 _md:h-4 fill-path' />
-									</div>
-									Choose your Kit
-								</div>
+									{mutateNFTs[0]?.json?.name || 'KIT'}
+								</button>
 							</div>
-							<button
-								className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full min-h-12 text-[25px] text-[#952CFF]'
-								onClick={() => {
-									handleMutate(0);
-								}}
-							>
-								{mutateNFTs[0]?.json?.name || 'KIT'}
-							</button>
-						</div>
-						<PlusIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
-						<div className='w-full'>
-							<div className='cursor-pointer group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
-								<img
-									src={mutateNFTs[1]?.json?.image || Mutation2}
-									alt=''
-									className={`w-full h-full object-contain rounded-md group-hover:hidden _md:hidden ${
-										mutateNFTs[1]?.json?.image && 'block'
-									}`}
-									onClick={() => {
-										handleMutate(1);
-									}}
-								/>
-								<div
-									className={`hidden absolute z-10 top-0 left-0 group-hover:flex _md:flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center ${
-										mutateNFTs[1]?.json?.image && 'hidden'
-									}`}
+							<PlusIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
+							<div className='w-full'>
+								<div className='cursor-pointer group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
+									{mutateNFTs[1]?.json?.image ? (
+										<img
+											src={mutateNFTs[1]?.json?.image}
+											alt=''
+											className='w-full h-full object-contain rounded-md'
+											onClick={() => {
+												handleMutate(1);
+											}}
+										/>
+									) : (
+										<div
+											className='absolute z-10 top-0 left-0 flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center'
+											onClick={() => {
+												handleMutate(1);
+											}}
+										>
+											<div className='flex items-center justify-center rounded-md w-20 h-20 _md:w-12 _md:h-12 bg-[#683CB6]'>
+												<PlusIcon className='w-8 h-8 _md:w-4 _md:h-4 fill-path' />
+											</div>
+											Choose your Sardine
+										</div>
+									)}
+								</div>
+								<button
+									className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full min-h-12 text-[25px] text-[#952CFF]'
 									onClick={() => {
 										handleMutate(1);
 									}}
 								>
-									<div className='flex items-center justify-center rounded-md w-20 h-20 _md:w-12 _md:h-12 bg-[#683CB6]'>
-										<PlusIcon className='w-8 h-8 _md:w-4 _md:h-4 fill-path' />
-									</div>
-									Choose your Sardine
-								</div>
+									{mutateNFTs[1]?.json?.name || 'SARDINE'}
+								</button>
 							</div>
-							<button
-								className='mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full min-h-12 text-[25px] text-[#952CFF]'
-								onClick={() => {
-									handleMutate(1);
-								}}
-							>
-								{mutateNFTs[1]?.json?.name || 'SARDINE'}
-							</button>
-						</div>
-						<PlusIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
-						<div className='w-full'>
-							<div className='cursor-pointer group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
-								<img
-									src={mutateNFTs[2]?.json?.image || Mutation3}
-									alt=''
-									className={`w-full h-full object-contain rounded-md group-hover:hidden ${
-										!mutateNFTs[2]?.json?.image && 'scale-75'
-									} _md:hidden ${mutateNFTs[2]?.json?.image && 'block'}`}
-									onClick={() => {
-										handleMutate(2);
-									}}
-								/>
-								<div
-									className={`hidden absolute z-10 top-0 left-0 group-hover:flex _md:flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center  ${
-										mutateNFTs[2]?.json?.image && 'hidden'
-									}`}
+							<PlusIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
+							<div className='w-full'>
+								<div className='cursor-pointer group relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-[#7D7D7D] rounded-2xl p-2 aspect-square'>
+									{mutateNFTs[2]?.json?.image ? (
+										<img
+											src={mutateNFTs[2]?.json?.image}
+											alt=''
+											className='w-full h-full object-contain rounded-md'
+											onClick={() => {
+												handleMutate(2);
+											}}
+										/>
+									) : (
+										<div
+											className='absolute z-10 top-0 left-0 flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center'
+											onClick={() => {
+												handleMutate(2);
+											}}
+										>
+											<div className='flex items-center justify-center rounded-md w-20 h-20 _md:w-12 _md:h-12 bg-[#683CB6]'>
+												<PlusIcon className='w-8 h-8 _md:w-4 _md:h-4 fill-path' />
+											</div>
+											Choose your Mouse
+										</div>
+									)}
+								</div>
+								<button
+									className='overflow-hidden mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full min-h-12 text-[25px] text-[#952CFF]'
 									onClick={() => {
 										handleMutate(2);
 									}}
 								>
-									<div className='flex items-center justify-center rounded-md w-20 h-20 _md:w-12 _md:h-12 bg-[#683CB6]'>
-										<PlusIcon className='w-8 h-8 _md:w-4 _md:h-4 fill-path' />
-									</div>
-									Choose your Mouse
+									{mutateNFTs[2]?.json?.name || 'MOUSE'}
+								</button>
+							</div>
+							<EqualsIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
+							<div className='w-full' onClick={handleMutateNFTs}>
+								<div className='cursor-pointer relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-theme rounded-md aspect-square'>
+									<img src={Mutation4} alt='' className='w-full h-full object-contain' />
+									<img src={Mutation5} alt='' className='absolute top-0 left-0' />
 								</div>
-							</div>
-							<button
-								className='overflow-hidden mt-6 border-[#952CFF] border-[1.65px] rounded-md w-full min-h-12 text-[25px] text-[#952CFF]'
-								onClick={() => {
-									handleMutate(2);
-								}}
-							>
-								{mutateNFTs[2]?.json?.name || 'MOUSE'}
-							</button>
-						</div>
-						<EqualsIcon className='mt-40 _xl:mt-[120px] _lg:mt-20 _md:mt-16 _sm:mt-0 max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px]' />
-						<div className='w-full' onClick={handleMutateNFTs}>
-							<div className='cursor-pointer relative overflow-hidden flex items-center justify-center border-dashed border-[1.78px] border-theme rounded-md aspect-square'>
-								<img src={Mutation4} alt='' className='w-full h-full object-contain' />
-								<img src={Mutation5} alt='' className='absolute top-0 left-0' />
-							</div>
-							<div className='flex gap-2.5 mt-6'>
-								<button className='border border-primary rounded-md w-full h-12 text-[22.15px] _lg:text-base text-theme'>
-									1 <span className='text-[#FBFF49]'>$SOL</span>
-								</button>
-								<button className='border border-primary rounded-md w-full h-12 text-[22.15px] _lg:text-base text-theme'>
-									25 <span className='text-primary'>$DEEZ</span>
+								<div className='flex gap-2.5 mt-6'>
+									<button className='border border-primary rounded-md w-full h-12 text-[22.15px] _lg:text-base text-theme'>
+										1 <span className='text-[#FBFF49]'>$SOL</span>
+									</button>
+									<button className='border border-primary rounded-md w-full h-12 text-[22.15px] _lg:text-base text-theme'>
+										25 <span className='text-primary'>$DEEZ</span>
+									</button>
+								</div>
+								<button className='relative mt-6 w-full h-12'>
+									<img
+										src={mutateItem}
+										alt=''
+										className='absolute -top-1/3 left-0	w-full'
+										onMouseLeave={() => setMutateItem(Mutate)}
+										onMouseOver={() => setMutateItem(MutateAnimation)}
+									/>
 								</button>
 							</div>
-							<button className='relative mt-6 w-full h-12'>
-								<img
-									src={mutateItem}
-									alt=''
-									className='absolute -top-1/3 left-0	w-full'
-									onMouseLeave={() => setMutateItem(Mutate)}
-									onMouseOver={() => setMutateItem(MutateAnimation)}
-								/>
-							</button>
 						</div>
-					</div>
+					</MobileView>
 				</div>
 			</div>
 			<footer className='flex flex-wrap gap-x-6 gap-y-2 justify-center mt-32 mx-auto pb-3 text-theme'>
