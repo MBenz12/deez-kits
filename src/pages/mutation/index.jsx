@@ -516,7 +516,7 @@ const Mutation = () => {
 				<img
 					src={MutationPng}
 					alt=''
-					className='relative hidden -z-10 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _md:ml-16 _sm:-mt-16 _xs:-ml-4 _xs:-mt-8 _md:block'
+					className='relative hidden -z-10 mx-auto -mt-64 _xl:mt-0 w-[800px] min-w-[550px] _md:ml-16 _sm:-mt-4 _xs:-ml-4 _xs:-mt-8 _md:block'
 				/>
 				<p className='whitespace-nowrap absolute top-64 left-[1080px] _xl:left-[880px] _xl:top-96 _lg:left-8 _lg:-rotate-12 text-[41.25px] _sm:top-64 _xs:top-[270px] _sm:text-[27.41px] text-theme'>
 					A BIT EXOTIC!
