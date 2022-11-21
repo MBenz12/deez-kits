@@ -537,13 +537,17 @@ const Mutation = () => {
 									alt=''
 									className={`w-full h-full object-contain rounded-md group-hover:hidden ${
 										!mutateNFTs[0]?.json?.image && 'scale-75'
-									} _md:hidden`}
+									} _md:hidden ${
+										mutateNFTs[0]?.json?.image && 'block'
+									}`}
 									onClick={() => {
 										handleMutate(0);
 									}}
 								/>
 								<div
-									className='hidden absolute z-10 top-0 left-0 group-hover:flex _md:flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center'
+									className={`hidden absolute z-10 top-0 left-0 group-hover:flex _md:flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center ${
+										mutateNFTs[0]?.json?.image && 'hidden'
+									}`}
 									onClick={() => {
 										handleMutate(0);
 									}}
@@ -569,13 +573,17 @@ const Mutation = () => {
 								<img
 									src={mutateNFTs[1]?.json?.image || Mutation2}
 									alt=''
-									className='w-full h-full object-contain rounded-md group-hover:hidden _md:hidden'
+									className={`w-full h-full object-contain rounded-md group-hover:hidden _md:hidden ${
+										mutateNFTs[1]?.json?.image && 'block'
+									}`}
 									onClick={() => {
 										handleMutate(1);
 									}}
 								/>
 								<div
-									className='hidden absolute z-10 top-0 left-0 group-hover:flex _md:flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center'
+									className={`hidden absolute z-10 top-0 left-0 group-hover:flex _md:flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center ${
+										mutateNFTs[1]?.json?.image && 'hidden'
+									}`}
 									onClick={() => {
 										handleMutate(1);
 									}}
@@ -603,13 +611,15 @@ const Mutation = () => {
 									alt=''
 									className={`w-full h-full object-contain rounded-md group-hover:hidden ${
 										!mutateNFTs[2]?.json?.image && 'scale-75'
-									} _md:hidden`}
+									} _md:hidden ${mutateNFTs[2]?.json?.image && 'block'}`}
 									onClick={() => {
 										handleMutate(2);
 									}}
 								/>
 								<div
-									className='hidden absolute z-10 top-0 left-0 group-hover:flex _md:flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center'
+									className={`hidden absolute z-10 top-0 left-0 group-hover:flex _md:flex flex-col items-center justify-center gap-4 border-2 border-[#683CB6] rounded-2xl w-full h-full bg-[#20194D] text-xl font-bold text-[#683CB6] text-center  ${
+										mutateNFTs[2]?.json?.image && 'hidden'
+									}`}
 									onClick={() => {
 										handleMutate(2);
 									}}
