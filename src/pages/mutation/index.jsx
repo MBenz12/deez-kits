@@ -190,7 +190,7 @@ const Mutation = () => {
 	};
 
 	const mutationSOLCost = 1;
-	const mutationDEEZCost = 100;
+	const mutationDEEZCost = 25;
 	const handleMutateNFTs = async () => {
 		if (!isWalletConnected()) {
 			toast.warn('Please connect your wallet.', { containerId: 114 });
@@ -373,7 +373,7 @@ const Mutation = () => {
 			);
 		}
 
-		// 100 $DEEZ SPL Token ix
+		// 25 $DEEZ SPL Token ix
 		{
 			const deezSPLTokenPubKey = new PublicKey(deezSPLToken);
 			const deezSPLTokenATASource = await getAta(deezSPLTokenPubKey, wallet.publicKey);
